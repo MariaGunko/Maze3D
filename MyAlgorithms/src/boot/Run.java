@@ -1,0 +1,86 @@
+package boot;
+
+import java.util.Random;
+
+import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Maze3dGenerator;
+import algorithms.mazeGenerators.Position;
+import algorithms.mazeGenerators.RandomNextMove;
+import algorithms.mazeGenerators.SimpleMaze3dGenerator;
+import algorithms.demo.Demo;
+import algorithms.mazeGenerators.GrowingTreeGenerator;
+import algorithms.mazeGenerators.LastNextMove;
+
+public class Run {
+	private static void testMazeGenerator(Maze3dGenerator mg){  
+		// set the size of the maze
+		int n=4;
+		// prints the time it takes the algorithm to run   
+		System.out.println("Algorithm Run Time: " + mg.measureAlgorithmTime(2*n+1,2*n+1,2*n+1));   
+		// generate another 3d maze   
+		Maze3d maze=mg.generate(2*n+1,2*n+1,2*n+1);  
+		// get the maze entrance   
+		Position p=maze.getStartPosition();   
+		// print the position   
+		System.out.println("Start Position: " + p); // format (z,x,y)  
+		// get all the possible moves from a position   
+		String[] moves=maze.getPossibleMoves(p);   
+		// print the moves  
+		System.out.println("Possible Moves: ");
+		for(String move : moves) 
+			if (move!=null)
+				System.out.println(move);   
+		// prints the maze exit position   
+		System.out.println("Goal Position: " + maze.getGoalPosition());    
+		// prints the maze after generate 
+		System.out.println("The Maze: ");
+		System.out.println(maze);
+		try{    // get 2d cross sections of the 3d maze   
+			
+			System.out.println("Crossed Section By X: ");
+			int[][] maze2dx=maze.getCrossSectionByX(2); 
+			for (int i=0;i<maze.getFloors();i++)
+			{
+				for (int j=0;j<maze.getCols();j++)
+					System.out.print(maze2dx[i][j]);
+				System.out.println();
+			}
+			
+			System.out.println("Crossed Section By Y: "); 
+			int[][] maze2dy=maze.getCrossSectionByY(3);    
+			for (int i=0;i<maze.getFloors();i++)
+			{
+				for (int j=0;j<maze.getRows();j++)
+					System.out.print(maze2dy[i][j]);
+				System.out.println();
+			}
+			
+			System.out.println("Crossed Section By Z: ");
+			int[][] maze2dz=maze.getCrossSectionByZ(1); 
+			for (int i=0;i<maze.getRows();i++)
+			{
+				for (int j=0;j<maze.getCols();j++)
+					System.out.print(maze2dz[i][j]);
+				System.out.println();
+			}
+			     
+			// this should throw an exception!    
+			maze.getCrossSectionByX(-1);       
+		} 
+		catch (IndexOutOfBoundsException e){    
+			System.out.println("good!");   
+		}  
+	}
+
+	public static void main(String[] args) {
+//		System.out.println("~*~*~*~*~*~*~*~*~ Simple Maze ~*~*~*~*~*~*~*~*~");   
+//		testMazeGenerator(new SimpleMaze3dGenerator()); 
+//		System.out.println("~*~*~*~*~*~ Growing Tree by Random ~*~*~*~*~*~*~"); 
+//		testMazeGenerator(new GrowingTreeGenerator(new RandomNextMove())); 
+//		System.out.println("~*~*~*~*~*~ Growing Tree By Last ~*~*~*~*~*~*~*~"); 
+//		testMazeGenerator(new GrowingTreeGenerator(new LastNextMove())); 
+		
+		Demo.run();
+	}
+
+}
