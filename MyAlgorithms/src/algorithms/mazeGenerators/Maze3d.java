@@ -1,5 +1,7 @@
 package algorithms.mazeGenerators;
 
+import java.util.ArrayList;
+
 public class Maze3d {
 	private int [][][] maze;
 	private int rows;
@@ -16,7 +18,59 @@ public class Maze3d {
 		
 		maze = new int [this.floors][this.rows][this.cols];
 	}
+	
+	public Maze3d (byte [] arr){
+		int k=0;
+		this.floors = arr[k++];
+		this.rows = arr[k++];
+		this.cols = arr[k++];
+		maze = new int [floors][rows][cols];
+		
+		Position startPos = new Position (arr[k++], arr[k++], arr[k++]);
+		this.setStartPosition(startPos);
+		Position goalPos = new Position (arr[k++], arr[k++], arr[k++]);
+		this.setStartPosition(goalPos);
+		
+		for (int z=0;z<floors ;z++)
+		{
+			for (int x=0;x< rows;x++)
+			{
+				for (int y=0;y< cols;y++)
+				{
+					maze[z][x][y]=arr[k++];
+				}
+			}
+		}
+	}
 
+	public byte [] toByteArray (){
+		ArrayList <Byte> arr = new ArrayList<Byte>();
+		arr.add((byte)floors);
+		arr.add((byte)rows);
+		arr.add((byte)cols);
+		arr.add((byte)startPosition.z);
+		arr.add((byte)startPosition.x);
+		arr.add((byte)startPosition.y);
+		arr.add((byte)goalPosition.z);
+		arr.add((byte)goalPosition.x);
+		arr.add((byte)goalPosition.y);
+		
+		for (int i=0; i<floors;i++){
+			for (int j=0;j<rows;j++){
+				for (int k=0;k<cols;k++){
+					arr.add((byte)maze[i][j][k]);
+				}
+			}
+		}
+		
+		byte [] bytes = new byte [arr.size()];
+		for (int m=0;m<bytes.length;m++)
+		{
+			bytes[m] = (byte)arr.get(m);
+		}
+		return bytes;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
