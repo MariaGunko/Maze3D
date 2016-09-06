@@ -15,17 +15,22 @@ public class MyCompressorOutputStream extends OutputStream {
 
 
 	@Override
-	public void write(int arg0) throws IOException {
-		// TODO Auto-generated method stub
-		
+	public void write(int fileLength) throws IOException {
+		out.write(fileLength);
 	}
 	
 	@Override
 	public void write(byte [] arr) throws IOException {
 		byte lastByte = arr[0];
+		int k;
+		for (k=0;k<9;k++)
+		{
+			out.write(lastByte);
+			lastByte = arr[k+1];
+		}
 		int count = 1;
 		
-		for (int i=1;i<arr.length;i++){
+		for (int i=k;i<arr.length;i++){
 			if (arr[i]!=lastByte)
 			{
 				while (count>=255){
