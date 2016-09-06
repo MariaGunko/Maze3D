@@ -23,6 +23,7 @@ public class MyCompressorOutputStream extends OutputStream {
 	public void write(byte [] arr) throws IOException {
 		byte lastByte = arr[0];
 		int k;
+		
 		for (k=0;k<9;k++)
 		{
 			out.write(lastByte);
