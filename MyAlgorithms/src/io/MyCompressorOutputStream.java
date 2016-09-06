@@ -27,6 +27,7 @@ public class MyCompressorOutputStream extends OutputStream {
 		for (k=0;k<9;k++)
 		{
 			out.write(lastByte);
+			System.out.print(lastByte + " ");
 			lastByte = arr[k+1];
 		}
 		int count = 1;
@@ -40,7 +41,9 @@ public class MyCompressorOutputStream extends OutputStream {
 					count-=255;
 				}
 				out.write(count);
+				System.out.print(count + " ");
 				out.write(lastByte);
+				System.out.print(lastByte + " ");
 				lastByte = arr[i];
 				count=1;
 			}

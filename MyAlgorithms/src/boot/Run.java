@@ -123,18 +123,20 @@ public class Run {
 		try {
 			in = new MyDecompressorInputStream(
 				new FileInputStream("1.maz"));
-			int m = in.read();
-			int p = in.read();
-			int k = in.read();
-			int size = m*p*k;
+			int z = in.read();
+			int x = in.read();
+			int y = in.read();
+			int size = (z*x*y) + 6;
 			
 			byte b[]=new byte[size];
+			System.out.println("We got HERE");
 			in.read(b);
 			in.close();	
 			
-			Maze3d loaded = new Maze3d(b);
+			
+			//Maze3d loaded = new Maze3d(z,x,y,b);
 			System.out.println("maze loaded from file:");
-			System.out.println(loaded);
+			//System.out.println(loaded);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

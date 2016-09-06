@@ -18,20 +18,23 @@ public class MyDecompressorInputStream extends InputStream {
 		for (int i=0;i<6;i++)
 		{
 			byte p = (byte) in.read();
+			System.out.print(p + " ");
 			arr[i] = p;
 		}
 		
-		int m=6;
+		int m=6,c;
 		// the loop reads couple of numbers - counter and the digit
 		// for example 4,1
-		while(m<arr.length){
+		while ((c = in.read()) != -1){
+		//while(m<arr.length){
 			byte count = (byte) in.read();
-			byte b = (byte) in.read();
-			
+			System.out.print(count + " ");
+			byte b =  (byte) in.read();
+			System.out.print(b + " ");
 			// the loop saves into array the decompressed data
 			// for example 1,1,1,1
 			for (int k=0;k<count;k++){
-				arr[m++] = b;
+				arr[m++] = (byte) b;
 			}
 		}
 		return arr.length;

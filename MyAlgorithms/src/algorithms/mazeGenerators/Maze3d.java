@@ -19,11 +19,11 @@ public class Maze3d {
 		maze = new int [this.floors][this.rows][this.cols];
 	}
 	
-	public Maze3d (byte [] arr){
+	public Maze3d (int a, int b, int c, byte [] arr){
 		int k=0;
-		this.floors = arr[k++];
-		this.rows = arr[k++];
-		this.cols = arr[k++];
+		this.floors = a;
+		this.rows = b;
+		this.cols = c;
 		maze = new int [floors][rows][cols];
 		
 		Position startPos = new Position (arr[k++], arr[k++], arr[k++]);
