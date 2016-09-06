@@ -107,7 +107,7 @@ public class Run {
 					new FileOutputStream("1.maz"));
 			byte[] arr = maze.toByteArray();
 			
-			out.write(arr.length);
+			//out.write(arr.length);
 			out.write(arr);
 			out.flush();
 			out.close();
@@ -123,7 +123,11 @@ public class Run {
 		try {
 			in = new MyDecompressorInputStream(
 				new FileInputStream("1.maz"));
-			int size = in.read();			
+			int m = in.read();
+			int p = in.read();
+			int k = in.read();
+			int size = m*p*k;
+			
 			byte b[]=new byte[size];
 			in.read(b);
 			in.close();	

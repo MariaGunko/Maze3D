@@ -15,13 +15,13 @@ public class MyDecompressorInputStream extends InputStream {
 	// returns the number of bytes we read from the file
 	@Override
 	public int read(byte[] arr) throws IOException {
-		for (int i=0;i<9;i++)
+		for (int i=0;i<6;i++)
 		{
 			byte p = (byte) in.read();
 			arr[i] = p;
 		}
 		
-		int m=9;
+		int m=6;
 		// the loop reads couple of numbers - counter and the digit
 		// for example 4,1
 		while(m<arr.length){
