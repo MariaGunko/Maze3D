@@ -20,7 +20,7 @@ public class MyDecompressorInputStream extends InputStream {
 			byte p = (byte) in.read();
 			arr[i] = p;
 		}
-
+		
 		int m=8;
 		// the loop reads couple of numbers - counter and the digit
 		// for example 4,1

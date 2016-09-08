@@ -1,5 +1,4 @@
 package algorithms.mazeGenerators;
-
 import java.util.ArrayList;
 
 public class Maze3d {

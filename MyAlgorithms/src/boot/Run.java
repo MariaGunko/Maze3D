@@ -126,7 +126,7 @@ public class Run {
 		try {
 			in = new MyDecompressorInputStream(
 				new FileInputStream("1.maz"));
-
+			
 			int sizeA = in.read();
 			int sizeB = in.read();
 			int totalSize = sizeA * 255 + sizeB;
