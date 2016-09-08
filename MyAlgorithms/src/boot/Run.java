@@ -92,13 +92,11 @@ public class Run {
 		// Demo.run();
 		
 		Maze3dGenerator myGenerator = new GrowingTreeGenerator(new RandomNextMove());
-		Maze3d maze=myGenerator.generate(5,5,5);  
+		Maze3d maze=myGenerator.generate(2,2,2);  
 		System.out.println(maze);
+		System.out.println(maze.getGoalPosition());
 		
-//		MazeAdapter adapter = new MazeAdapter(maze);
-//		BFS<Position> bfs = new BFS<Position>();
-//		Solution<Position> solution = bfs.search(adapter);
-//		System.out.println(solution);
+		int a,b;
 		
 		// save it to a file
 		OutputStream out;
@@ -106,8 +104,13 @@ public class Run {
 			out = new MyCompressorOutputStream(
 					new FileOutputStream("1.maz"));
 			byte[] arr = maze.toByteArray();
+		
+			a = arr.length/255;	
+			b = arr.length%255;
 			
-			//out.write(arr.length);
+			out.write(a);
+			out.write(b);
+		
 			out.write(arr);
 			out.flush();
 			out.close();
@@ -123,20 +126,21 @@ public class Run {
 		try {
 			in = new MyDecompressorInputStream(
 				new FileInputStream("1.maz"));
-			int z = in.read();
-			int x = in.read();
-			int y = in.read();
-			int size = (z*x*y) + 6;
+
+			int sizeA = in.read();
+			int sizeB = in.read();
+			int totalSize = sizeA * 255 + sizeB;
 			
-			byte b[]=new byte[size];
-			System.out.println("We got HERE");
-			in.read(b);
+			byte bytes[]=new byte[totalSize];
+			System.out.println("Bla Bla");
+
+			in.read(bytes);
 			in.close();	
 			
-			
-			//Maze3d loaded = new Maze3d(z,x,y,b);
-			System.out.println("maze loaded from file:");
-			//System.out.println(loaded);
+			Maze3d loaded = new Maze3d(bytes);
+			System.out.println("Maze loaded from file:");
+			System.out.println(loaded);
+			System.out.println(maze.equals(loaded));
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

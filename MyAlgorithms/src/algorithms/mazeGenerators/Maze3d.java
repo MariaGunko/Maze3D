@@ -17,19 +17,21 @@ public class Maze3d {
 		this.cols=((2*cols)+1);
 		
 		maze = new int [this.floors][this.rows][this.cols];
+
 	}
 	
-	public Maze3d (int a, int b, int c, byte [] arr){
-		int k=0;
-		this.floors = a;
-		this.rows = b;
-		this.cols = c;
+	public Maze3d (byte [] arr){
+		int k=9;
+		this.floors = arr[0];
+		this.rows = arr[1];
+		this.cols = arr[2];
 		maze = new int [floors][rows][cols];
 		
-		Position startPos = new Position (arr[k++], arr[k++], arr[k++]);
+		Position startPos = new Position (arr[3], arr[4], arr[5]);
 		this.setStartPosition(startPos);
-		Position goalPos = new Position (arr[k++], arr[k++], arr[k++]);
-		this.setStartPosition(goalPos);
+		Position goalPos = new Position (arr[6], arr[7], arr[8]);
+		this.setGoalPosition(goalPos);
+		System.out.println(goalPos);
 		
 		for (int z=0;z<floors ;z++)
 		{
@@ -37,9 +39,13 @@ public class Maze3d {
 			{
 				for (int y=0;y< cols;y++)
 				{
-					maze[z][x][y]=arr[k++];
+					maze[z][x][y]=arr[k];
+					k++;
+					System.out.print(maze[z][x][y]);
 				}
+				System.out.println();
 			}
+			System.out.println();
 		}
 	}
 
@@ -81,20 +87,20 @@ public class Maze3d {
 				for (int y=0;y< cols;y++)
 				{
 					if (z==startPosition.z&&x==startPosition.x&&y==startPosition.y)
-					{
-						sb.append("E");
-					}
-					else 
-					{ 
-						if (z==goalPosition.z&&x==goalPosition.x&&y==goalPosition.y)
 						{
-							sb.append("X");
+							sb.append("E");
 						}
-						else
-							sb.append(maze[z][x][y]);
-					}	
+						else 
+						{ 
+							if (z==goalPosition.z&&x==goalPosition.x&&y==goalPosition.y)
+							{
+								sb.append("X");
+							}
+							else
+								sb.append(maze[z][x][y]);
+						}	
 				}
-			sb.append("\n");
+				sb.append("\n");
 			}
 			sb.append("\n");
 		}
