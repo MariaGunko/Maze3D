@@ -40,11 +40,11 @@ public class Maze3d {
 				{
 					maze[z][x][y]=arr[k];
 					k++;
-					System.out.print(maze[z][x][y]);
+					//System.out.print(maze[z][x][y]);
 				}
-				System.out.println();
+				//System.out.println();
 			}
-			System.out.println();
+			//System.out.println();
 		}
 	}
 
@@ -195,8 +195,6 @@ public class Maze3d {
 				}
 			}
 		}
-		
-		
 		return true;
 	}
 
