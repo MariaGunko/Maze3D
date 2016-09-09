@@ -167,6 +167,38 @@ public class Maze3d {
 		
 		return possibleMoves;
 	}
+	
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		Maze3d m =(Maze3d)obj;
+		if(m.cols!=cols)
+			return false;
+		if(m.rows!=rows)
+			return false;
+		if(m.floors!=floors)
+			return false;
+		if(!(startPosition.equals(m.startPosition)))
+				return false;
+		if(!(goalPosition.equals(m.goalPosition)))
+				return false;
+		for (int z=0;z<floors ;z++)
+		{
+			for (int x=0;x< rows;x++)
+			{
+				for (int y=0;y< cols;y++)
+				{
+						if (m.maze[z][x][y]!=maze[z][x][y])
+							return false;
+				
+				}
+			}
+		}
+		
+		
+		return true;
+	}
 
 	public int [][] getCrossSectionByX (int x)
 	{
