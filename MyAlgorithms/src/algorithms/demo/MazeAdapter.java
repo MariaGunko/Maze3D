@@ -12,7 +12,7 @@ public class MazeAdapter implements Searchable<Position> {
 
 	private Maze3d myMaze;
 
-	MazeAdapter (Maze3d myMaze){
+	public MazeAdapter (Maze3d myMaze){
 		this.myMaze=myMaze;
 	}
 

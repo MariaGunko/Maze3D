@@ -1,8 +1,11 @@
 package controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
 import model.Model;
 import view.View;
 
@@ -57,7 +60,7 @@ public class CommandsManager {
 		public void execute(String[] args) {
 			String name = args[0];
 			Maze3d maze = model.modelGetMaze(name);
-			view.displayMaze(maze);
+			view.viewDisplayMaze(maze);
 		}
 		
 	}
@@ -68,39 +71,50 @@ public class CommandsManager {
 			int index = Integer.parseInt(args[0]);
 			String XYZ = args[1];
 			String mazeName = args[2];
-			model.modelGetCrossSection(index, XYZ, mazeName);
+			int [][] maze2d= model.modelGetCrossSection(index, XYZ, mazeName);
+			view.viewDisplayCrossSection(maze2d);
+			
 		}
 	}
 	
 	public class saveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			
+			String mazeName = args[0];
+			String fileName = args[1];
+			model.modelSaveMaze(mazeName, fileName);
 		}
 	}
 	
 	public class loadMazeCommand implements Command{
 		@Override
-		public void execute(String[] args) {
-			
+		public void execute(String[] args){
+			////////// check file name type .maz ////////////
+			String fileName = args[0];
+			String mazeName = args[1];
+			model.modelLoadMaze(fileName, mazeName);
 		}
 	}
 	
 	public class solveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			
-		}
-	}
-	
-	public class ExitCommand implements Command{
-		@Override
-		public void execute(String[] args) {
-			
+			String mazeName = args[0];
+			String algorithm = args[1];
+			model.modelSolveMaze(mazeName, algorithm);
 		}
 	}
 	
 	public class DisplaySolutionCommand implements Command{
+		@Override
+		public void execute(String[] args) {
+			String mazeName = args[0];
+			Solution <Position> s = model.modelGetSolution(mazeName);
+			view.viewDisplaySolution(s);
+		}
+	}
+	
+	public class ExitCommand implements Command{
 		@Override
 		public void execute(String[] args) {
 			

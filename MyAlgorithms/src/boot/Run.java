@@ -94,7 +94,6 @@ public class Run {
 		Maze3dGenerator myGenerator = new GrowingTreeGenerator(new RandomNextMove());
 		Maze3d maze=myGenerator.generate(2,2,2);  
 		System.out.println(maze);
-		System.out.println(maze.getGoalPosition());
 		
 		int a,b;
 		
@@ -132,7 +131,6 @@ public class Run {
 			int totalSize = sizeA * 255 + sizeB;
 			
 			byte bytes[]=new byte[totalSize];
-			System.out.println("Bla Bla");
 
 			in.read(bytes);
 			in.close();	

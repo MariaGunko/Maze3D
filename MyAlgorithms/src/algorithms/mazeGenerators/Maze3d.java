@@ -16,7 +16,6 @@ public class Maze3d {
 		this.cols=((2*cols)+1);
 		
 		maze = new int [this.floors][this.rows][this.cols];
-
 	}
 	
 	public Maze3d (byte [] arr){
@@ -30,7 +29,6 @@ public class Maze3d {
 		this.setStartPosition(startPos);
 		Position goalPos = new Position (arr[6], arr[7], arr[8]);
 		this.setGoalPosition(goalPos);
-		System.out.println(goalPos);
 		
 		for (int z=0;z<floors ;z++)
 		{
@@ -167,8 +165,6 @@ public class Maze3d {
 		
 		return possibleMoves;
 	}
-	
-	
 	
 	@Override
 	public boolean equals(Object obj) {

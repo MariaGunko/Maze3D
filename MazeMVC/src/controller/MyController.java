@@ -14,13 +14,16 @@ public class MyController implements Controller {
 		this.model = model;
 		
 		commandsManager = new CommandsManager(model,view);
-		view.setCommands (commandsManager.getCommandsMap());
+		view.viewSetCommands (commandsManager.getCommandsMap());
 	}
 
 	@Override
-	public void notifyMazeIsReady(String name) {
-		view.notifyMazeIsReady(name);
-
+	public void c_notifyMazeIsReady(String name) {
+		view.viewNotifyMazeIsReady(name);
 	}
 
+	@Override
+	public void c_displayMessage(String msg) {
+		view.viewDisplayMessage(msg);	
+	}
 }

@@ -22,14 +22,6 @@ public class MyCompressorOutputStream extends OutputStream {
 	@Override
 	public void write(byte [] arr) throws IOException {
 		byte lastByte;
-		//int k;
-		
-//		for (k=0;k<9;k++)
-//		{
-//			lastByte = arr[k];
-//			out.write(lastByte);
-//			System.out.print(lastByte  + " ");
-//		}
 		
 		int count = 1;
 		lastByte = arr[0];
@@ -42,9 +34,9 @@ public class MyCompressorOutputStream extends OutputStream {
 					count-=255;
 				}
 				out.write(count);
-				System.out.print(count + " ");
+				//System.out.print(count + " ");
 				out.write(lastByte);
-				System.out.print(lastByte + " ");
+				//System.out.print(lastByte + " ");
 				lastByte = arr[i];
 				count=1;
 			}
