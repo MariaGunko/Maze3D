@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -37,7 +38,9 @@ public class CommandsManager {
 	public class DisplayDirectoriesCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			
+			String path = args[0];
+			String files = model.modelDir(path);
+			view.viewDisplayMessage(files);
 		}
 	}
 	

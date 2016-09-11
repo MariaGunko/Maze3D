@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,6 +23,7 @@ import algorithms.search.DFS;
 import algorithms.search.Searchable;
 import algorithms.search.Searcher;
 import algorithms.search.Solution;
+import algorithms.search.State;
 import controller.Controller;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
@@ -172,18 +174,18 @@ public class MyModel implements Model {
 				else
 				{
 					Maze3d myMaze = mazes.get(mazeName);
-				    Searchable<Position> adapter = new MazeAdapter(myMaze);
+					Searchable<Position> adapter = new MazeAdapter(myMaze);
 					Searcher <Position> myAlgorithm;
-					
+
 					switch (algorithm){
 					case "BFS":
 						myAlgorithm = new BFS <Position>();					
 						break;
-					
+
 					case "DFS":
 						myAlgorithm = new DFS <Position>();
 						break;
-						
+
 					default:
 						controller.c_displayMessage("Algorithm does not exist");
 						return;
@@ -195,7 +197,7 @@ public class MyModel implements Model {
 		});
 		thread.start();	
 		threads.add(thread);
-		
+
 	}
 
 	@Override
@@ -211,10 +213,32 @@ public class MyModel implements Model {
 	public void modelExit() {
 		for (int i=0;i<this.threads.size();i++)
 		{
+			/////////////////////// TO DO //////////////////////
 			if (threads.get(i).isAlive())
 			{
 				threads.remove(i);
 			}
 		}
+	}
+
+	@Override
+	public String modelDir(String path) {
+		StringBuilder sb = new StringBuilder();
+		File folder = null;
+		File[] listOfFiles = null;
+
+		try{      
+			folder = new File(path);         
+			listOfFiles = folder.listFiles();
+			
+			for (File f: listOfFiles){
+				sb.append(f.toString()).append("\n");
+			}
+		}
+		catch(Exception e){
+			// if any error occurs
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 }

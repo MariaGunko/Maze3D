@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
 
 import algorithms.mazeGenerators.Maze3d;
@@ -15,4 +16,5 @@ public interface Model {
 	void modelSolveMaze (String mazeName, String algorithm);
 	Solution<Position> modelGetSolution(String name);
 	void modelExit ();
+	String modelDir (String path);
 }
