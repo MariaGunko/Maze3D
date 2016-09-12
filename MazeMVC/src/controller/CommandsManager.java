@@ -37,7 +37,7 @@ public class CommandsManager {
 	public class DisplayDirectoriesCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			String path = args[1];
+			String path = args[0];
 			String files = model.modelDir(path);
 			view.viewDisplayMessage(files);
 		}
@@ -47,10 +47,10 @@ public class CommandsManager {
 
 		@Override
 		public void execute(String[] args) {
-			String name = args[1];
-			int floors = Integer.parseInt(args[2]);
-			int rows = Integer.parseInt(args[3]);
-			int cols = Integer.parseInt(args[4]);
+			String name = args[0];
+			int floors = Integer.parseInt(args[1]);
+			int rows = Integer.parseInt(args[2]);
+			int cols = Integer.parseInt(args[3]);
 			model.modelGenerateMaze(name, floors, rows, cols);		
 		}
 		
@@ -60,7 +60,7 @@ public class CommandsManager {
 
 		@Override
 		public void execute(String[] args) {
-			String name = args[1];
+			String name = args[0];
 			Maze3d maze = model.modelGetMaze(name);
 			view.viewDisplayMaze(maze);
 		}
@@ -70,9 +70,9 @@ public class CommandsManager {
 	public class DisplayCrossSectionCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			int index = Integer.parseInt(args[1]);
-			String XYZ = args[2];
-			String mazeName = args[3];
+			int index = Integer.parseInt(args[0]);
+			String XYZ = args[1];
+			String mazeName = args[2];
 			int [][] maze2d= model.modelGetCrossSection(index, XYZ, mazeName);
 			view.viewDisplayCrossSection(maze2d);
 			
@@ -82,8 +82,8 @@ public class CommandsManager {
 	public class saveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			String mazeName = args[1];
-			String fileName = args[2];
+			String mazeName = args[0];
+			String fileName = args[1];
 			model.modelSaveMaze(mazeName, fileName);
 		}
 	}
@@ -92,8 +92,8 @@ public class CommandsManager {
 		@Override
 		public void execute(String[] args){
 			////////// check file name type .maz ////////////
-			String fileName = args[1];
-			String mazeName = args[2];
+			String fileName = args[0];
+			String mazeName = args[1];
 			model.modelLoadMaze(fileName, mazeName);
 		}
 	}
@@ -101,8 +101,8 @@ public class CommandsManager {
 	public class solveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			String mazeName = args[1];
-			String algorithm = args[2];
+			String mazeName = args[0];
+			String algorithm = args[1];
 			model.modelSolveMaze(mazeName, algorithm);
 		}
 	}
@@ -110,7 +110,7 @@ public class CommandsManager {
 	public class DisplaySolutionCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			String mazeName = args[1];
+			String mazeName = args[0];
 			Solution <Position> s = model.modelGetSolution(mazeName);
 			view.viewDisplaySolution(s);
 		}
