@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.management.RuntimeMXBean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,30 +31,55 @@ import io.MyDecompressorInputStream;
 
 public class MyModel implements Model {
 
+	private List<GenerateMazeRunnable> generateMazeTasks= new ArrayList<GenerateMazeRunnable>();
+
+	class GenerateMazeRunnable implements Runnable{
+		private int floors,rows,cols;
+		private String name;
+		private GrowingTreeGenerator generator;
+		//GrowingTreeGenerator generator = new GrowingTreeGe
+		public GenerateMazeRunnable(int floors,int rows, int cols, String name) {
+			this.floors=floors;
+			this.rows = rows;
+			this.cols = cols;
+			this.name = name;
+		}
+
+		@Override
+		public void run() {
+			generator=new GrowingTreeGenerator(new RandomNextMove());
+			Maze3d maze = generator.generate(floors, rows, cols);
+			mazes.put(name, maze);
+			controller.c_notifyMazeIsReady(name);
+		}
+		public void terminate() {
+//			generator.setDone(true);
+		}	
+
+	}
+
 	private Controller controller;
 	private Map <String,Maze3d> mazes = new ConcurrentHashMap<String,Maze3d>(); // synchronized hashmap
 	private Map <String,Solution<Position>> solutions = new ConcurrentHashMap<String,Solution<Position>>();
 	private List <Thread> threads = new ArrayList<Thread>();
 
-	public MyModel (Controller controller){
-		this.controller=controller;
+//	public MyModel (Controller controller){
+//		this.controller=controller;
+//	}
+	public void setController(Controller controller) {
+		this.controller = controller;
 	}
-
 	@Override
 	public void modelGenerateMaze(String name, int floors, int rows, int cols) {
-		Thread thread = new Thread (new Runnable() {
-
-			@Override
-			public void run() {
-				GrowingTreeGenerator generator = new GrowingTreeGenerator(new RandomNextMove());
-				Maze3d maze = generator.generate(floors, rows, cols);
-				mazes.put(name, maze);
-
-				controller.c_notifyMazeIsReady(name);
-			}
-		});
-		thread.start();	
+		GenerateMazeRunnable generateMaze= new GenerateMazeRunnable(floors, rows, cols, name); 
+		generateMazeTasks.add(generateMaze);
+		Thread thread = new Thread(generateMaze);
+		thread.start();
 		threads.add(thread);
+
+		//Thread thread = new Thread (new modelGenerateMaze( name,floors, rows, cols));
+		//thread.start();	
+		//	threads.add(thread);
 	}
 
 	@Override
@@ -208,18 +234,13 @@ public class MyModel implements Model {
 		}
 		return null;
 	}
-	
-	
+
+
 
 	@Override
 	public void modelExit() {
-		for (int i=0;i<this.threads.size();i++)
-		{
-			/////////////////////// TO DO //////////////////////
-			if (threads.get(i).isAlive())
-			{
-				threads.remove(i);
-			}
+		for (GenerateMazeRunnable task : generateMazeTasks) {
+			task.terminate();
 		}
 	}
 
@@ -232,7 +253,7 @@ public class MyModel implements Model {
 		try{      
 			folder = new File(path);         
 			listOfFiles = folder.listFiles();
-			
+
 			for (File f: listOfFiles){
 				sb.append(f.toString()).append("\n");
 			}

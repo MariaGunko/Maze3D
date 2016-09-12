@@ -6,6 +6,7 @@ import java.io.IOException;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import controller.Controller;
 
 public interface Model {
 	void modelGenerateMaze(String name, int floors, int rows, int cols);
@@ -17,4 +18,5 @@ public interface Model {
 	Solution<Position> modelGetSolution(String name);
 	void modelExit ();
 	String modelDir (String path);
+	void setController(Controller controller);
 }
