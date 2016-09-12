@@ -30,6 +30,7 @@ public class CommandsManager {
 		commands.put("display_solution", new DisplaySolutionCommand());
 		commands.put("exit", new ExitCommand());
 		
+		
 		return commands;			
 	}
 	

@@ -57,6 +57,7 @@ public class MyModel implements Model {
 		}	
 
 	}
+	
 
 	private Controller controller;
 	private Map <String,Maze3d> mazes = new ConcurrentHashMap<String,Maze3d>(); // synchronized hashmap

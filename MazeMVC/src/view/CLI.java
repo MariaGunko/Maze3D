@@ -61,6 +61,7 @@ public class CLI {
 					}
 				}
 			}			
+			
 		});
 		thread.start();		
 	}

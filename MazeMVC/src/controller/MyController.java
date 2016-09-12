@@ -9,6 +9,7 @@ public class MyController implements Controller {
 	private Model model;
 	private CommandsManager commandsManager;
 	
+	
 	public MyController(View view, Model model) {
 		this.view = view;
 		this.model = model;

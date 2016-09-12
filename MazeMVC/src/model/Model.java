@@ -19,4 +19,5 @@ public interface Model {
 	void modelExit ();
 	String modelDir (String path);
 	void setController(Controller controller);
+	
 }

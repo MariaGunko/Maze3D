@@ -13,11 +13,12 @@ import view.View;
 
 public class Run {
 
+	
 	public static void main(String[] args) {
 		
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
-				
+
 		View view = new MyView(in, out);
 		Model model = new MyModel();
 		

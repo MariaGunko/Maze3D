@@ -66,6 +66,7 @@ public class MyView implements View {
 	public void viewDisplaySolution(Solution<Position> solve) {
 		System.out.println(solve);
 	}
+	
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub

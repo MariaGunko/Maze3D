@@ -19,3 +19,4 @@ public interface View {
 	void start();
 	void viewSetCommands(HashMap<String, Command> commands);
 }
+
