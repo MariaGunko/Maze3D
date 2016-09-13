@@ -12,7 +12,6 @@ import view.MyView;
 import view.View;
 
 public class Run {
-
 	
 	public static void main(String[] args) {
 		
@@ -27,7 +26,5 @@ public class Run {
 		model.setController(controller);
 		
 		view.start();
-
 	}
-
 }

@@ -30,6 +30,12 @@ import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
 public class MyModel implements Model {
+	
+
+	private Controller controller;
+	private Map <String,Maze3d> mazes = new ConcurrentHashMap<String,Maze3d>(); // synchronized hashmap
+	private Map <String,Solution<Position>> solutions = new ConcurrentHashMap<String,Solution<Position>>();
+	private List <Thread> threads = new ArrayList<Thread>();
 
 	private List<GenerateMazeRunnable> generateMazeTasks= new ArrayList<GenerateMazeRunnable>();
 
@@ -52,21 +58,15 @@ public class MyModel implements Model {
 			mazes.put(name, maze);
 			controller.c_notifyMazeIsReady(name);
 		}
-		public void terminate() {
+//		public void terminate() {
 //			generator.setDone(true);
-		}	
-
+//		}	
 	}
 	
-
-	private Controller controller;
-	private Map <String,Maze3d> mazes = new ConcurrentHashMap<String,Maze3d>(); // synchronized hashmap
-	private Map <String,Solution<Position>> solutions = new ConcurrentHashMap<String,Solution<Position>>();
-	private List <Thread> threads = new ArrayList<Thread>();
-
 //	public MyModel (Controller controller){
 //		this.controller=controller;
 //	}
+	
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
@@ -237,12 +237,15 @@ public class MyModel implements Model {
 	}
 
 
-
-	@Override
 	public void modelExit() {
-		for (GenerateMazeRunnable task : generateMazeTasks) {
-			task.terminate();
+//		for (GenerateMazeRunnable task : generateMazeTasks) {
+//			task.terminate();
+//		}
+		for (int i=0;i<threads.size();i++){
+			Thread t = threads.get(i);
+			t.interrupt();
 		}
+		controller.c_displayMessage("All proccesses are closed");
 	}
 
 	@Override

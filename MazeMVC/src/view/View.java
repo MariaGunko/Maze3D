@@ -8,9 +8,15 @@ import algorithms.search.Solution;
 import controller.Command;
 import controller.Controller;
 
+/**
+ * This interface defines methods for the VIEW
+ * @author Maria&Amiran
+ * 
+ */
 public interface View {
 	void viewNotifyMazeIsReady(String name);
 	void viewDisplayMaze (Maze3d maze);
+
 	void viewDisplayMessage (String msg);
 	void viewDisplayCrossSection (int [][] maze2d);
 	
@@ -18,5 +24,6 @@ public interface View {
 	void setController(Controller controller);
 	void start();
 	void viewSetCommands(HashMap<String, Command> commands);
+	void viewExit ();
 }
 
