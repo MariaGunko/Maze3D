@@ -8,6 +8,11 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import controller.Controller;
 
+/**
+ * This interface defines methods for the MODEL
+ * @author Maria&Amiran
+ *
+ */
 public interface Model {
 	void modelGenerateMaze(String name, int floors, int rows, int cols);
 	Maze3d modelGetMaze (String name);

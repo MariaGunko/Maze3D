@@ -29,14 +29,21 @@ import controller.Controller;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 
+/**
+ * 
+ * This class implements all common methods of MODEL interface
+ * 
+ * @author Maria&Amiran
+ *
+ */
 public class MyModel implements Model {
-	
 
 	private Controller controller;
+	
 	private Map <String,Maze3d> mazes = new ConcurrentHashMap<String,Maze3d>(); // synchronized hashmap
 	private Map <String,Solution<Position>> solutions = new ConcurrentHashMap<String,Solution<Position>>();
+	
 	private List <Thread> threads = new ArrayList<Thread>();
-
 	private List<GenerateMazeRunnable> generateMazeTasks= new ArrayList<GenerateMazeRunnable>();
 
 	class GenerateMazeRunnable implements Runnable{
@@ -70,6 +77,15 @@ public class MyModel implements Model {
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
+	
+	/**
+	 * this method generates a maze due to the given parameters 
+	 * 
+     * @param name - the maze name
+	 * @param floors - number of floors wanted
+	 * @param rows - number of rows wanted
+	 * @param cols - number of columns wanted
+	 */	
 	@Override
 	public void modelGenerateMaze(String name, int floors, int rows, int cols) {
 		GenerateMazeRunnable generateMaze= new GenerateMazeRunnable(floors, rows, cols, name); 
@@ -83,6 +99,12 @@ public class MyModel implements Model {
 		//	threads.add(thread);
 	}
 
+	/**
+	 * this method gets a maze name and returns the relevant maze
+	 * 
+	 * @param name
+	 * @return Maze3d
+	 */
 	@Override
 	public Maze3d modelGetMaze(String name) {
 		if (mazes.containsKey(name)){
@@ -91,6 +113,14 @@ public class MyModel implements Model {
 		return null;
 	}
 
+	/**
+	 * this method gets one of the axis: X,Y or Z, an index and a maze name
+	 * and returns the crossed section maze 2D
+	 * @param index
+	 * @param XYZ
+	 * @param mazeName
+	 * @return maze2d
+	 */
 	@Override
 	public int[][] modelGetCrossSection(int index, String XYZ, String mazeName) {
 		int [][] maze2d = null;
@@ -120,6 +150,12 @@ public class MyModel implements Model {
 		return maze2d;
 	}
 
+	/**
+	 * 
+	 * this method saves the maze into a file
+	 * @param mazeName
+	 * @param fileName
+	 */
 	@Override
 	public void modelSaveMaze(String mazeName, String fileName) {
 		if (!mazes.containsKey(mazeName)){
@@ -159,6 +195,12 @@ public class MyModel implements Model {
 
 	}
 
+	/**
+	 * this method loads a maze from a file to a Maze3d
+	 * 
+	 * @param fileName
+	 * @param mazeName
+	 */
 	@Override
 	public void modelLoadMaze(String fileName, String mazeName){
 		InputStream in;
@@ -189,6 +231,11 @@ public class MyModel implements Model {
 		}	
 	}
 
+	/**
+	 * this method runs the wanted algorithm on the maze
+	 * @param mazeName
+	 * @param algorithm
+	 */
 	@Override
 	public void modelSolveMaze(String mazeName, String algorithm) {
 		Thread thread = new Thread (new Runnable() {
@@ -227,6 +274,11 @@ public class MyModel implements Model {
 
 	}
 
+	/**
+	 * this method gets a maze name and returns the solution for it
+	 * @param name
+	 * @return mySolution
+	 */
 	@Override
 	public Solution<Position> modelGetSolution(String name) {
 		if (solutions.containsKey(name)){
@@ -236,7 +288,9 @@ public class MyModel implements Model {
 		return null;
 	}
 
-
+	/**
+	 * this method closes all running threads and notify exit
+	 */
 	public void modelExit() {
 //		for (GenerateMazeRunnable task : generateMazeTasks) {
 //			task.terminate();
@@ -248,6 +302,11 @@ public class MyModel implements Model {
 		controller.c_displayMessage("All proccesses are closed");
 	}
 
+	/**
+	 * this method gets a path and returns string of all folders and directories in it
+	 * @param path
+	 * @return StringBuilder
+	 */
 	@Override
 	public String modelDir(String path) {
 		StringBuilder sb = new StringBuilder();

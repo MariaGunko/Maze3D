@@ -8,16 +8,32 @@ import algorithms.search.Solution;
 import model.Model;
 import view.View;
 
+/** 
+ * Manager of commands implemented in controller architecture
+ * includes access for both MODEL and VIEW
+ * @author Maria&Amiran
+ *
+ */
 public class CommandsManager {
 	
 	private Model model;
 	private View view;
 	
+	/**
+	 * CTOR
+	 * 
+	 * @param model
+	 * @param view
+	 */
 	public CommandsManager(Model model, View view) {
 		this.model = model;
 		this.view = view;
 	}
 	
+	/**
+	 * Getter for the hashMap of commands
+	 * @return commands
+	 */
 	public HashMap <String,Command> getCommandsMap(){
 		HashMap<String,Command> commands = new HashMap <String, Command>();
 		commands.put("dir", new DisplayDirectoriesCommand());
@@ -29,11 +45,15 @@ public class CommandsManager {
 		commands.put("solve", new solveMazeCommand());
 		commands.put("display_solution", new DisplaySolutionCommand());
 		commands.put("exit", new ExitCommand());
-		
-		
+			
 		return commands;			
 	}
 	
+	/**
+	 * This class displays all directories of given path
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class DisplayDirectoriesCommand implements Command{
 		@Override
 		public void execute(String[] args) {
@@ -43,6 +63,12 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This class generates a new maze according to the given arguments:
+	 * name, floors, rows, columns
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class GenerateMazeCommand implements Command {
 
 		@Override
@@ -56,6 +82,11 @@ public class CommandsManager {
 		
 	}
 	
+	/**
+	 * This class displays a maze according to the given name
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class DisplayMazeCommand implements Command{
 
 		@Override
@@ -67,6 +98,12 @@ public class CommandsManager {
 		
 	}
 	
+	/**
+	 * This class displays crossed section 2D maze according to the given arguments:
+	 * index, one of the axis X, Y or Z and a mazeName
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class DisplayCrossSectionCommand implements Command{
 		@Override
 		public void execute(String[] args) {
@@ -79,6 +116,11 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This class saves the maze under fileName  
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class saveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
@@ -88,16 +130,25 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This class loads the maze from file
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class loadMazeCommand implements Command{
 		@Override
 		public void execute(String[] args){
-			////////// check file name type .maz ////////////
 			String fileName = args[0];
 			String mazeName = args[1];
 			model.modelLoadMaze(fileName, mazeName);
 		}
 	}
 	
+	/**
+	 * This class solves the maze get maze name and algorithm:BFS,DFS
+	 * @author Maria&Amiran 
+	 *
+	 */
 	public class solveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
@@ -106,7 +157,11 @@ public class CommandsManager {
 			model.modelSolveMaze(mazeName, algorithm);
 		}
 	}
-	
+	/**
+	 * This class displays the maze solution 
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class DisplaySolutionCommand implements Command{
 		@Override
 		public void execute(String[] args) {
@@ -116,6 +171,11 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This class interrupts all running threads and shuts down the program
+	 * @author Maria&Amiran
+	 *
+	 */
 	public class ExitCommand implements Command{
 		@Override
 		public void execute(String[] args) {
