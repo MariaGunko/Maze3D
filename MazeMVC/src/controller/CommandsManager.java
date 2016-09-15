@@ -15,10 +15,10 @@ import view.View;
  *
  */
 public class CommandsManager {
-	
+
 	private Model model;
 	private View view;
-	
+
 	/**
 	 * CTOR
 	 * 
@@ -29,7 +29,7 @@ public class CommandsManager {
 		this.model = model;
 		this.view = view;
 	}
-	
+
 	/**
 	 * Getter for the hashMap of commands
 	 * @return commands
@@ -45,10 +45,10 @@ public class CommandsManager {
 		commands.put("solve", new solveMazeCommand());
 		commands.put("display_solution", new DisplaySolutionCommand());
 		commands.put("exit", new ExitCommand());
-			
+
 		return commands;			
 	}
-	
+
 	/**
 	 * This class displays all directories of given path
 	 * @author Maria&Amiran
@@ -57,12 +57,14 @@ public class CommandsManager {
 	public class DisplayDirectoriesCommand implements Command{
 		@Override
 		public void execute(String[] args) {
+			if (args.length!=1)
+				view.viewDisplayMessage("Missing or unnecessary parameters");
 			String path = args[0];
 			String files = model.modelDir(path);
 			view.viewDisplayMessage(files);
 		}
 	}
-	
+
 	/**
 	 * This class generates a new maze according to the given arguments:
 	 * name, floors, rows, columns
@@ -73,15 +75,27 @@ public class CommandsManager {
 
 		@Override
 		public void execute(String[] args) {
-			String name = args[0];
-			int floors = Integer.parseInt(args[1]);
-			int rows = Integer.parseInt(args[2]);
-			int cols = Integer.parseInt(args[3]);
-			model.modelGenerateMaze(name, floors, rows, cols);		
+			if (args.length!=4)
+				view.viewDisplayMessage("Missing or unnecessary parameters");
+			else{
+				String name = args[0];
+				try{
+
+
+					int floors = Integer.parseInt(args[1]);
+					int rows = Integer.parseInt(args[2]);
+					int cols = Integer.parseInt(args[3]);
+					model.modelGenerateMaze(name, floors, rows, cols);	
+				}
+				catch(NumberFormatException e)  
+				{  
+					view.viewDisplayMessage("Invalid parameters");
+				}
+			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * This class displays a maze according to the given name
 	 * @author Maria&Amiran
@@ -91,31 +105,45 @@ public class CommandsManager {
 
 		@Override
 		public void execute(String[] args) {
+
 			String name = args[0];
 			Maze3d maze = model.modelGetMaze(name);
 			view.viewDisplayMaze(maze);
 		}
-		
+
 	}
-	
+
 	/**
 	 * This class displays crossed section 2D maze according to the given arguments:
 	 * index, one of the axis X, Y or Z and a mazeName
 	 * @author Maria&Amiran
 	 *
 	 */
+
 	public class DisplayCrossSectionCommand implements Command{
 		@Override
 		public void execute(String[] args) {
-			int index = Integer.parseInt(args[0]);
-			String XYZ = args[1];
-			String mazeName = args[2];
-			int [][] maze2d= model.modelGetCrossSection(index, XYZ, mazeName);
-			view.viewDisplayCrossSection(maze2d);
-			
+			if (args.length!=3)
+				view.viewDisplayMessage("Missing or unnecessary parameters");
+			else
+			{
+				try  
+				{  
+					int index = Integer.parseInt(args[0]); 
+					String XYZ = args[1];
+					String mazeName = args[2];
+					int [][] maze2d= model.modelGetCrossSection(index, XYZ, mazeName);
+					view.viewDisplayCrossSection(maze2d);
+				}  
+				catch(NumberFormatException e)  
+				{  
+					view.viewDisplayMessage("Invalid parameters");
+				}
+			} 
+
 		}
 	}
-	
+
 	/**
 	 * This class saves the maze under fileName  
 	 * @author Maria&Amiran
@@ -124,12 +152,14 @@ public class CommandsManager {
 	public class saveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
+			if (args.length!=2)
+				view.viewDisplayMessage("Missing or unnecessary parameters");
 			String mazeName = args[0];
 			String fileName = args[1];
 			model.modelSaveMaze(mazeName, fileName);
 		}
 	}
-	
+
 	/**
 	 * This class loads the maze from file
 	 * @author Maria&Amiran
@@ -143,7 +173,7 @@ public class CommandsManager {
 			model.modelLoadMaze(fileName, mazeName);
 		}
 	}
-	
+
 	/**
 	 * This class solves the maze get maze name and algorithm:BFS,DFS
 	 * @author Maria&Amiran 
@@ -152,6 +182,8 @@ public class CommandsManager {
 	public class solveMazeCommand implements Command{
 		@Override
 		public void execute(String[] args) {
+			if (args.length!=2)
+				view.viewDisplayMessage("Missing or unnecessary parameters");
 			String mazeName = args[0];
 			String algorithm = args[1];
 			model.modelSolveMaze(mazeName, algorithm);
@@ -165,12 +197,13 @@ public class CommandsManager {
 	public class DisplaySolutionCommand implements Command{
 		@Override
 		public void execute(String[] args) {
+
 			String mazeName = args[0];
 			Solution <Position> s = model.modelGetSolution(mazeName);
 			view.viewDisplaySolution(s);
 		}
 	}
-	
+
 	/**
 	 * This class interrupts all running threads and shuts down the program
 	 * @author Maria&Amiran

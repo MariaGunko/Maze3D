@@ -30,7 +30,7 @@ public class MyView implements View {
 	private PrintWriter out;
 	private CLI cli;
 	private Controller controller;
-	
+
 	/**
 	 * MyView CTOR
 	 * 
@@ -42,7 +42,7 @@ public class MyView implements View {
 		this.out = out;			
 		cli = new CLI(in, out);
 	}
-	
+
 	/**
 	 * controller setter
 	 * @param controller
@@ -50,7 +50,7 @@ public class MyView implements View {
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
-	
+
 	/**
 	 * this method gets a maze name and notifies if the maze is ready
 	 * @param name
@@ -88,11 +88,19 @@ public class MyView implements View {
 	 */
 	@Override
 	public void viewDisplayCrossSection(int[][] maze2d) {
-		for (int i=0;i<maze2d[0].length;i++)
+		if (maze2d!=null){
+
+
+			for (int i=0;i<maze2d[0].length;i++)
+			{
+				for (int j=0;j<maze2d.length;j++)
+					out.print(maze2d[i][j]);
+				out.println();
+			}
+		}
+		else 
 		{
-			for (int j=0;j<maze2d.length;j++)
-				out.print(maze2d[i][j]);
-			out.println();
+			controller.c_displayMessage("Try again");
 		}
 	}
 	/**
@@ -104,15 +112,15 @@ public class MyView implements View {
 		cli.setCommands(commands);
 
 	}
-/**
- * this method gets a solution to the maze and displays it 
- * @param solve
- */
+	/**
+	 * this method gets a solution to the maze and displays it 
+	 * @param solve
+	 */
 	@Override
 	public void viewDisplaySolution(Solution<Position> solve) {
 		out.println(solve);
 	}
-	
+
 	/**
 	 * this method starts running CLI
 	 */
@@ -121,7 +129,7 @@ public class MyView implements View {
 		// TODO Auto-generated method stub
 		cli.start();
 	}
-	
+
 	/**
 	 * this method notify exit
 	 */

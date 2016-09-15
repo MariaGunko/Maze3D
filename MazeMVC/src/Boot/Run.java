@@ -19,11 +19,7 @@ import view.View;
  */
 public class Run {
 	
-	/**
-	 * The main function of the program
-	 * runs all the MVC architecture
-	 * @param args
-	 */
+
 	public static void main(String[] args) {
 		
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

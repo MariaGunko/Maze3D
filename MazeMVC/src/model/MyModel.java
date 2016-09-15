@@ -50,7 +50,7 @@ public class MyModel implements Model {
 		private int floors,rows,cols;
 		private String name;
 		private GrowingTreeGenerator generator;
-		//GrowingTreeGenerator generator = new GrowingTreeGe
+		
 		public GenerateMazeRunnable(int floors,int rows, int cols, String name) {
 			this.floors=floors;
 			this.rows = rows;
@@ -65,15 +65,11 @@ public class MyModel implements Model {
 			mazes.put(name, maze);
 			controller.c_notifyMazeIsReady(name);
 		}
-//		public void terminate() {
-//			generator.setDone(true);
-//		}	
 	}
 	
-//	public MyModel (Controller controller){
-//		this.controller=controller;
-//	}
-	
+/**
+ * Controller setter	
+ */
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
@@ -94,9 +90,6 @@ public class MyModel implements Model {
 		thread.start();
 		threads.add(thread);
 
-		//Thread thread = new Thread (new modelGenerateMaze( name,floors, rows, cols));
-		//thread.start();	
-		//	threads.add(thread);
 	}
 
 	/**

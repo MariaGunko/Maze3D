@@ -77,20 +77,26 @@ public class CLI {
 							out.println("Command doesn't exist");
 						}
 						else {
+							if (command.equals("exit"))
+							{
+								Command cmd = commands.get(command);
+								cmd.execute(null);
+								break;
+							}
 							String[] args = null;
 							if (arr.length > 1) {
 								String commandArgs = commandLine.substring(
 										commandLine.indexOf(" ") + 1);
-								args = commandArgs.split(" ");							
+								args = commandArgs.split(" ");	
+								Command cmd = commands.get(command);
+								cmd.execute(args);
 							}
-							Command cmd = commands.get(command);
-							cmd.execute(args);
-
-							if (command.equals("exit"))
-								break;
+							else {
+								out.println("Invalid parameters");
+								out.flush();
+							}	
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
