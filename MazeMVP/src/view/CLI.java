@@ -3,7 +3,6 @@ package view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Observable;
 
 public class CLI extends Observable {
@@ -16,7 +15,7 @@ public class CLI extends Observable {
 	}
 	
 	private void printMenu() {
-		out.print("Choose command: (");
+		out.print("Choose command:");
 		/*for (String command : commands.keySet()) {
 			out.print(command + ",");
 		}

@@ -23,33 +23,38 @@ public class Presenter implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		String commandLine = (String)arg;
+		if (o==view){
+			String commandLine = (String)arg;
 
-		String arr[] = commandLine.split(" ");
-		String command = arr[0];			
+			String arr[] = commandLine.split(" ");
+			String command = arr[0];			
 
-		if(!commands.containsKey(command)) {
-			view.viewDisplayMessage("Command doesn't exist");			
-		}
-		else {
-			if (command.equals("exit"))
-			{
-				Command cmd = commands.get(command);
-				cmd.execute(null);
+			if(!commands.containsKey(command)) {
+				view.viewDisplayMessage("Command doesn't exist");			
 			}
-			else{
-				String[] args = null;
-				if (arr.length > 1) {
-					String commandArgs = commandLine.substring(
-							commandLine.indexOf(" ") + 1);
-					args = commandArgs.split(" ");
+			else {
+				if (command.equals("exit"))
+				{
 					Command cmd = commands.get(command);
-					cmd.execute(args);
+					cmd.execute(null);
 				}
-				else {
-					view.viewDisplayMessage("Invalid parameters");
-				}	
+				else{
+					String[] args = null;
+					if (arr.length > 1) {
+						String commandArgs = commandLine.substring(
+								commandLine.indexOf(" ") + 1);
+						args = commandArgs.split(" ");
+						Command cmd = commands.get(command);
+						cmd.execute(args);
+					}
+					else {
+						view.viewDisplayMessage("Invalid parameters");
+					}	
+				}
 			}
+		}
+		else if (o==model){
+			view.viewDisplayMessage((String)arg);
 		}
 	}
 }

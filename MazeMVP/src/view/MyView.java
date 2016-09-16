@@ -2,7 +2,6 @@ package view;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -82,5 +81,4 @@ public class MyView extends Observable implements View, Observer {
 		out.println("Bye Bye :)");	
 		out.flush();	
 	}
-
 }
