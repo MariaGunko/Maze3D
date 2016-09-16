@@ -7,4 +7,5 @@ public interface Model {
 	Maze3d getMaze(String name);
 	void exit();
 	String modelDir(String path);	// TO DO
+	void modelSaveMaze(String mazeName, String fileName);
 }

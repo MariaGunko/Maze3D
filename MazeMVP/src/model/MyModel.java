@@ -57,4 +57,10 @@ public class MyModel extends Observable implements Model {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void modelSaveMaze(String mazeName, String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
 }

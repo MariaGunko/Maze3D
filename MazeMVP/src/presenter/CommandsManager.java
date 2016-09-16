@@ -3,6 +3,7 @@ package presenter;
 import java.util.HashMap;
 
 import algorithms.mazeGenerators.Maze3d;
+
 import model.Model;
 import view.View;
 
@@ -84,7 +85,16 @@ public class CommandsManager {
 		public class saveMazeCommand implements Command{
 			@Override
 			public void execute(String[] args) {
+				if (args.length!=2)
+					view.viewDisplayMessage("Missing or unnecessary parameters");
+				String mazeName = args[0];
+				String fileName = args[1];
+				model.modelSaveMaze(mazeName, fileName);
 			}
+			
+		
+			
+			
 		}
 
 		public class loadMazeCommand implements Command{
