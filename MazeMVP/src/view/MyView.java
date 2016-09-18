@@ -13,7 +13,8 @@ public class MyView extends Observable implements View, Observer {
 	
 	private BufferedReader in;
 	private PrintWriter out;
-	private CLI cli;	
+	private CLI cli;
+	private GeneralWindow win;
 
 	public MyView(BufferedReader in, PrintWriter out) {
 		this.in = in;
@@ -21,6 +22,10 @@ public class MyView extends Observable implements View, Observer {
 				
 		cli = new CLI(in, out);
 		cli.addObserver(this);
+		
+		win = new GeneralWindow (1000,1000);
+		win.addObserver(this);
+		
 	}	
 
 	@Override
@@ -72,8 +77,7 @@ public class MyView extends Observable implements View, Observer {
 
 	@Override
 	public void viewDisplaySolution(Solution<Position> solve) {
-		out.println(solve);
-		
+		out.println(solve);	
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Map;
 import java.util.Observable;
@@ -13,6 +15,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import algorithms.demo.MazeAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
@@ -26,18 +30,80 @@ import algorithms.search.Searcher;
 import algorithms.search.Solution;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
+import properties.Properties;
+import properties.PropertiesLoader;
 
 public class MyModel extends Observable implements Model {
 	
 	private ExecutorService executor;
-	
-	public MyModel() {
-		executor = Executors.newFixedThreadPool(50);
-	}		
-		
+	private Properties properties;
 	private Map<String, Maze3d> mazes = new ConcurrentHashMap<String, Maze3d>();
 	private Map<String, Solution<Position>> solutions = new ConcurrentHashMap<String, Solution<Position>>();
+	
+	
+	public MyModel() {
+		properties = PropertiesLoader.getInstance().getProperties();
+		executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
+		loadSolutions();
+	}		
+		
+	private void loadSolutions() {
+		File file = new File ("Solutions.dat");
+		if (!file.exists())
+			return;
+		
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream (new GZIPInputStream(new FileInputStream(file)));
+			try {
+				mazes = (Map<String,Maze3d>)ois.readObject();
+				solutions = (Map<String,Solution<Position>>)ois.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				ois.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
+	private void saveSolutions (){
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream (new GZIPOutputStream (new FileOutputStream("Solution.dat")));
+			oos.writeObject(mazes);
+			oos.writeObject(solutions);
 			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				oos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	/**
 	 * this method generates a maze due to the given parameters 
 	 * 
@@ -80,8 +146,9 @@ public class MyModel extends Observable implements Model {
 	 */
 	public void exit() {
 		executor.shutdownNow();
-		setChanged();
-		notifyObservers("All proccesses are closed");	
+		saveSolutions();
+		//setChanged();
+		//notifyObservers("All proccesses are closed");	
 	}
 
 	/**
@@ -241,6 +308,7 @@ public class MyModel extends Observable implements Model {
 	 */
 	@Override
 	public void modelSolveMaze(String mazeName, String algorithm) {
+		
 		executor.submit(new Callable<Solution<Position>>() {
 
 			@Override
@@ -249,6 +317,12 @@ public class MyModel extends Observable implements Model {
 					setChanged();
 					notifyObservers("Maze name not found");	
 					}
+				else if(solutions.containsKey(mazeName))
+				{
+					setChanged();
+					notifyObservers("The Maze is already solved, the solution exsits in HashMap");
+					return solutions.get(mazeName);
+				}
 				else
 				{
 					Maze3d myMaze = mazes.get(mazeName);

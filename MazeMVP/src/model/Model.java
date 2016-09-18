@@ -10,7 +10,7 @@ public interface Model {
 	void exit();
 	String modelDir(String path);
 	void modelSaveMaze(String mazeName, String fileName);
-	int[][] modelGetCrossSection(int index, String xYZ, String mazeName);
+	int[][] modelGetCrossSection(int index, String XYZ, String mazeName);
 	void modelLoadMaze(String fileName, String mazeName);
 	void modelSolveMaze(String mazeName, String algorithm); // TO DO
 	Solution<Position> modelGetSolution(String mazeName);
