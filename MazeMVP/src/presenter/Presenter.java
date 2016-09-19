@@ -56,5 +56,9 @@ public class Presenter implements Observer {
 		else if (o==model){
 			view.viewDisplayMessage((String)arg);
 		}
+		else
+		{
+			view.viewDisplayMessage("ma kora kapara");
+		}
 	}
 }

@@ -48,5 +48,4 @@ public class CLI extends Observable {
 		});
 		thread.start();		
 	}
-	
 }

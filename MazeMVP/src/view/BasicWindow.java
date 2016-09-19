@@ -5,7 +5,7 @@ import java.util.Observable;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class BasicWindow extends Observable implements Runnable  {
+public abstract class BasicWindow extends Observable {
 	protected Display display;
 	protected Shell shell;
 
@@ -17,7 +17,7 @@ public abstract class BasicWindow extends Observable implements Runnable  {
 		shell.setSize(width, height);
 	}
 	
-	public void run(){
+	public void start(){
 		initWidgets();
 		shell.open();
 

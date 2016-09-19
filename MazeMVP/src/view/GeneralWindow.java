@@ -9,6 +9,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
@@ -17,6 +19,12 @@ public class GeneralWindow  extends BasicWindow {
 
 	public GeneralWindow(int width, int height) {
 		super(width, height);
+	}
+	public void close()
+	{
+		// Don't call shell.close(), because then
+		// you'll have to re-create it
+		shell.setVisible(false);
 	}
 
 	@Override
@@ -28,14 +36,19 @@ public class GeneralWindow  extends BasicWindow {
 		Button generateButton = new Button(shell, SWT.PUSH);
 		generateButton.setText("Generate Maze");
 		generateButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
+		
 		generateButton.addSelectionListener(new SelectionListener() {
-
+			
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent arg0) {
+				GenerateMazeWindow win = new GenerateMazeWindow();				
+				win.start(display);
 			}
-
+			
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {		
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 
@@ -72,16 +85,21 @@ public class GeneralWindow  extends BasicWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				e.doit=false;
+				//			
 				setChanged();
 				notifyObservers("exit");
+				close();
+				shell.dispose();
+				
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
-		shell.pack();
+
+
+	//	shell.pack();
 		//mouse zoom do it
 		mouseZoomlListener = new MouseWheelListener() {
 

@@ -7,14 +7,16 @@ import java.io.PrintWriter;
 import model.MyModel;
 import presenter.Presenter;
 import view.GeneralWindow;
+import view.GenerateMazeWindow;
 import view.MyView;
 
 public class Run {
 
 	public static void main(String[] args) {	
 		
-		GeneralWindow window = new GeneralWindow(1500,900);
-		window.run();
+		//GenerateMazeWindow window1= new GenerateMazeWindow(2000, 1500);
+		GeneralWindow window = new GeneralWindow(1400,900);
+		window.start();
 		
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
@@ -27,6 +29,7 @@ public class Run {
 		view.addObserver(presenter);
 				
 		view.start();
+		
 	}
 
 }
