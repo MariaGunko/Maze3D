@@ -42,7 +42,7 @@ public class MyModel extends Observable implements Model {
 	
 	
 	public MyModel() {
-		properties = PropertiesLoader.getInstance().getProperties();
+		//properties = PropertiesLoader.getInstance().getProperties();
 		//executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
 		executor = Executors.newFixedThreadPool(10);
 		loadSolutions();

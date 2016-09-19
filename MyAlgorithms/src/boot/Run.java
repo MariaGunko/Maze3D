@@ -6,19 +6,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Random;
+//import java.util.Random;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Maze3dGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.RandomNextMove;
-import algorithms.mazeGenerators.SimpleMaze3dGenerator;
+
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
-import algorithms.demo.Demo;
-import algorithms.demo.MazeAdapter;
+
+
 import algorithms.mazeGenerators.GrowingTreeGenerator;
-import algorithms.mazeGenerators.LastNextMove;
+
 
 public class Run {
 	private static void testMazeGenerator(Maze3dGenerator mg){  

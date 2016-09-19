@@ -38,7 +38,8 @@ public class MazeAdapter implements Searchable<Position> {
 		//String [] possibleMoves = this.myMaze.getPossibleMoves(p);
 		Position [] possibleMoves = this.myMaze.getPossiblePossitions(p);
 		
-		int x,y,z,i=0;
+		int i=0;
+//		int x,y,z;
 		Position neighborPoint;
 		State<Position> neighborState;
 

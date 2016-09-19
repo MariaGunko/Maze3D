@@ -23,7 +23,7 @@ public class MyView extends Observable implements View, Observer {
 		cli = new CLI(in, out);
 		cli.addObserver(this);
 		
-		win = new GeneralWindow (1000,1000);
+		win = new GeneralWindow (1700,950);
 		win.addObserver(this);
 		
 	}	
@@ -43,7 +43,8 @@ public class MyView extends Observable implements View, Observer {
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		cli.start();
+		//cli.start();
+		win.start();
 	}
 
 	@Override
