@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 public class PropertiesLoader {
 	private static PropertiesLoader instance;
 	private Properties properties;
-	
+	 
 	private PropertiesLoader() {
 		try {
 			XMLDecoder decoder = new XMLDecoder (new FileInputStream ("properties.xml"));
