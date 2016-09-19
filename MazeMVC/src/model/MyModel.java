@@ -264,7 +264,6 @@ public class MyModel implements Model {
 		});
 		thread.start();	
 		threads.add(thread);
-
 	}
 
 	/**

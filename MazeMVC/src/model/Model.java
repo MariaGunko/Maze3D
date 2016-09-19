@@ -1,8 +1,5 @@
 package model;
 
-import java.io.File;
-import java.io.IOException;
-
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;

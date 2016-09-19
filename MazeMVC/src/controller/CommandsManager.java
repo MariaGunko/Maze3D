@@ -51,8 +51,6 @@ public class CommandsManager {
 
 	/**
 	 * This class displays all directories of given path
-	 * @author Maria&Amiran
-	 *
 	 */
 	public class DisplayDirectoriesCommand implements Command{
 		@Override
@@ -80,8 +78,6 @@ public class CommandsManager {
 			else{
 				String name = args[0];
 				try{
-
-
 					int floors = Integer.parseInt(args[1]);
 					int rows = Integer.parseInt(args[2]);
 					int cols = Integer.parseInt(args[3]);

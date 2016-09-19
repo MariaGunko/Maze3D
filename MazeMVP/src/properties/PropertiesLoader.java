@@ -9,9 +9,8 @@ public class PropertiesLoader {
 	private Properties properties;
 	
 	private PropertiesLoader() {
-		XMLDecoder decoder;
 		try {
-			decoder = new XMLDecoder (new FileInputStream ("properties.xml"));
+			XMLDecoder decoder = new XMLDecoder (new FileInputStream ("properties.xml"));
 			properties=(Properties)decoder.readObject();
 			decoder.close();
 		} catch (FileNotFoundException e) {
@@ -28,7 +27,6 @@ public class PropertiesLoader {
 	}
 
 	public Properties getProperties() {
-		// TODO Auto-generated method stub
-		return null;
+		return properties;
 	}
 }

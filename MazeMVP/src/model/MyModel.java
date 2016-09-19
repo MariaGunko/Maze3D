@@ -43,10 +43,12 @@ public class MyModel extends Observable implements Model {
 	
 	public MyModel() {
 		properties = PropertiesLoader.getInstance().getProperties();
-		executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
+		//executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
+		executor = Executors.newFixedThreadPool(10);
 		loadSolutions();
 	}		
 		
+	@SuppressWarnings("unchecked")
 	private void loadSolutions() {
 		File file = new File ("Solutions.dat");
 		if (!file.exists())
@@ -54,14 +56,9 @@ public class MyModel extends Observable implements Model {
 		
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream (new GZIPInputStream(new FileInputStream(file)));
-			try {
-				mazes = (Map<String,Maze3d>)ois.readObject();
-				solutions = (Map<String,Solution<Position>>)ois.readObject();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+			ois = new ObjectInputStream (new GZIPInputStream(new FileInputStream("solutions.dat")));
+			mazes = (Map<String,Maze3d>)ois.readObject();
+			solutions = (Map<String,Solution<Position>>)ois.readObject();	
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,6 +66,10 @@ public class MyModel extends Observable implements Model {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		finally{
 			try {
 				ois.close();
@@ -76,15 +77,13 @@ public class MyModel extends Observable implements Model {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-		
+		}	
 	}
 	
 	private void saveSolutions (){
 		ObjectOutputStream oos = null;
 		try {
-			oos = new ObjectOutputStream (new GZIPOutputStream (new FileOutputStream("Solution.dat")));
+			oos = new ObjectOutputStream (new GZIPOutputStream (new FileOutputStream("Solutions.dat")));
 			oos.writeObject(mazes);
 			oos.writeObject(solutions);
 			
@@ -147,8 +146,8 @@ public class MyModel extends Observable implements Model {
 	public void exit() {
 		executor.shutdownNow();
 		saveSolutions();
-		//setChanged();
-		//notifyObservers("All proccesses are closed");	
+		setChanged();
+		notifyObservers("All proccesses are closed");	
 	}
 
 	/**

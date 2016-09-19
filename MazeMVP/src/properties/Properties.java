@@ -11,9 +11,9 @@ public class Properties implements Serializable{
 	private String solveMazeAlgorithm;
 	
 	public Properties (){
-		numOfThreads = 50;
-		generateMazeAlgorithm = "GrowingTree";
-		solveMazeAlgorithm = "BFS";
+//		numOfThreads = 50;
+//		generateMazeAlgorithm = "GrowingTree";
+//		solveMazeAlgorithm = "BFS";
 	}
 	
 	public int getNumOfThreads() {

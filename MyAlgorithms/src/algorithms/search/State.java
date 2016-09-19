@@ -1,12 +1,18 @@
 package algorithms.search;
 
+import java.io.Serializable;
+
 /**
  * Generic class represents a state in a game
  * 
  * @author MariaAmiran
  *
  */
-public class State<T> implements Comparable<State<T>> {
+public class State<T> implements Comparable<State<T>>, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private State<T> cameFrom;
 	private double cost; // solution cost
 	private T value; // current value state	
