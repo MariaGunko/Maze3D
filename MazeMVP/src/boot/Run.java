@@ -18,6 +18,7 @@ public class Run {
 		GeneralWindow window = new GeneralWindow(1400,900);
 		window.start();
 		
+		
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
 				
