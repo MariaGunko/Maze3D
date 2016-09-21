@@ -20,9 +20,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class GeneralWindow extends BasicWindow {
-	MouseWheelListener mouseZoomlListener;
+import algorithms.mazeGenerators.Maze3d;
 
+public class GeneralWindow extends BasicWindow {
+	
+	private MazeDisplay mazeDisplay;
+	MouseWheelListener mouseZoomlListener;
 	String nameMaze = null;
 
 	public GeneralWindow(int width, int height) {
@@ -114,12 +117,16 @@ public class GeneralWindow extends BasicWindow {
 								
 							}
 						});	
+						
+						
 						while(!GenerateShell.isDisposed()){
 							if(!GenerateDisplay.readAndDispatch()){
 								GenerateDisplay.sleep();
 							}
 						}
 						GenerateDisplay.dispose();
+						
+						
 					}
 				});
 				thread.start();
@@ -144,7 +151,9 @@ public class GeneralWindow extends BasicWindow {
 		displayButton.addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {	
+			public void widgetSelected(SelectionEvent e) {
+				mazeDisplay = new MazeDisplay(shell, SWT.NONE);			
+				shell.open();	
 				setChanged();
 				notifyObservers("display"+" "+ nameMaze);	
 			}
@@ -247,6 +256,23 @@ public class GeneralWindow extends BasicWindow {
 			}
 		};
 		shell.addMouseWheelListener(mouseZoomlListener);
+	}
+
+public void displayMaze(Maze3d maze) {
+		
+		int[][] mazeData={
+				{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+				{1,0,0,0,0,0,0,0,1,1,0,1,0,0,1},
+				{0,0,1,1,1,1,1,0,0,1,0,1,0,1,1},
+				{1,1,1,0,0,0,1,0,1,1,0,1,0,0,1},
+				{1,0,1,0,1,1,1,0,0,0,0,1,1,0,1},
+				{1,1,0,0,0,1,0,0,1,1,1,1,0,0,1},
+				{1,0,0,1,0,0,1,0,0,0,0,1,0,1,1},
+				{1,0,1,1,0,1,1,0,1,1,0,0,0,1,1},
+				{1,0,0,0,0,0,0,0,0,1,0,1,0,0,1},
+				{1,1,1,1,1,1,1,1,1,1,1,1,0,1,1},
+			};
+		mazeDisplay.setMazeData(mazeData);
 	}
 
 	@Override
