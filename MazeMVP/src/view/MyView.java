@@ -15,7 +15,6 @@ public class MyView extends Observable implements View, Observer {
 	private PrintWriter out;
 	private CLI cli;
 	private GeneralWindow win;
-	private GenerateMazeWindow windowGenerate;
 
 	public MyView(BufferedReader in, PrintWriter out) {
 		this.in = in;
