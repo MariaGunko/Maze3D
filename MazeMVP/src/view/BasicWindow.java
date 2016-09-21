@@ -9,7 +9,7 @@ public abstract class BasicWindow extends Observable {
 	protected Display display;
 	protected Shell shell;
 
-	protected abstract void  initWidgets();
+	protected abstract void initWidgets();
 	
 	public BasicWindow(int width,int height){
 		display = new Display();

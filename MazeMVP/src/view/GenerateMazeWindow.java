@@ -1,5 +1,7 @@
 package view;
 
+import java.util.Observable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -12,12 +14,11 @@ import org.eclipse.swt.widgets.Text;
 
 public class GenerateMazeWindow extends DialogMazeWindow{
 
-
+	String mazeName;
 	@Override
 	protected void initWidgets() {
 		shell.setText("Generate Maze");
 		shell.setSize(400,250);
-		
 		
 		shell.setLayout(new  GridLayout(2, false));
 		
@@ -44,8 +45,6 @@ public class GenerateMazeWindow extends DialogMazeWindow{
 		txtColumns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		
 		
-		
-		
 		Button GenerateMaze = new Button(shell, SWT.PUSH);
 		shell.setDefaultButton(GenerateMaze);
 		GenerateMaze.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
@@ -56,16 +55,20 @@ public class GenerateMazeWindow extends DialogMazeWindow{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {				
 				MessageBox msg = new MessageBox(shell, SWT.OK);
-				String name=txtName.getText();
-				msg.setText("Create Maze -> "+name);
+				String nameMaze=txtName.getText();
+				msg.setText("Create Maze -> "+nameMaze);
 				
 				int rows = Integer.parseInt(txtRows.getText());
 				int cols = Integer.parseInt(txtColumns.getText());
 				int floors = Integer.parseInt(txtFloors.getText());
 				
-				msg.setMessage("Generating maze: "+name +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
-				
+				String setMaze="generate_maze "+nameMaze+" "+floors+" "+rows+" "+cols;
+				msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
 				msg.open();
+				
+				setChanged();
+				notifyObservers(setMaze);
+					
 				shell.close();
 			}
 			
@@ -74,6 +77,16 @@ public class GenerateMazeWindow extends DialogMazeWindow{
 				
 			}
 		});	
+		
+	}
+
+	public String getMazeName() {
+		
+		return mazeName;
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
 		
 	}
 }

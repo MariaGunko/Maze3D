@@ -27,7 +27,7 @@ public class Presenter implements Observer {
 			String commandLine = (String)arg;
 
 			String arr[] = commandLine.split(" ");
-			String command = arr[0];			
+			String command = arr[0];
 
 			if(!commands.containsKey(command)) {
 				view.viewDisplayMessage("Command doesn't exist");			
@@ -55,10 +55,6 @@ public class Presenter implements Observer {
 		}
 		else if (o==model){
 			view.viewDisplayMessage((String)arg);
-		}
-		else
-		{
-			view.viewDisplayMessage("ma kora kapara");
 		}
 	}
 }

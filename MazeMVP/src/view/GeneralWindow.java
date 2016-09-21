@@ -15,42 +15,37 @@ import org.eclipse.swt.widgets.Text;
 public class GeneralWindow  extends BasicWindow {
 	MouseWheelListener mouseZoomlListener;
 
+	String nameMaze;
+
 	public GeneralWindow(int width, int height) {
 		super(width, height);
 	}
-//	public void close()
-//	{
-//		// Don't call shell.close(), because then
-//		// you'll have to re-create it
-//		shell.setVisible(false);
-//	}
 
 	@Override
 	protected void initWidgets() {
 
 		shell.setText("Welcome to the MAZE GAME");
 		shell.setLayout(new org.eclipse.swt.layout.GridLayout(2, false));
-	
 
+		GenerateMazeWindow windowGenerate = new GenerateMazeWindow ();
+		//windowGenerate.addObserver();
 		Button generateButton = new Button(shell, SWT.PUSH);
 		generateButton.setText("Generate Maze");
 		generateButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
-		
+
 		generateButton.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				GenerateMazeWindow win = new GenerateMazeWindow();				
-				win.start(display);
+				windowGenerate.start(display);
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-
 
 		Text t=new Text(shell,SWT.MULTI|SWT.BORDER);
 		t.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true, 1,7));
@@ -60,10 +55,27 @@ public class GeneralWindow  extends BasicWindow {
 		Button displayButton = new Button(shell, SWT.PUSH);
 		displayButton.setText("Display Maze");
 		displayButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
+		
 
 		Button solveButton = new Button(shell, SWT.PUSH);
 		solveButton.setText("Solve Maze");
 		solveButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
+		
+
+		solveButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {	
+				setChanged();
+				nameMaze=windowGenerate.getMazeName();
+				notifyObservers("solve"+" "+ "amiran" +" "+"BFS");
+						
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
 
 
 		Button displayMazeSolutionButton = new Button(shell, SWT.PUSH);
@@ -87,9 +99,7 @@ public class GeneralWindow  extends BasicWindow {
 			public void widgetSelected(SelectionEvent e) {	
 				setChanged();
 				notifyObservers("exit");
-				//close();
-				shell.dispose();
-				
+				shell.close();			
 			}
 
 			@Override
@@ -98,7 +108,19 @@ public class GeneralWindow  extends BasicWindow {
 		});
 
 
-	//	shell.pack();
+
+
+
+		Button musicButton = new Button(shell, SWT.PUSH);
+		musicButton.setText("Music");
+		musicButton.setLayoutData(new GridData(SWT.NONE,SWT.NONE,false,false, 1, 1));
+
+
+		
+		
+
+
+		//	shell.pack();
 		//mouse zoom do it
 		mouseZoomlListener = new MouseWheelListener() {
 

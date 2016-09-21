@@ -199,7 +199,7 @@ public class CommandsManager {
 		public class ExitCommand implements Command{
 			@Override
 			public void execute(String[] args) {
-				model.exit();	
+				model.exit();
 				view.viewExit();
 			}	
 		}

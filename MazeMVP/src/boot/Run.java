@@ -16,8 +16,7 @@ public class Run {
 		
 		//GenerateMazeWindow window1= new GenerateMazeWindow(2000, 1500);
 		//GeneralWindow window = new GeneralWindow(1700,950);
-		//window.start();
-		
+		//window.start();	
 		
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		PrintWriter out = new PrintWriter(System.out);
@@ -29,8 +28,6 @@ public class Run {
 		model.addObserver(presenter);
 		view.addObserver(presenter);
 				
-		view.start();
-		
+		view.start();		
 	}
-
 }

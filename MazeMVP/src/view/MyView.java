@@ -15,6 +15,7 @@ public class MyView extends Observable implements View, Observer {
 	private PrintWriter out;
 	private CLI cli;
 	private GeneralWindow win;
+	private GenerateMazeWindow windowGenerate;
 
 	public MyView(BufferedReader in, PrintWriter out) {
 		this.in = in;
@@ -25,7 +26,6 @@ public class MyView extends Observable implements View, Observer {
 		
 		win = new GeneralWindow (1700,950);
 		win.addObserver(this);
-		
 	}	
 
 	@Override
@@ -43,8 +43,8 @@ public class MyView extends Observable implements View, Observer {
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		//cli.start();
 		win.start();
+		 //cli.start();	
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class MyView extends Observable implements View, Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o == cli) {
+		if ((o == cli)||(o == win)) {
 			setChanged();
 			notifyObservers(arg);
 		}
