@@ -72,6 +72,7 @@ public class CommandsManager {
 		class GenerateMazeCommand implements Command {
 			@Override
 			public void execute(String[] args) {
+				Maze3d maze;
 				if (args.length!=4)
 					view.viewDisplayMessage("Missing or unnecessary parameters");
 				else{
