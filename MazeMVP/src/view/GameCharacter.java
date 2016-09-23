@@ -1,7 +1,5 @@
 package view;
 
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
@@ -13,7 +11,7 @@ public class GameCharacter{
 	int x,y;
 	
 	public GameCharacter() {
-		img = new Image (null, "Images/silvestre.jpg");
+		img = new Image (null, "Images/silvestre.gif");
 	}
 
 	public void setPosition(Position pos) {
@@ -29,5 +27,31 @@ public class GameCharacter{
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 				cellWidth * pos.x, cellHeight * pos.y, cellWidth, cellHeight);
+	}
+	
+	public void moveUp(){
+		setPosition(new Position (this.pos.z, this.pos.x,this.pos.y-1));
+		
+	}
+
+	public void moveDown(){
+		setPosition(new Position (this.pos.z, this.pos.x,this.pos.y+100));
+	}
+
+	public void moveLeft(){
+		setPosition(new Position (this.pos.z, this.pos.x-1,this.pos.y));
+	}
+
+	public void moveRight(){
+		setPosition(new Position (this.pos.z, this.pos.x+1,this.pos.y));
+		
+	}
+
+	public void moveFloorUp(){
+		
+	}
+
+	public void moveFloorDown(){
+		
 	}
 }

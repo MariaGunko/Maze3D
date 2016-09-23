@@ -35,6 +35,7 @@ public class MyView extends Observable implements View, Observer {
 
 	@Override
 	public void viewDisplayMaze(Maze3d maze) {
+		
 		out.println(maze);
 		out.flush();
 	}

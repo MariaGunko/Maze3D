@@ -123,6 +123,7 @@ public class MyModel extends Observable implements Model {
 				
 				setChanged();
 				notifyObservers("maze_ready " + name);		
+				notifyObservers(maze);
 				return maze;
 			}	
 		});		

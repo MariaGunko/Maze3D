@@ -1,16 +1,22 @@
 package view;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Observable;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -28,6 +34,7 @@ public class GeneralWindow extends BasicWindow {
 	private MazeDisplay mazeDisplay;
 	MouseWheelListener mouseZoomlListener;
 	String nameMaze = null;
+	Clip music;
 
 	public GeneralWindow(int width, int height) {
 		super(width, height);
@@ -103,19 +110,19 @@ public class GeneralWindow extends BasicWindow {
 								int rows = Integer.parseInt(txtRows.getText());
 								int cols = Integer.parseInt(txtColumns.getText());
 								int floors = Integer.parseInt(txtFloors.getText());
-								
+
 
 								String setMaze="generate_maze "+nameMaze+" "+floors+" "+rows+" "+cols;
-								
+
 								msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
 								msg.open();
-								
+
 								setChanged();
 								notifyObservers(setMaze);
 								notifyMazeIsReady(nameMaze);
 
 								GenerateShell.close();
-								
+
 								//setChanged();
 								//notifyObservers("display"+" "+ nameMaze);
 							}
@@ -125,7 +132,6 @@ public class GeneralWindow extends BasicWindow {
 
 							}
 						});	
-
 
 						while(!GenerateShell.isDisposed()){
 							if(!GenerateDisplay.readAndDispatch()){
@@ -144,10 +150,10 @@ public class GeneralWindow extends BasicWindow {
 			}
 		});
 
-//		Text t=new Text(shell,SWT.MULTI|SWT.BORDER);
-//		t.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true, 1,7));
-//		final Image image=new Image(display,"images/background.jpg");
-//		t.setBackgroundImage(image);	
+		//		Text t=new Text(shell,SWT.MULTI|SWT.BORDER);
+		//		t.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true, 1,7));
+		//		final Image image=new Image(display,"images/background.jpg");
+		//		t.setBackgroundImage(image);	
 
 		mazeDisplay = new MazeDisplay(shell, SWT.NONE);		
 		//mazeDisplay.setMazeData(maze);
@@ -250,9 +256,30 @@ public class GeneralWindow extends BasicWindow {
 		musicButton.setText("Music");
 		musicButton.setLayoutData(new GridData(SWT.NONE,SWT.NONE,false,false, 1, 1));
 		musicButton.setBackground(blue);
+		musicButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				playMusic(new File("Images/amiran.wav"));
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+		});
 
 
-
+		shell.addKeyListener(new KeyAdapter(){
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.keyCode == SWT.ARROW_DOWN)
+					System.out.println("Was pressed");
+			}
+		});
+		
 		//	shell.pack();
 		//mouse zoom do it
 		mouseZoomlListener = new MouseWheelListener() {
@@ -268,10 +295,12 @@ public class GeneralWindow extends BasicWindow {
 		};
 		shell.addMouseWheelListener(mouseZoomlListener);
 	}
-	
+
+
+
 	public void notifyMazeIsReady(String name) {
 		display.syncExec(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				//MessageBox msg = new MessageBox(shell);
@@ -282,23 +311,19 @@ public class GeneralWindow extends BasicWindow {
 		});			
 	}
 
-	public void displayMaze(Maze3d maze) {
+	private void playMusic(File file) {
 
-//		int[][] mazeData={
-//				{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//				{1,0,0,0,0,0,0,0,1,1,0,1,0,0,1},
-//				{0,0,1,1,1,1,1,0,0,1,0,1,0,1,1},
-//				{1,1,1,0,0,0,1,0,1,1,0,1,0,0,1},
-//				{1,0,1,0,1,1,1,0,0,0,0,1,1,0,1},
-//				{1,1,0,0,0,1,0,0,1,1,1,1,0,0,1},
-//				{1,0,0,1,0,0,1,0,0,0,0,1,0,1,1},
-//				{1,0,1,1,0,1,1,0,1,1,0,0,0,1,1},
-//				{1,0,0,0,0,0,0,0,0,1,0,1,0,0,1},
-//				{1,1,1,1,1,1,1,1,1,1,1,1,0,1,1},
-//		};
-		
-		//int [][] mazeData = maze.getCrossSectionByZ(0);
-		//mazeDisplay.setMazeData(mazeData);
+		try {
+			music = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem
+					.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+			music.open(inputStream);
+			// loop infinitely
+			music.setLoopPoints(0, -1);
+			music.loop(Clip.LOOP_CONTINUOUSLY);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
