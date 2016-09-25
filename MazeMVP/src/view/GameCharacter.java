@@ -35,7 +35,8 @@ public class GameCharacter{
 	}
 
 	public void moveDown(){
-		setPosition(new Position (this.pos.z, this.pos.x,this.pos.y+100));
+		//setPosition(new Position (this.pos.z, this.pos.x,this.pos.y+100));
+		pos.y--;
 	}
 
 	public void moveLeft(){

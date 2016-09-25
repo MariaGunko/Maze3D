@@ -107,6 +107,7 @@ public class MazeDisplay extends Canvas implements View {
 		});
 
 	}
+	
 
 	public void keyPressed(KeyEvent e) {
 		if (e.keyCode == SWT.ARROW_UP)
@@ -137,6 +138,7 @@ public class MazeDisplay extends Canvas implements View {
 					break;
 				}
 			}
+			redraw();
 		}
 		if (e.keyCode == SWT.ARROW_LEFT)
 			gameCharacter.moveLeft();

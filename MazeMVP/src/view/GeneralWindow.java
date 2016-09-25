@@ -22,11 +22,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import algorithms.mazeGenerators.Maze3d;
+import presenter.CommandsManager.DisplayCrossSectionCommand;
 
 public class GeneralWindow extends BasicWindow {
 
@@ -44,6 +47,49 @@ public class GeneralWindow extends BasicWindow {
 	protected void initWidgets() {
 
 		shell.setText("Welcome to the MAZE GAME");
+		
+		Menu menuButton = new Menu(shell, SWT.BAR);
+		shell.setMenuBar(menuButton);
+
+		// File button in the bar
+		MenuItem fileItem = new MenuItem(menuButton, SWT.CASCADE);
+		fileItem.setText("Menu");
+
+		// Drop down functions for file button
+		Menu subMenu = new Menu(shell, SWT.DROP_DOWN);
+		fileItem.setMenu(subMenu);
+
+		MenuItem properties = new MenuItem(subMenu, SWT.PUSH);
+		properties.setText("properties");
+		MenuItem LoadMaze = new MenuItem(subMenu, SWT.PUSH);
+		LoadMaze.setText("LoadMaze\tCtrl+L");
+		MenuItem SaveMaze = new MenuItem(subMenu, SWT.PUSH);
+		SaveMaze.setText("SaveMaze\tCtrl+S");
+		MenuItem exitButtonmenu = new MenuItem(subMenu, SWT.PUSH);
+		exitButtonmenu.setText("EXIT");
+		
+	
+
+		exitButtonmenu.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {	
+				
+				setChanged();
+				notifyObservers("exit");
+				shell.close();			
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
+		
+		
+		
+		
+		
+		
 		shell.setLayout(new org.eclipse.swt.layout.GridLayout(2, false));
 
 		Color blue = display.getSystemColor(SWT.COLOR_CYAN);
@@ -123,8 +169,9 @@ public class GeneralWindow extends BasicWindow {
 
 								GenerateShell.close();
 
-								//setChanged();
-								//notifyObservers("display"+" "+ nameMaze);
+								setChanged();
+								notifyObservers("display"+" "+ nameMaze);
+								
 							}
 
 							@Override
@@ -193,7 +240,6 @@ public class GeneralWindow extends BasicWindow {
 			public void widgetSelected(SelectionEvent e) {	
 				setChanged();
 				//nameMaze=windowGenerate.getMazeName();
-				//notifyObservers("solve"+" "+ "amiran" +" "+"BFS");
 				notifyObservers("solve"+" "+ nameMaze +" "+"BFS");				
 			}
 
@@ -259,8 +305,11 @@ public class GeneralWindow extends BasicWindow {
 		musicButton.addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
+			public void widgetSelected(SelectionEvent arg0)
+			{
 				playMusic(new File("Images/amiran.wav"));
+				
+			
 
 			}
 
@@ -276,20 +325,23 @@ public class GeneralWindow extends BasicWindow {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.ARROW_DOWN)
-					System.out.println("Was pressed");
+					mazeDisplay.keyPressed(e);
+				
+					
 			}
 		});
 		
-		//	shell.pack();
-		//mouse zoom do it
+		
+		
+		//mouse zoom do it +5 point 
 		mouseZoomlListener = new MouseWheelListener() {
 
 			@Override
 			public void mouseScrolled(MouseEvent e) {
 				// if both ctrl and wheel are being operated
-				//	if ((e.stateMask & SWT.CTRL) != 0)
-				//mazePainterAdapter.mazePainter.setSize(mazePainterAdapter.mazePainter.getSize().x + e.count,
-				//		mazePainterAdapter.mazePainter.getSize().y + e.count);
+					if ((e.stateMask & SWT.CTRL) != 0)
+				mazeDisplay.setSize(mazeDisplay.getSize().x + e.count,
+						mazeDisplay.getSize().y + e.count);
 
 			}
 		};
@@ -297,6 +349,7 @@ public class GeneralWindow extends BasicWindow {
 	}
 
 
+	
 
 	public void notifyMazeIsReady(String name) {
 		display.syncExec(new Runnable() {
@@ -306,6 +359,7 @@ public class GeneralWindow extends BasicWindow {
 				//MessageBox msg = new MessageBox(shell);
 
 				setChanged();
+				
 				notifyObservers("display"+" "+ nameMaze);
 			}
 		});			
@@ -321,6 +375,7 @@ public class GeneralWindow extends BasicWindow {
 			// loop infinitely
 			music.setLoopPoints(0, -1);
 			music.loop(Clip.LOOP_CONTINUOUSLY);
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
