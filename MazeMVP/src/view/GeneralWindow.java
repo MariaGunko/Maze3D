@@ -10,13 +10,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,9 +28,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import algorithms.mazeGenerators.Maze3d;
-import presenter.CommandsManager.DisplayCrossSectionCommand;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
 
-public class GeneralWindow extends BasicWindow {
+
+public class GeneralWindow extends BasicWindow implements View {
 
 	private Maze3d maze;
 	private MazeDisplay mazeDisplay;
@@ -47,7 +48,7 @@ public class GeneralWindow extends BasicWindow {
 	protected void initWidgets() {
 
 		shell.setText("Welcome to the MAZE GAME");
-		
+
 		Menu menuButton = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menuButton);
 
@@ -67,14 +68,14 @@ public class GeneralWindow extends BasicWindow {
 		SaveMaze.setText("SaveMaze\tCtrl+S");
 		MenuItem exitButtonmenu = new MenuItem(subMenu, SWT.PUSH);
 		exitButtonmenu.setText("EXIT");
-		
-	
+
+
 
 		exitButtonmenu.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
-				
+
 				setChanged();
 				notifyObservers("exit");
 				shell.close();			
@@ -84,12 +85,8 @@ public class GeneralWindow extends BasicWindow {
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
 		});
-		
-		
-		
-		
-		
-		
+
+
 		shell.setLayout(new org.eclipse.swt.layout.GridLayout(2, false));
 
 		Color blue = display.getSystemColor(SWT.COLOR_CYAN);
@@ -106,10 +103,15 @@ public class GeneralWindow extends BasicWindow {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				Thread thread = new Thread (new Runnable() {
-					public void run() {
-						Display GenerateDisplay = new Display();
-						Shell GenerateShell = new Shell(GenerateDisplay);
+				//Thread thread = new Thread (new Runnable() {
+
+
+				//	public void run() {
+
+						//Display GenerateDisplay = new Display();
+						Shell GenerateShell = new Shell(display);
+
+
 
 						GenerateShell.setLayout(new  GridLayout(2, false));
 
@@ -156,22 +158,25 @@ public class GeneralWindow extends BasicWindow {
 								int rows = Integer.parseInt(txtRows.getText());
 								int cols = Integer.parseInt(txtColumns.getText());
 								int floors = Integer.parseInt(txtFloors.getText());
-
+								
 
 								String setMaze="generate_maze "+nameMaze+" "+floors+" "+rows+" "+cols;
-
-								msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
-								msg.open();
-
 								setChanged();
 								notifyObservers(setMaze);
-								notifyMazeIsReady(nameMaze);
-
-								GenerateShell.close();
-
-								setChanged();
-								notifyObservers("display"+" "+ nameMaze);
 								
+									
+									
+								msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
+								msg.open();
+								mazeDisplay.setFocus();
+								GenerateShell.close();																
+																
+								
+								//notifyMazeIsReady(nameMaze);
+								
+
+								//	setChanged();
+								//notifyObservers("display"+" "+ nameMaze);
 							}
 
 							@Override
@@ -180,32 +185,36 @@ public class GeneralWindow extends BasicWindow {
 							}
 						});	
 
-						while(!GenerateShell.isDisposed()){
+						/*while(!GenerateShell.isDisposed()){
 							if(!GenerateDisplay.readAndDispatch()){
 								GenerateDisplay.sleep();
 							}
 						}
-						GenerateDisplay.dispose();
+						GenerateDisplay.dispose();*/
 					}
-				});
-				thread.start();
-			}
+				
+				//thread.start();
+			//}
+	
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
 			}
-		});
+		});	
+
+
+		mazeDisplay = new MazeDisplay(shell, SWT.NONE|SWT.DOUBLE_BUFFERED);		
+		//mazeDisplay.setMazeData(maze);
+		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,1,7));
+		final Image image=new Image(display,"images/background.jpg");
+		mazeDisplay.setBackgroundImage(image);
+		mazeDisplay.setFocus();
 
 		//		Text t=new Text(shell,SWT.MULTI|SWT.BORDER);
 		//		t.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true, 1,7));
 		//		final Image image=new Image(display,"images/background.jpg");
-		//		t.setBackgroundImage(image);	
-
-		mazeDisplay = new MazeDisplay(shell, SWT.NONE);		
-		//mazeDisplay.setMazeData(maze);
-		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,1,7));
-		mazeDisplay.setFocus();
+		//		t.setBackgroundImage(image);
 
 		Button displayButton = new Button(shell, SWT.PUSH);
 		displayButton.setText("Display Maze");
@@ -220,6 +229,8 @@ public class GeneralWindow extends BasicWindow {
 
 				setChanged();
 				notifyObservers("display"+" "+ nameMaze);	
+				//notifyObservers("display"+" "+ "amiran");	
+				mazeDisplay.setFocus();
 			}
 
 			@Override
@@ -308,8 +319,8 @@ public class GeneralWindow extends BasicWindow {
 			public void widgetSelected(SelectionEvent arg0)
 			{
 				playMusic(new File("Images/amiran.wav"));
-				
-			
+
+
 
 			}
 
@@ -317,31 +328,17 @@ public class GeneralWindow extends BasicWindow {
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
 			}
-		});
+		});	
 
-
-		shell.addKeyListener(new KeyAdapter(){
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.keyCode == SWT.ARROW_DOWN)
-					mazeDisplay.keyPressed(e);
-				
-					
-			}
-		});
-		
-		
-		
 		//mouse zoom do it +5 point 
 		mouseZoomlListener = new MouseWheelListener() {
 
 			@Override
 			public void mouseScrolled(MouseEvent e) {
 				// if both ctrl and wheel are being operated
-					if ((e.stateMask & SWT.CTRL) != 0)
-				mazeDisplay.setSize(mazeDisplay.getSize().x + e.count,
-						mazeDisplay.getSize().y + e.count);
+				if ((e.stateMask & SWT.CTRL) != 0)
+					mazeDisplay.setSize(mazeDisplay.getSize().x + e.count,
+							mazeDisplay.getSize().y + e.count);
 
 			}
 		};
@@ -349,21 +346,18 @@ public class GeneralWindow extends BasicWindow {
 	}
 
 
-	
-
-	public void notifyMazeIsReady(String name) {
-		display.syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				//MessageBox msg = new MessageBox(shell);
-
-				setChanged();
-				
-				notifyObservers("display"+" "+ nameMaze);
-			}
-		});			
-	}
+	//	public void notifyMazeIsReady(String name) {
+	//		display.syncExec(new Runnable() {
+	//
+	//			@Override
+	//			public void run() {
+	//				//MessageBox msg = new MessageBox(shell);
+	//
+	//				setChanged();	
+	//				notifyObservers("display"+" "+ nameMaze);
+	//			}
+	//		});			
+	//	}
 
 	private void playMusic(File file) {
 
@@ -375,7 +369,7 @@ public class GeneralWindow extends BasicWindow {
 			// loop infinitely
 			music.setLoopPoints(0, -1);
 			music.loop(Clip.LOOP_CONTINUOUSLY);
-				
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -384,5 +378,40 @@ public class GeneralWindow extends BasicWindow {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void viewNotifyMazeIsReady(String name) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void viewDisplayMaze(Maze3d maze) {
+		mazeDisplay.setMazeData(maze);
+
+	}
+
+	@Override
+	public void viewDisplayMessage(String msg) {
+		System.out.println(msg);
+	}
+
+	@Override
+	public void viewDisplayCrossSection(int[][] maze2d) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void viewDisplaySolution(Solution<Position> solve) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void viewExit() {
+		// TODO Auto-generated method stub
+
 	}
 }

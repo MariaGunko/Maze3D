@@ -123,7 +123,6 @@ public class MyModel extends Observable implements Model {
 				
 				setChanged();
 				notifyObservers("maze_ready " + name);		
-				notifyObservers(maze);
 				return maze;
 			}	
 		});		
@@ -366,5 +365,8 @@ public class MyModel extends Observable implements Model {
 			return mySolution;
 		}
 		return null;
+	}
+	public Properties getProperties() {
+		return properties;
 	}
 }

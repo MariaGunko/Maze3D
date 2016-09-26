@@ -8,51 +8,57 @@ import algorithms.mazeGenerators.Position;
 public class GameCharacter{
 	private Position pos;
 	private Image img;
-	int x,y;
-	
+	private Image goalImg;
+
+
 	public GameCharacter() {
-		img = new Image (null, "Images/silvestre.gif");
+		img = new Image (null, "images/silvestre.gif");
+		goalImg = new Image (null, "images/goal.jpg");
 	}
 
 	public void setPosition(Position pos) {
 		this.pos = pos;
 	}
-	
-//	public void paint(PaintEvent e,int w,int h){
-//		e.gc.setForeground(new Color(null,255,0,0));
-//		e.gc.setBackground(new Color(null,255,0,0));
-//		e.gc.fillOval(pos.x,pos.y, w, h);
-//	}
-	
+	public Position getPosition(){
+		return pos;
+	}
+
+
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 				cellWidth * pos.x, cellHeight * pos.y, cellWidth, cellHeight);
+
 	}
 	
+
 	public void moveUp(){
-		setPosition(new Position (this.pos.z, this.pos.x,this.pos.y-1));
-		
+		pos.y--;
+
 	}
 
 	public void moveDown(){
-		//setPosition(new Position (this.pos.z, this.pos.x,this.pos.y+100));
-		pos.y--;
+		pos.y++;
+
+
 	}
 
 	public void moveLeft(){
-		setPosition(new Position (this.pos.z, this.pos.x-1,this.pos.y));
+		pos.x--;
 	}
 
 	public void moveRight(){
-		setPosition(new Position (this.pos.z, this.pos.x+1,this.pos.y));
-		
+		pos.x++;
+
 	}
 
 	public void moveFloorUp(){
-		
+		pos.z--;
+
+
 	}
 
 	public void moveFloorDown(){
-		
+		pos.z++;
+
 	}
 }

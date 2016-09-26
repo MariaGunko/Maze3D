@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -14,9 +15,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
-import algorithms.search.Solution;
 
-public class MazeDisplay extends Canvas implements View {
+
+public class MazeDisplay extends Canvas  {
 
 	Image img = new Image (null, "Images/wall_Black.jpg");
 	Image back = new Image (null, "Images/Optimus.jpg");
@@ -25,30 +26,54 @@ public class MazeDisplay extends Canvas implements View {
 	Position currentPosition ;
 	int floors, rows, cols;
 	Maze3d maze;
+	Position checkPos;
+	int [][] checkZ;
 
 	Timer timer;
 	TimerTask myTask;
 
 	GameCharacter gameCharacter;
-	//	private int[][] mazeData;
-	private int[][] mazeData = {
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-			{1,0,0,0,0,0,0,0,1,1,0,1,0,0,1},
-			{1,0,1,1,1,1,1,0,0,1,0,1,0,1,1},
-			{1,1,1,0,0,0,1,0,1,1,0,1,0,0,1},
-			{1,0,1,0,1,1,1,0,0,0,0,1,1,0,1},
-			{1,1,0,0,0,1,0,0,1,1,1,1,0,0,1},
-			{1,0,0,1,0,0,1,0,0,0,0,1,0,1,1},
-			{1,0,1,1,0,1,1,0,1,1,0,0,0,1,1},
-			{1,0,0,0,0,0,0,0,0,1,0,1,0,0,1},
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}		
-	};
+	private int[][] mazeData;
+	//	private int[][] mazeData = {
+	//			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	//			{1,0,0,0,0,0,0,0,1,1,0,1,0,0,1},
+	//			{1,0,1,1,1,1,1,0,0,1,0,1,0,1,1},
+	//			{1,1,1,0,0,0,1,0,1,1,0,1,0,0,1},
+	//			{1,0,1,0,1,1,1,0,0,0,0,1,1,0,1},
+	//			{1,1,0,0,0,1,0,0,1,1,1,1,0,0,1},
+	//			{1,0,0,1,0,0,1,0,0,0,0,1,0,1,1},
+	//			{1,0,1,1,0,1,1,0,1,1,0,0,0,1,1},
+	//			{1,0,0,0,0,0,0,0,0,1,0,1,0,0,1},
+	//			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}		
+	//	};
+
 
 	public void setMazeData(Maze3d maze) {
-		int [][] mazeData = maze.getCrossSectionByZ(0);
-		this.mazeData = mazeData;
+		this.maze = maze;
+		System.out.println(maze);
+		startPosition=maze.getStartPosition();
+		goalPosition = maze.getGoalPosition();
+		this.mazeData = this.maze.getCrossSectionByZ(startPosition.z);
+		gameCharacter.setPosition(new Position(startPosition.z, startPosition.y, startPosition.x));
+		floors=maze.getFloors();
 		this.redraw();
+
+
 	}
+
+	public void setZ (int z)
+	{
+		this.mazeData = this.maze.getCrossSectionByZ(z);
+//		if(mazeData[currentPosition.y][currentPosition.x]!=0)
+//		{
+//			return false;
+//
+//		}
+//		else return true;
+//		//this.redraw();
+	}
+
+
 
 	public void setCanvas(Object arg){
 		if(arg.getClass() == Maze3d.class){
@@ -62,16 +87,93 @@ public class MazeDisplay extends Canvas implements View {
 		}
 	}
 
-	//	public void setMazeData(int[][] mazeData) {
-	//		this.mazeData = mazeData;
-	//		this.redraw();
-	//	}
 
 	public MazeDisplay(Shell parent, int style) {
 		super(parent, style);
 		setBackground(new Color (null, 255,255,0));
 		gameCharacter = new GameCharacter();
-		gameCharacter.setPosition(new Position(2, 3, 3));
+
+		//gameCharacter.setPosition(startPosition);
+
+
+		this.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				currentPosition = gameCharacter.getPosition();
+
+				switch (e.keyCode) {
+				case SWT.ARROW_RIGHT:					
+					checkPos=currentPosition;
+					if(mazeData[checkPos.y][checkPos.x+1]==0)
+					{
+						gameCharacter.moveRight();	
+						redraw();
+					}
+					break;
+
+				case SWT.ARROW_LEFT:
+					checkPos=currentPosition;
+					if(mazeData[checkPos.y][checkPos.x-1]==0)
+					{
+						gameCharacter.moveLeft();	
+						redraw();
+					}
+					break;
+
+				case SWT.ARROW_UP:	
+					checkPos=currentPosition;
+					if(mazeData[checkPos.y-1][checkPos.x]==0)
+					{
+						gameCharacter.moveUp();	
+						redraw();
+					}
+					break;
+
+				case SWT.ARROW_DOWN:	
+					//				Position checkPoint = new Position (currentPosition.z,currentPosition.x,currentPosition.y+1);
+					//				Position [] arr = maze.getPossiblePossitions(currentPosition);
+					//				for (int i=0;i<arr.length;i++)
+					//				{
+					//					
+					checkPos=currentPosition;
+					if(mazeData[checkPos.y+1][checkPos.x]==0)
+					{
+						gameCharacter.moveDown();	
+						redraw();
+					}
+					break;
+
+				case SWT.PAGE_UP:
+					if (maze.getMaze()[currentPosition.z-1][currentPosition.y][currentPosition.x] == 0) 
+					{
+						setZ(currentPosition.z - 1);
+						gameCharacter.moveFloorUp();
+						redraw();
+					}
+					break;
+					
+
+				case SWT.PAGE_DOWN:		
+					
+					
+					if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
+					{
+						setZ(currentPosition.z + 1);
+						gameCharacter.moveFloorDown();
+						redraw();
+					}
+					break;
+					
+		
+				}
+			}
+		});
+
 
 		this.addPaintListener(new PaintListener() {
 
@@ -96,100 +198,15 @@ public class MazeDisplay extends Canvas implements View {
 						int x=j*w;
 						int y=i*h;
 						if(mazeData[i][j]!=0)
-							//e.gc.fillRectangle(x,y,w,h);
+
 							e.gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 									x, y, w, h);
 					}
-
-				//				   gameCharacter.paint(e, w, h);
 				gameCharacter.draw(w, h, e.gc);
+
 			}
 		});
-
-	}
-	
-
-	public void keyPressed(KeyEvent e) {
-		if (e.keyCode == SWT.ARROW_UP)
-		{
-			Position checkPoint = new Position (currentPosition.z,currentPosition.x,currentPosition.y-1);
-			Position [] arr = maze.getPossiblePossitions(currentPosition);
-			for (int i=0;i<arr.length;i++)
-			{
-				if(arr[i].equals(checkPoint))	
-				{
-					currentPosition = checkPoint;
-					gameCharacter.moveUp();	
-					break;
-				}
-			}
-
-		}
-		if (e.keyCode == SWT.ARROW_DOWN)
-		{
-			Position checkPoint = new Position (currentPosition.z,currentPosition.x,currentPosition.y+100);
-			Position [] arr = maze.getPossiblePossitions(currentPosition);
-			for (int i=0;i<arr.length;i++)
-			{
-				if(arr[i].equals(checkPoint))	
-				{
-					currentPosition = checkPoint;
-					gameCharacter.moveDown();	
-					break;
-				}
-			}
-			redraw();
-		}
-		if (e.keyCode == SWT.ARROW_LEFT)
-			gameCharacter.moveLeft();
-		if (e.keyCode == SWT.ARROW_RIGHT)
-			gameCharacter.moveRight();
-		if (e.keyCode == SWT.PAGE_UP)
-			gameCharacter.moveFloorUp();
-		if (e.keyCode == SWT.PAGE_DOWN)
-			gameCharacter.moveFloorDown();
-		this.redraw();
-	}
-
-	@Override
-	public void viewNotifyMazeIsReady(String name) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewDisplayMaze(Maze3d maze) {
-		//setMazeData(maze);	
-
-	}
-
-	@Override
-	public void viewDisplayMessage(String msg) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void start() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewDisplayCrossSection(int[][] maze2d) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewDisplaySolution(Solution<Position> solve) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewExit() {
-		// TODO Auto-generated method stub
-
+		
+		
 	}
 }
