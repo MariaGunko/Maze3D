@@ -320,8 +320,6 @@ public class GeneralWindow extends BasicWindow implements View {
 			{
 				playMusic(new File("Images/amiran.wav"));
 
-
-
 			}
 
 			@Override

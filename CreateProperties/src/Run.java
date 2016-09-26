@@ -6,8 +6,10 @@ public class Run {
 
 	public static void main(String[] args) {
 		Properties prop = new Properties();
-		prop.setNumOfThreads(10);
-		prop.setGenerateMazeAlgorithm("DFS");
+		prop.setNumOfThreads(20);
+		prop.setGenerateMazeAlgorithm("GrowingTreeGenerator_RandomNextMove");
+		prop.setSolveMazeAlgorithm("DFS");
+		prop.setViewForm("GUI");
 		
 		XMLEncoder xmlEncoder = null;
 		try {

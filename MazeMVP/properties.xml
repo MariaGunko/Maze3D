@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_101" class="java.beans.XMLDecoder">
+<java version="1.8.0_102" class="java.beans.XMLDecoder">
  <object class="properties.Properties">
   <void property="generateMazeAlgorithm">
-   <string>DFS</string>
+   <string>GrowingTreeGenerator_RandomNextMove</string>
   </void>
   <void property="numOfThreads">
-   <int>10</int>
+   <int>20</int>
+  </void>
+  <void property="solveMazeAlgorithm">
+   <string>DFS</string>
+  </void>
+  <void property="viewForm">
+   <string>GUI</string>
   </void>
  </object>
 </java>

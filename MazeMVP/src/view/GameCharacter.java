@@ -6,14 +6,16 @@ import org.eclipse.swt.graphics.Image;
 import algorithms.mazeGenerators.Position;
 
 public class GameCharacter{
-	private Position pos;
 	private Image img;
+	private Position pos;
+	
 	private Image goalImg;
+	private Position posT;
 
 
 	public GameCharacter() {
 		img = new Image (null, "images/silvestre.gif");
-		goalImg = new Image (null, "images/goal.jpg");
+		goalImg = new Image (null, "images/tweety.gif");
 	}
 
 	public void setPosition(Position pos) {
@@ -22,14 +24,23 @@ public class GameCharacter{
 	public Position getPosition(){
 		return pos;
 	}
-
+	
+	public void setTweetyPosition(Position pos) {
+		this.posT = pos;
+	}
+	public Position getTweetyPosition(){
+		return posT;
+	}
 
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 				cellWidth * pos.x, cellHeight * pos.y, cellWidth, cellHeight);
-
 	}
 	
+	public void drawTweety(int cellWidth, int cellHeight, GC gc) {
+		gc.drawImage(goalImg, 0, 0, goalImg.getBounds().width, goalImg.getBounds().height, 
+				cellWidth * posT.x, cellHeight * posT.y, cellWidth, cellHeight);
+	}
 
 	public void moveUp(){
 		pos.y--;

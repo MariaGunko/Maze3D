@@ -8,11 +8,13 @@ public class Properties implements Serializable{
 	private int numOfThreads;
 	private String generateMazeAlgorithm;
 	private String solveMazeAlgorithm;
+	private String viewForm;
 	
 	public Properties (){
-		numOfThreads = 50;
-		generateMazeAlgorithm = "GrowingTree";
-		solveMazeAlgorithm = "BFS";
+//		numOfThreads = 20;
+//		generateMazeAlgorithm = "GrowingTreeGenerator_RandomNextMove";
+//		solveMazeAlgorithm = "DFS";
+//		viewForm="GUI";
 	}
 	
 	public int getNumOfThreads() {
@@ -32,5 +34,11 @@ public class Properties implements Serializable{
 	}
 	public void setSolveMazeAlgorithm(String solveMazeAlgorithm) {
 		this.solveMazeAlgorithm = solveMazeAlgorithm;
+	}
+	public String getViewForm() {
+		return viewForm;
+	}
+	public void setViewForm(String viewForm) {
+		this.viewForm = viewForm;
 	}
 }

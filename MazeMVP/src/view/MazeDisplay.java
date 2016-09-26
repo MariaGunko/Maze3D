@@ -25,6 +25,7 @@ public class MazeDisplay extends Canvas  {
 	Position goalPosition ;
 	Position currentPosition ;
 	int floors, rows, cols;
+	int currentFloor;
 	Maze3d maze;
 	Position checkPos;
 	int [][] checkZ;
@@ -33,6 +34,8 @@ public class MazeDisplay extends Canvas  {
 	TimerTask myTask;
 
 	GameCharacter gameCharacter;
+	GameCharacter tweety;
+	
 	private int[][] mazeData;
 	//	private int[][] mazeData = {
 	//			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -54,15 +57,19 @@ public class MazeDisplay extends Canvas  {
 		startPosition=maze.getStartPosition();
 		goalPosition = maze.getGoalPosition();
 		this.mazeData = this.maze.getCrossSectionByZ(startPosition.z);
+		
 		gameCharacter.setPosition(new Position(startPosition.z, startPosition.y, startPosition.x));
+		tweety.setTweetyPosition(new Position(goalPosition.z, goalPosition.y, goalPosition.x));
+		
 		floors=maze.getFloors();
+		rows=maze.getRows();
+		cols=maze.getCols();
 		this.redraw();
-
-
 	}
 
 	public void setZ (int z)
 	{
+		currentFloor=z;
 		this.mazeData = this.maze.getCrossSectionByZ(z);
 //		if(mazeData[currentPosition.y][currentPosition.x]!=0)
 //		{
@@ -74,27 +81,11 @@ public class MazeDisplay extends Canvas  {
 	}
 
 
-
-	public void setCanvas(Object arg){
-		if(arg.getClass() == Maze3d.class){
-			this.maze = (Maze3d)arg;
-			this.floors = maze.getFloors();
-			this.rows = maze.getRows();
-			this.cols = maze.getCols();
-			startPosition = maze.getStartPosition();
-			goalPosition = maze.getGoalPosition();
-			currentPosition = maze.getStartPosition();
-		}
-	}
-
-
 	public MazeDisplay(Shell parent, int style) {
 		super(parent, style);
 		setBackground(new Color (null, 255,255,0));
 		gameCharacter = new GameCharacter();
-
-		//gameCharacter.setPosition(startPosition);
-
+		tweety = new GameCharacter();
 
 		this.addKeyListener(new KeyListener() {
 
@@ -184,8 +175,6 @@ public class MazeDisplay extends Canvas  {
 
 				e.gc.setForeground(new Color(null,0,0,0));
 				e.gc.setBackground(new Color(null,0,0,0));
-				// e.gc.drawImage(back, 0, 0);
-
 
 				int width=getSize().x;
 				int height=getSize().y;
@@ -202,7 +191,10 @@ public class MazeDisplay extends Canvas  {
 							e.gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 									x, y, w, h);
 					}
+				
 				gameCharacter.draw(w, h, e.gc);
+				if (tweety.getTweetyPosition().z==currentFloor)
+					tweety.drawTweety(w, h, e.gc);
 
 			}
 		});
