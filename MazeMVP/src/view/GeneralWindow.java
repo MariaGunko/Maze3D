@@ -3,7 +3,10 @@ package view;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.Observable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -30,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
+import algorithms.search.State;
 
 
 public class GeneralWindow extends BasicWindow implements View {
@@ -108,94 +112,110 @@ public class GeneralWindow extends BasicWindow implements View {
 
 				//	public void run() {
 
-						//Display GenerateDisplay = new Display();
-						Shell GenerateShell = new Shell(display);
+				//Display GenerateDisplay = new Display();
+				Shell GenerateShell = new Shell(display);
 
 
 
-						GenerateShell.setLayout(new  GridLayout(2, false));
+				GenerateShell.setLayout(new  GridLayout(2, false));
 
-						Label lblName = new Label(GenerateShell, SWT.NONE);
-						lblName.setText("Maze name: ");
-						Text txtName = new Text(GenerateShell, SWT.BORDER);
-						txtName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				Label lblName = new Label(GenerateShell, SWT.NONE);
+				lblName.setText("Maze name: ");
+				Text txtName = new Text(GenerateShell, SWT.BORDER);
+				txtName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-						Label lblFloors = new Label(GenerateShell, SWT.NONE);
-						lblFloors.setText("Floors: ");
-						Text txtFloors = new Text(GenerateShell, SWT.BORDER);
-						txtFloors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-
-						Label lblRows = new Label(GenerateShell, SWT.NONE);
-						lblRows.setText("Rows: ");
-						Text txtRows = new Text(GenerateShell, SWT.BORDER);
-						txtRows.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				Label lblFloors = new Label(GenerateShell, SWT.NONE);
+				lblFloors.setText("Floors: ");
+				Text txtFloors = new Text(GenerateShell, SWT.BORDER);
+				txtFloors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 
-						Label lblColumns = new Label(GenerateShell, SWT.NONE);
-						lblColumns.setText("Columns: ");
-						Text txtColumns = new Text(GenerateShell, SWT.BORDER);
-						txtColumns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+				Label lblRows = new Label(GenerateShell, SWT.NONE);
+				lblRows.setText("Rows: ");
+				Text txtRows = new Text(GenerateShell, SWT.BORDER);
+				txtRows.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
 
-						Button GenerateMaze = new Button(GenerateShell, SWT.PUSH);
-						GenerateShell.setDefaultButton(GenerateMaze);
-						GenerateMaze.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
-						GenerateMaze.setText("Generate maze");
+				Label lblColumns = new Label(GenerateShell, SWT.NONE);
+				lblColumns.setText("Columns: ");
+				Text txtColumns = new Text(GenerateShell, SWT.BORDER);
+				txtColumns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-						GenerateShell.setText("Generate Maze");
-						GenerateShell.setSize(400,250);
-						GenerateShell.open();
 
-						GenerateMaze.addSelectionListener(new SelectionListener() {
+				Button GenerateMaze = new Button(GenerateShell, SWT.PUSH);
+				GenerateShell.setDefaultButton(GenerateMaze);
+				GenerateMaze.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
+				GenerateMaze.setText("Generate maze");
 
-							@Override
-							public void widgetSelected(SelectionEvent arg0) {				
-								MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
-								nameMaze=txtName.getText();
-								msg.setText("Create Maze -> "+nameMaze);
+				GenerateShell.setText("Generate Maze");
+				GenerateShell.setSize(400,250);
+				GenerateShell.open();
 
-								int rows = Integer.parseInt(txtRows.getText());
-								int cols = Integer.parseInt(txtColumns.getText());
-								int floors = Integer.parseInt(txtFloors.getText());
-								
+				GenerateMaze.addSelectionListener(new SelectionListener() {
 
-								String setMaze="generate_maze "+nameMaze+" "+floors+" "+rows+" "+cols;
-								setChanged();
-								notifyObservers(setMaze);
-								
-									
-									
-								msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
-								msg.open();
-								mazeDisplay.setFocus();
-								GenerateShell.close();																
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {				
+						MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
+						nameMaze=txtName.getText();
+						msg.setText("Create Maze -> "+nameMaze);
+						
+						try{
+							int rows = Integer.parseInt(txtRows.getText());
+							int cols = Integer.parseInt(txtColumns.getText());
+							int floors = Integer.parseInt(txtFloors.getText());	
+							String setMaze="generate_maze "+nameMaze+" "+floors+" "+rows+" "+cols;
+							setChanged();
+							notifyObservers(setMaze);
+
+							msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
+							msg.open();
+							mazeDisplay.setFocus();
+							GenerateShell.close();
+
+						}
+						catch(NumberFormatException e)  
+						{
+							MessageBox msg1 = new MessageBox(GenerateShell, SWT.OK);
+							msg1.setText("ERROR");
+							msg1.setMessage("Please try again, enter integer numbers between 2 to 40");
+							msg1.open();
+						}
+						
+
+				
+						
+						
+
+				
+
+
 																
-								
-								//notifyMazeIsReady(nameMaze);
-								
+						
 
-								//	setChanged();
-								//notifyObservers("display"+" "+ nameMaze);
-							}
+						//notifyMazeIsReady(nameMaze);
 
-							@Override
-							public void widgetDefaultSelected(SelectionEvent arg0) {			
 
-							}
-						});	
+						//	setChanged();
+						//notifyObservers("display"+" "+ nameMaze);
+					}
 
-						/*while(!GenerateShell.isDisposed()){
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {			
+
+					}
+				});	
+
+				/*while(!GenerateShell.isDisposed()){
 							if(!GenerateDisplay.readAndDispatch()){
 								GenerateDisplay.sleep();
 							}
 						}
 						GenerateDisplay.dispose();*/
-					}
-				
-				//thread.start();
+			}
+
+			//thread.start();
 			//}
-	
+
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
@@ -250,7 +270,7 @@ public class GeneralWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
 				setChanged();
-				//nameMaze=windowGenerate.getMazeName();
+			
 				notifyObservers("solve"+" "+ nameMaze +" "+"BFS");				
 			}
 
@@ -319,7 +339,6 @@ public class GeneralWindow extends BasicWindow implements View {
 			public void widgetSelected(SelectionEvent arg0)
 			{
 				playMusic(new File("Images/amiran.wav"));
-
 			}
 
 			@Override
@@ -357,6 +376,8 @@ public class GeneralWindow extends BasicWindow implements View {
 	//		});			
 	//	}
 
+		
+	
 	private void playMusic(File file) {
 
 		try {
@@ -403,7 +424,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 	@Override
 	public void viewDisplaySolution(Solution<Position> solve) {
-		// TODO Auto-generated method stub
+		mazeDisplay.showSolution(solve);
 
 	}
 

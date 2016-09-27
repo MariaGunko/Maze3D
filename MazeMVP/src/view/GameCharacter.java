@@ -31,6 +31,16 @@ public class GameCharacter{
 	public Position getTweetyPosition(){
 		return posT;
 	}
+	
+	public boolean win() 
+	{
+		if(!getTweetyPosition().equals(pos))
+		{
+			return false;
+			
+		}
+		return true;
+	}
 
 	public void draw(int cellWidth, int cellHeight, GC gc) {
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
@@ -49,8 +59,6 @@ public class GameCharacter{
 
 	public void moveDown(){
 		pos.y++;
-
-
 	}
 
 	public void moveLeft(){
@@ -59,17 +67,13 @@ public class GameCharacter{
 
 	public void moveRight(){
 		pos.x++;
-
 	}
 
 	public void moveFloorUp(){
 		pos.z--;
-
-
 	}
 
 	public void moveFloorDown(){
 		pos.z++;
-
 	}
 }

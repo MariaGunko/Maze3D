@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,10 +13,14 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
+import algorithms.search.State;
 
 
 public class MazeDisplay extends Canvas  {
@@ -35,7 +41,7 @@ public class MazeDisplay extends Canvas  {
 
 	GameCharacter gameCharacter;
 	GameCharacter tweety;
-	
+
 	private int[][] mazeData;
 	//	private int[][] mazeData = {
 	//			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -57,29 +63,118 @@ public class MazeDisplay extends Canvas  {
 		startPosition=maze.getStartPosition();
 		goalPosition = maze.getGoalPosition();
 		this.mazeData = this.maze.getCrossSectionByZ(startPosition.z);
-		
+
 		gameCharacter.setPosition(new Position(startPosition.z, startPosition.y, startPosition.x));
 		tweety.setTweetyPosition(new Position(goalPosition.z, goalPosition.y, goalPosition.x));
-		
+
 		floors=maze.getFloors();
 		rows=maze.getRows();
 		cols=maze.getCols();
 		this.redraw();
 	}
 
+	private void moveCat (Position currPos, Position newPos) {
+		if (newPos.x == currPos.x - 1)
+		{
+			gameCharacter.moveLeft();
+			redraw();
+		}
+		else if (newPos.x == currPos.x + 1)
+		{
+			gameCharacter.moveRight();
+			redraw();
+		}
+		else if (newPos.y == currPos.y - 1)
+		{
+			gameCharacter.moveUp();
+			redraw();
+		}
+		else if (newPos.y == currPos.y + 1)
+		{
+			
+			gameCharacter.moveDown();
+			redraw();
+		}
+		else if (newPos.z == currPos.z + 1){
+			gameCharacter.moveFloorDown();
+			redraw();
+		}
+		else if (newPos.z == currPos.z -1){
+			gameCharacter.moveFloorUp();
+			redraw();
+		}
+	}
+
+	public void showSolution(Solution<Position> solve)
+	{
+		List<State<Position>> states = solve.getStates();
+
+		TimerTask task = new TimerTask() 
+		{
+	
+			Position currPos = (states.get(0).getValue());
+			int currIndex = 1;		
+
+			@Override
+			public void run() 
+			{
+				getDisplay().syncExec(new Runnable() 
+				{
+					@Override
+					public void run()
+					{
+						for (State <Position> s: states)
+						{
+							Position newPos = (states.get(currIndex).getValue());
+							System.out.println(currPos);
+							System.out.println(newPos);
+							//Position newPos = (s.getValue());
+							moveCat(currPos, newPos);
+							//gameCharacter.moveUp();
+//							redraw();
+							currIndex++;
+							currPos = newPos;
+							
+						}
+
+						if (currIndex == states.size()) 
+						{
+							timer.cancel();
+						}				
+
+						else if (currIndex == 140 / 40) 
+						{
+							timer.cancel();
+							
+							//							setChanged();
+							//							notifyObservers(snakesBoard);
+						}
+					}
+				});
+			}
+		};
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(task, 0, 40);	
+	}
+
+
 	public void setZ (int z)
 	{
 		currentFloor=z;
 		this.mazeData = this.maze.getCrossSectionByZ(z);
-//		if(mazeData[currentPosition.y][currentPosition.x]!=0)
-//		{
-//			return false;
-//
-//		}
-//		else return true;
-//		//this.redraw();
 	}
 
+	public void winner () {
+		Shell GenerateShell = new Shell(getDisplay());
+		if(tweety.getTweetyPosition().equals(gameCharacter.getPosition()))
+		{
+			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
+			msg.setText("Winner");
+			msg.setMessage("Congratulations you got tweety");
+			msg.open();
+		}
+
+	}
 
 	public MazeDisplay(Shell parent, int style) {
 		super(parent, style);
@@ -96,7 +191,6 @@ public class MazeDisplay extends Canvas  {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				currentPosition = gameCharacter.getPosition();
-
 				switch (e.keyCode) {
 				case SWT.ARROW_RIGHT:					
 					checkPos=currentPosition;
@@ -104,6 +198,7 @@ public class MazeDisplay extends Canvas  {
 					{
 						gameCharacter.moveRight();	
 						redraw();
+						winner();
 					}
 					break;
 
@@ -111,8 +206,9 @@ public class MazeDisplay extends Canvas  {
 					checkPos=currentPosition;
 					if(mazeData[checkPos.y][checkPos.x-1]==0)
 					{
-						gameCharacter.moveLeft();	
+						gameCharacter.moveLeft();
 						redraw();
+						winner();
 					}
 					break;
 
@@ -120,22 +216,20 @@ public class MazeDisplay extends Canvas  {
 					checkPos=currentPosition;
 					if(mazeData[checkPos.y-1][checkPos.x]==0)
 					{
-						gameCharacter.moveUp();	
+						gameCharacter.moveUp();
 						redraw();
+						winner();
 					}
 					break;
 
 				case SWT.ARROW_DOWN:	
-					//				Position checkPoint = new Position (currentPosition.z,currentPosition.x,currentPosition.y+1);
-					//				Position [] arr = maze.getPossiblePossitions(currentPosition);
-					//				for (int i=0;i<arr.length;i++)
-					//				{
-					//					
+
 					checkPos=currentPosition;
 					if(mazeData[checkPos.y+1][checkPos.x]==0)
 					{
 						gameCharacter.moveDown();	
 						redraw();
+						winner();
 					}
 					break;
 
@@ -145,24 +239,28 @@ public class MazeDisplay extends Canvas  {
 						setZ(currentPosition.z - 1);
 						gameCharacter.moveFloorUp();
 						redraw();
+						winner();
 					}
 					break;
-					
+
 
 				case SWT.PAGE_DOWN:		
-					
-					
+
+
 					if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
 					{
 						setZ(currentPosition.z + 1);
 						gameCharacter.moveFloorDown();
 						redraw();
+						winner();
 					}
 					break;
-					
-		
+
 				}
+
+
 			}
+
 		});
 
 
@@ -191,14 +289,16 @@ public class MazeDisplay extends Canvas  {
 							e.gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 									x, y, w, h);
 					}
-				
+
 				gameCharacter.draw(w, h, e.gc);
 				if (tweety.getTweetyPosition().z==currentFloor)
 					tweety.drawTweety(w, h, e.gc);
 
+
 			}
 		});
-		
-		
+
+
 	}
+
 }
