@@ -34,10 +34,14 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
+import properties.Properties;
+import properties.PropertiesLoader;
 
 
 public class GeneralWindow extends BasicWindow implements View {
 
+	private Image exit, musicPic, hint;
+	private Properties p;
 	private Maze3d maze;
 	private MazeDisplay mazeDisplay;
 	MouseWheelListener mouseZoomlListener;
@@ -51,7 +55,11 @@ public class GeneralWindow extends BasicWindow implements View {
 	@Override
 	protected void initWidgets() {
 
-		shell.setText("Welcome to the MAZE GAME");
+		shell.setText("Welcome to Tweety & Silvestre MAZE GAME");
+		p = PropertiesLoader.getInstance().getProperties();
+		exit = new Image (null, "images/EXIT_NEW.png");
+		musicPic = new Image (null, "images/music.jpg");
+		hint = new Image (null, "images/question.jpg");
 
 		Menu menuButton = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menuButton);
@@ -73,8 +81,6 @@ public class GeneralWindow extends BasicWindow implements View {
 		MenuItem exitButtonmenu = new MenuItem(subMenu, SWT.PUSH);
 		exitButtonmenu.setText("EXIT");
 
-
-
 		exitButtonmenu.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -93,7 +99,8 @@ public class GeneralWindow extends BasicWindow implements View {
 
 		shell.setLayout(new org.eclipse.swt.layout.GridLayout(2, false));
 
-		Color blue = display.getSystemColor(SWT.COLOR_CYAN);
+		//Color blue = display.getSystemColor(SWT.COLOR_CYAN);
+		Color blue = display.getSystemColor(SWT.COLOR_RED);
 		Color yellow = display.getSystemColor(SWT.COLOR_YELLOW);
 		shell.setBackground(yellow);
 
@@ -169,8 +176,11 @@ public class GeneralWindow extends BasicWindow implements View {
 
 							msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
 							msg.open();
-							mazeDisplay.setFocus();
 							GenerateShell.close();
+							
+							setChanged();
+							notifyObservers("display"+" "+ nameMaze);	
+							mazeDisplay.setFocus();
 
 						}
 						catch(NumberFormatException e)  
@@ -179,18 +189,7 @@ public class GeneralWindow extends BasicWindow implements View {
 							msg1.setText("ERROR");
 							msg1.setMessage("Please try again, enter integer numbers between 2 to 40");
 							msg1.open();
-						}
-						
-
-				
-						
-						
-
-				
-
-
-																
-						
+						}		
 
 						//notifyMazeIsReady(nameMaze);
 
@@ -226,7 +225,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 		mazeDisplay = new MazeDisplay(shell, SWT.NONE|SWT.DOUBLE_BUFFERED);		
 		//mazeDisplay.setMazeData(maze);
-		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,1,7));
+		mazeDisplay.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,1,8));
 		final Image image=new Image(display,"images/background.jpg");
 		mazeDisplay.setBackgroundImage(image);
 		mazeDisplay.setFocus();
@@ -236,27 +235,27 @@ public class GeneralWindow extends BasicWindow implements View {
 		//		final Image image=new Image(display,"images/background.jpg");
 		//		t.setBackgroundImage(image);
 
-		Button displayButton = new Button(shell, SWT.PUSH);
-		displayButton.setText("Display Maze");
-		displayButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
-		displayButton.setBackground(blue);
-
-
-		displayButton.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				setChanged();
-				notifyObservers("display"+" "+ nameMaze);	
-				//notifyObservers("display"+" "+ "amiran");	
-				mazeDisplay.setFocus();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-			}
-		});
+//		Button displayButton = new Button(shell, SWT.PUSH);
+//		displayButton.setText("Display Maze");
+//		displayButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
+//		displayButton.setBackground(blue);
+//
+//
+//		displayButton.addSelectionListener(new SelectionListener() {
+//
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//
+////				setChanged();
+////				notifyObservers("display"+" "+ nameMaze);	
+////				//notifyObservers("display"+" "+ "amiran");	
+////				mazeDisplay.setFocus();
+//			}
+//
+//			@Override
+//			public void widgetDefaultSelected(SelectionEvent arg0) {
+//			}
+//		});
 
 
 		Button solveButton = new Button(shell, SWT.PUSH);
@@ -270,8 +269,8 @@ public class GeneralWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
 				setChanged();
-			
-				notifyObservers("solve"+" "+ nameMaze +" "+"BFS");				
+				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());		
+				//notifyObservers("solve"+" "+ nameMaze +" "+"BFS");				
 			}
 
 			@Override
@@ -310,9 +309,10 @@ public class GeneralWindow extends BasicWindow implements View {
 		loadButton.setBackground(blue);
 
 		Button exitButton = new Button(shell, SWT.PUSH);
-		exitButton.setText("EXIT");
+		//exitButton.setText("EXIT");
 		exitButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
 		exitButton.setBackground(blue);
+		exitButton.setImage(exit);
 
 		exitButton.addSelectionListener(new SelectionListener() {
 
@@ -330,7 +330,8 @@ public class GeneralWindow extends BasicWindow implements View {
 
 
 		Button musicButton = new Button(shell, SWT.PUSH);
-		musicButton.setText("Music");
+		//musicButton.setText("Music");
+		musicButton.setImage(musicPic);
 		musicButton.setLayoutData(new GridData(SWT.NONE,SWT.NONE,false,false, 1, 1));
 		musicButton.setBackground(blue);
 		musicButton.addSelectionListener(new SelectionListener() {
@@ -339,6 +340,26 @@ public class GeneralWindow extends BasicWindow implements View {
 			public void widgetSelected(SelectionEvent arg0)
 			{
 				playMusic(new File("Images/amiran.wav"));
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+		});	
+		
+		
+		Button hintButton = new Button(shell, SWT.PUSH);
+		//musicButton.setText("Music");
+		hintButton.setImage(hint);
+		hintButton.setLayoutData(new GridData(SWT.NONE,SWT.NONE,false,false, 1, 1));
+		hintButton.setBackground(blue);
+		hintButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
 			}
 
 			@Override
