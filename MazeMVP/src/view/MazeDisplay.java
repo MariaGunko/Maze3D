@@ -20,6 +20,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
+import algorithms.search.BFS;
 import algorithms.search.Solution;
 import algorithms.search.State;
 
@@ -112,7 +113,7 @@ public class MazeDisplay extends Canvas  {
 	public void showSolution(Solution<Position> solve)
 	{
 
-
+		Timer timer = new Timer();
 		TimerTask task = new TimerTask() 
 		{
 			int i=1;
@@ -124,19 +125,26 @@ public class MazeDisplay extends Canvas  {
 			public void run() {	
 				getDisplay().syncExec(new Runnable() {					
 
-
+					
 					@Override
 					public void run() {
+						if(i<=goal){
+							//timer.cancel();
 						Position s2 = states.get(i).getValue();
 						System.out.println(s1+"        "+s2);
 						
-						
+						moveCat(s1,s2);
+						s1=s2;
+						i=i+1;
+						winner();
+						}
+						else timer.cancel();
 						//redraw();
 
 
 						//	if (s2.equals(states.get(goal))){
 						//timer.cancel();
-						winner();
+						
 						//							if (i == states.size()) {
 						//								timer.cancel();
 						//							}		
@@ -157,8 +165,8 @@ public class MazeDisplay extends Canvas  {
 			}
 			
 		};
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, 500);
+		
+		timer.scheduleAtFixedRate(task, 0, 100);
 	}
 
 	//						if (currIndex == states.size()) 
