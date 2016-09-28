@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -34,6 +35,7 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
+import presenter.CommandsManager.saveMazeCommand;
 import properties.Properties;
 import properties.PropertiesLoader;
 
@@ -47,9 +49,25 @@ public class GeneralWindow extends BasicWindow implements View {
 	MouseWheelListener mouseZoomlListener;
 	String nameMaze = null;
 	Clip music;
+	
 
 	public GeneralWindow(int width, int height) {
 		super(width, height);
+	}
+	
+	public void loadFile() {
+		FileDialog fd=new FileDialog(shell,SWT.OPEN);
+		fd.setText("open");
+		//fd.setFilterPath("E:/workspace/89210 part3");
+		String[] filterExt = {  "*.*" };
+		fd.setFilterExtensions(filterExt);
+		String selected = fd.open();
+		setChanged();
+		notifyObservers("load_maze"+" "+selected+" "+fd.getFileName());
+		setChanged();
+		notifyObservers("display"+" "+fd.getFileName());
+		nameMaze=fd.getFileName();
+		
 	}
 
 	@Override
@@ -60,6 +78,7 @@ public class GeneralWindow extends BasicWindow implements View {
 		exit = new Image (null, "images/EXIT_NEW.png");
 		musicPic = new Image (null, "images/music.jpg");
 		hint = new Image (null, "images/question.jpg");
+		Shell GenerateShell = new Shell(getDisplay());
 
 		Menu menuButton = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menuButton);
@@ -74,10 +93,68 @@ public class GeneralWindow extends BasicWindow implements View {
 
 		MenuItem properties = new MenuItem(subMenu, SWT.PUSH);
 		properties.setText("properties");
+
+
+
+
+		properties.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				FileDialog fd=new FileDialog(shell,SWT.OPEN);
+				fd.setText("open");
+				fd.setFilterPath("E:/workspace/89210 part3");
+				String[] filterExt = { "*.txt", "*.java", ".xml", "*.*" };
+				fd.setFilterExtensions(filterExt);
+				String selected = fd.open();
+
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		MenuItem LoadMaze = new MenuItem(subMenu, SWT.PUSH);
 		LoadMaze.setText("LoadMaze\tCtrl+L");
+		LoadMaze.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			
+				loadFile();
+
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+
+
 		MenuItem SaveMaze = new MenuItem(subMenu, SWT.PUSH);
 		SaveMaze.setText("SaveMaze\tCtrl+S");
+		SaveMaze.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			
+			setChanged();
+			notifyObservers("save_maze "+nameMaze+" "+nameMaze);
+			
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+			}
+		});
 		MenuItem exitButtonmenu = new MenuItem(subMenu, SWT.PUSH);
 		exitButtonmenu.setText("EXIT");
 
@@ -165,7 +242,7 @@ public class GeneralWindow extends BasicWindow implements View {
 						MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 						nameMaze=txtName.getText();
 						msg.setText("Create Maze -> "+nameMaze);
-						
+
 						try{
 							int rows = Integer.parseInt(txtRows.getText());
 							int cols = Integer.parseInt(txtColumns.getText());
@@ -177,7 +254,7 @@ public class GeneralWindow extends BasicWindow implements View {
 							msg.setMessage("Generating maze: "+nameMaze +" Floors: "+floors+ " rows: " + rows + " cols: " + cols);
 							msg.open();
 							GenerateShell.close();
-							
+
 							setChanged();
 							notifyObservers("display"+" "+ nameMaze);	
 							mazeDisplay.setFocus();
@@ -235,27 +312,27 @@ public class GeneralWindow extends BasicWindow implements View {
 		//		final Image image=new Image(display,"images/background.jpg");
 		//		t.setBackgroundImage(image);
 
-//		Button displayButton = new Button(shell, SWT.PUSH);
-//		displayButton.setText("Display Maze");
-//		displayButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
-//		displayButton.setBackground(blue);
-//
-//
-//		displayButton.addSelectionListener(new SelectionListener() {
-//
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//
-////				setChanged();
-////				notifyObservers("display"+" "+ nameMaze);	
-////				//notifyObservers("display"+" "+ "amiran");	
-////				mazeDisplay.setFocus();
-//			}
-//
-//			@Override
-//			public void widgetDefaultSelected(SelectionEvent arg0) {
-//			}
-//		});
+		//		Button displayButton = new Button(shell, SWT.PUSH);
+		//		displayButton.setText("Display Maze");
+		//		displayButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
+		//		displayButton.setBackground(blue);
+		//
+		//
+		//		displayButton.addSelectionListener(new SelectionListener() {
+		//
+		//			@Override
+		//			public void widgetSelected(SelectionEvent e) {
+		//
+		////				setChanged();
+		////				notifyObservers("display"+" "+ nameMaze);	
+		////				//notifyObservers("display"+" "+ "amiran");	
+		////				mazeDisplay.setFocus();
+		//			}
+		//
+		//			@Override
+		//			public void widgetDefaultSelected(SelectionEvent arg0) {
+		//			}
+		//		});
 
 
 		Button solveButton = new Button(shell, SWT.PUSH);
@@ -302,11 +379,52 @@ public class GeneralWindow extends BasicWindow implements View {
 		saveButton.setText("Save Maze");
 		saveButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
 		saveButton.setBackground(blue);
+		saveButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				
+				if(nameMaze==null)
+				{
+					MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
+					msg.setText("ERROR");
+					msg.setMessage("You must generate MAZE first");
+					msg.open();
+				}
+				else{
+				setChanged();
+				notifyObservers("save_maze "+nameMaze+" "+nameMaze);
+				}
+				
+				
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		Button loadButton = new Button(shell, SWT.PUSH);
 		loadButton.setText("load Maze");
 		loadButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
 		loadButton.setBackground(blue);
+		loadButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				loadFile();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		Button exitButton = new Button(shell, SWT.PUSH);
 		//exitButton.setText("EXIT");
@@ -347,8 +465,8 @@ public class GeneralWindow extends BasicWindow implements View {
 				// TODO Auto-generated method stub
 			}
 		});	
-		
-		
+
+
 		Button hintButton = new Button(shell, SWT.PUSH);
 		//musicButton.setText("Music");
 		hintButton.setImage(hint);
@@ -397,8 +515,13 @@ public class GeneralWindow extends BasicWindow implements View {
 	//		});			
 	//	}
 
-		
-	
+
+
+	private Display getDisplay() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private void playMusic(File file) {
 
 		try {
