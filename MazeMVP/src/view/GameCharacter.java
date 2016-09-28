@@ -9,13 +9,21 @@ public class GameCharacter{
 	private Image img;
 	private Position pos;
 	
-	private Image goalImg;
-	private Position posT;
+	//private Image goalImg;
+	//private Position posT;
 
 
 	public GameCharacter() {
-		img = new Image (null, "images/silvestre.gif");
-		goalImg = new Image (null, "images/tweety.gif");
+		//img = new Image (null, "images/silvestre.gif");
+		//goalImg = new Image (null, "images/tweety.gif");
+	}
+
+	public Image getImg() {
+		return img;
+	}
+
+	public void setImg(Image img) {
+		this.img = img;
 	}
 
 	public void setPosition(Position pos) {
@@ -32,16 +40,16 @@ public class GameCharacter{
 		return pos;
 	}
 	
-	public void setTweetyPosition(Position pos) {
-		this.posT = pos;
-	}
-	public Position getTweetyPosition(){
-		return posT;
-	}
+//	public void setTweetyPosition(Position pos) {
+//		this.posT = pos;
+//	}
+//	public Position getTweetyPosition(){
+//		return posT;
+//	}
 	
 	public boolean win() 
 	{
-		if(!getTweetyPosition().equals(pos))
+		if(!getPosition().equals(pos))
 		{
 			return false;
 			
@@ -54,10 +62,10 @@ public class GameCharacter{
 				cellWidth * pos.x, cellHeight * pos.y, cellWidth, cellHeight);
 	}
 	
-	public void drawTweety(int cellWidth, int cellHeight, GC gc) {
-		gc.drawImage(goalImg, 0, 0, goalImg.getBounds().width, goalImg.getBounds().height, 
-				cellWidth * posT.x, cellHeight * posT.y, cellWidth, cellHeight);
-	}
+//	public void drawTweety(int cellWidth, int cellHeight, GC gc) {
+//		gc.drawImage(goalImg, 0, 0, goalImg.getBounds().width, goalImg.getBounds().height, 
+//				cellWidth * posT.x, cellHeight * posT.y, cellWidth, cellHeight);
+//	}
 
 	public void moveUp(){
 		pos.y--;

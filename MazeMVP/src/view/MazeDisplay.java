@@ -27,13 +27,15 @@ import algorithms.search.State;
 
 public class MazeDisplay extends Canvas  {
 
+	Image SilvesPic = new Image (null, "images/silvestre.gif");
+	Image goalImg = new Image (null, "images/tweety.gif");
 	Image img = new Image (null, "Images/wall_Black.jpg");
-	Image back = new Image (null, "Images/Optimus.jpg");
+	Image hint = new Image (null, "Images/coin.gif");
 	Position startPosition ;
 	Position goalPosition ;
 	Position currentPosition ;
-	int floors, rows, cols;
-	int currentFloor;
+	int floors, rows, cols, currentFloor;
+	
 	Maze3d maze;
 	Position checkPos;
 	int [][] checkZ;
@@ -43,6 +45,7 @@ public class MazeDisplay extends Canvas  {
 
 	GameCharacter gameCharacter;
 	GameCharacter tweety;
+	GameCharacter coin;
 
 	private int[][] mazeData;
 	//	private int[][] mazeData = {
@@ -65,9 +68,14 @@ public class MazeDisplay extends Canvas  {
 		startPosition=maze.getStartPosition();
 		goalPosition = maze.getGoalPosition();
 		this.mazeData = this.maze.getCrossSectionByZ(startPosition.z);
+		currentFloor=maze.getStartPosition().z;
 
+		gameCharacter.setImg(SilvesPic);
+		tweety.setImg(goalImg);
+		coin.setImg(hint);
+		
 		gameCharacter.setPosition(new Position(startPosition.z, startPosition.y, startPosition.x));
-		tweety.setTweetyPosition(new Position(goalPosition.z, goalPosition.y, goalPosition.x));
+		tweety.setPosition(new Position(goalPosition.z, goalPosition.y, goalPosition.x));
 
 		floors=maze.getFloors();
 		rows=maze.getRows();
@@ -119,6 +127,13 @@ public class MazeDisplay extends Canvas  {
 		}
 	}
 	
+	public void showHint (Solution<Position> solve){
+		List<State<Position>> states = solve.getStates();
+		for (int i=0;i<states.size();i++){
+			Position pos = states.get(i).getValue();
+		}
+	}
+	
 	public void showSolution(Solution<Position> solve)
 	{
 		GoBack();
@@ -166,7 +181,7 @@ public class MazeDisplay extends Canvas  {
 
 	public void winner () {
 		Shell GenerateShell = new Shell(getDisplay());
-		if(tweety.getTweetyPosition().equals(gameCharacter.getPosition()))
+		if(tweety.getPosition().equals(gameCharacter.getPosition()))
 		{
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 			msg.setText("Winner");
@@ -180,6 +195,7 @@ public class MazeDisplay extends Canvas  {
 		setBackground(new Color (null, 255,255,0));
 		gameCharacter = new GameCharacter();
 		tweety = new GameCharacter();
+		coin = new GameCharacter();
 
 		this.addKeyListener(new KeyListener() {
 
@@ -256,10 +272,7 @@ public class MazeDisplay extends Canvas  {
 					break;
 
 				}
-
-
 			}
-
 		});
 
 
@@ -290,10 +303,9 @@ public class MazeDisplay extends Canvas  {
 					}
 
 				gameCharacter.draw(w, h, e.gc);
-				if (tweety.getTweetyPosition().z==currentFloor)
-					tweety.drawTweety(w, h, e.gc);
-
-
+				if (tweety.getPosition().z==currentFloor)
+					tweety.draw(w, h, e.gc);
+				
 			}
 		});
 
