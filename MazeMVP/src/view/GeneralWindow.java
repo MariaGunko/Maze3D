@@ -49,25 +49,31 @@ public class GeneralWindow extends BasicWindow implements View {
 	MouseWheelListener mouseZoomlListener;
 	String nameMaze = null;
 	Clip music;
-	
+
 
 	public GeneralWindow(int width, int height) {
 		super(width, height);
 	}
-	
+
 	public void loadFile() {
 		FileDialog fd=new FileDialog(shell,SWT.OPEN);
 		fd.setText("open");
 		//fd.setFilterPath("E:/workspace/89210 part3");
 		String[] filterExt = {  "*.*" };
 		fd.setFilterExtensions(filterExt);
-		String selected = fd.open();
-		setChanged();
-		notifyObservers("load_maze"+" "+selected+" "+fd.getFileName());
-		setChanged();
-		notifyObservers("display"+" "+fd.getFileName());
-		nameMaze=fd.getFileName();
+		try{
+			String selected = fd.open();
+			setChanged();
+			notifyObservers("load_maze"+" "+selected+" "+fd.getFileName());
+			setChanged();
+			notifyObservers("display"+" "+fd.getFileName());
+			nameMaze=fd.getFileName();
+		}
+		catch (Exception e) {
+			
+		}
 		
+
 	}
 
 	@Override
@@ -83,9 +89,13 @@ public class GeneralWindow extends BasicWindow implements View {
 		Menu menuButton = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menuButton);
 
+		
 		// File button in the bar
 		MenuItem fileItem = new MenuItem(menuButton, SWT.CASCADE);
 		fileItem.setText("Menu");
+		
+		MenuItem fileItem1 = new MenuItem(menuButton, SWT.CASCADE);
+		fileItem1.setText("about");
 
 		// Drop down functions for file button
 		Menu subMenu = new Menu(shell, SWT.DROP_DOWN);
@@ -118,39 +128,40 @@ public class GeneralWindow extends BasicWindow implements View {
 			}
 		});
 		MenuItem LoadMaze = new MenuItem(subMenu, SWT.PUSH);
-		LoadMaze.setText("LoadMaze\tCtrl+L");
+		LoadMaze.setText("LoadMaze");
 		LoadMaze.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-			
+
 				loadFile();
 
-				
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
 
 
 		MenuItem SaveMaze = new MenuItem(subMenu, SWT.PUSH);
-		SaveMaze.setText("SaveMaze\tCtrl+S");
+		
+		SaveMaze.setText("SaveMaze");
 		SaveMaze.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-			
-			setChanged();
-			notifyObservers("save_maze "+nameMaze+" "+nameMaze);
-			
-				
+
+				setChanged();
+				notifyObservers("save_maze "+nameMaze+" "+nameMaze);
+
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 			}
@@ -365,6 +376,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
+				
 				setChanged();
 				//notifyObservers("display_solution"+" "+ "amiran");	
 				notifyObservers("display_solution"+" "+ nameMaze);	
@@ -380,10 +392,10 @@ public class GeneralWindow extends BasicWindow implements View {
 		saveButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
 		saveButton.setBackground(blue);
 		saveButton.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				
+
 				if(nameMaze==null)
 				{
 					MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
@@ -392,18 +404,18 @@ public class GeneralWindow extends BasicWindow implements View {
 					msg.open();
 				}
 				else{
-				setChanged();
-				notifyObservers("save_maze "+nameMaze+" "+nameMaze);
+					setChanged();
+					notifyObservers("save_maze "+nameMaze+" "+nameMaze);
 				}
-				
-				
-				
+
+
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -412,17 +424,17 @@ public class GeneralWindow extends BasicWindow implements View {
 		loadButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
 		loadButton.setBackground(blue);
 		loadButton.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				loadFile();
-				
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -477,7 +489,8 @@ public class GeneralWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
 			{
-				// TODO Auto-generated method stub
+				setChanged();
+				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());	
 			}
 
 			@Override
@@ -526,6 +539,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 		try {
 			music = AudioSystem.getClip();
+			
 			AudioInputStream inputStream = AudioSystem
 					.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
 			music.open(inputStream);

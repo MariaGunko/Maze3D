@@ -110,11 +110,22 @@ public class MazeDisplay extends Canvas  {
 		}
 	}
 
+	public void GoBack ()
+	{
+		if (!gameCharacter.getPosition().equals(maze.getStartPosition()))
+		{
+			gameCharacter.setPosition2(startPosition.z,startPosition.y,startPosition.x);
+			redraw();
+		}
+	}
+	
 	public void showSolution(Solution<Position> solve)
 	{
+		GoBack();
 
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() 
+	
 		{
 			int i=1;
 			List<State<Position>> states = solve.getStates();
@@ -125,66 +136,26 @@ public class MazeDisplay extends Canvas  {
 			public void run() {	
 				getDisplay().syncExec(new Runnable() {					
 
-					
+
 					@Override
 					public void run() {
 						if(i<=goal){
 							//timer.cancel();
-						Position s2 = states.get(i).getValue();
-						System.out.println(s1+"        "+s2);
-						
-						moveCat(s1,s2);
-						s1=s2;
-						i=i+1;
-						winner();
+							Position s2 = states.get(i).getValue();
+							System.out.println(s1+"        "+s2);
+
+							moveCat(s1,s2);
+							s1=s2;
+							i=i+1;
+							winner();
 						}
 						else timer.cancel();
-						//redraw();
-
-
-						//	if (s2.equals(states.get(goal))){
-						//timer.cancel();
-						
-						//							if (i == states.size()) {
-						//								timer.cancel();
-						//							}		
-
-						//}
-
-						//							if (i==states.size())
-						//							{
-						//								timer.cancel();
-						//							}
-
-						//	}
-					}
-					
+					}	
 				});
-				
-
 			}
-			
 		};
-		
-		timer.scheduleAtFixedRate(task, 0, 100);
+		timer.scheduleAtFixedRate(task, 0, 500);
 	}
-
-	//						if (currIndex == states.size()) 
-	//						{
-	//							timer.cancel();
-	//						}				
-	//
-	//						else if (currIndex == 140 / 40) 
-	//						{
-	//							timer.cancel();
-	//							
-	//							//							setChanged();
-	//							//							notifyObservers(snakesBoard);
-	//						}
-	//					}
-	//				});
-	//			}
-	//		};
 
 
 	public void setZ (int z)
@@ -201,9 +172,7 @@ public class MazeDisplay extends Canvas  {
 			msg.setText("Winner");
 			msg.setMessage("Congratulations you got tweety :)");
 			msg.open();
-
 		}
-
 	}
 
 	public MazeDisplay(Shell parent, int style) {

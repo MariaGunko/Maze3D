@@ -21,6 +21,13 @@ public class GameCharacter{
 	public void setPosition(Position pos) {
 		this.pos = pos;
 	}
+	
+	public void setPosition2(int a, int b, int c) {
+		this.pos.z = a;
+		this.pos.x = b;
+		this.pos.y = c;
+	}
+	
 	public Position getPosition(){
 		return pos;
 	}
