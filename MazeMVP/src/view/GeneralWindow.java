@@ -104,7 +104,7 @@ public class GeneralWindow extends BasicWindow implements View {
 				FileDialog fd=new FileDialog(shell,SWT.OPEN);
 				fd.setText("open");
 				fd.setFilterPath("E:/workspace/89210 part3");
-				String[] filterExt = { "*.txt", "*.java", ".xml", "*.*" };
+				String[] filterExt = { ".xml", "*.*" };
 				fd.setFilterExtensions(filterExt);
 				String selected = fd.open();
 

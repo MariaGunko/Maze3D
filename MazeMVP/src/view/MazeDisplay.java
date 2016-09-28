@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
@@ -74,32 +75,35 @@ public class MazeDisplay extends Canvas  {
 	}
 
 	private void moveCat (Position currPos, Position newPos) {
-		if (newPos.x == currPos.x - 1)
+		if (newPos.y == currPos.y - 1)
 		{
 			gameCharacter.moveLeft();
 			redraw();
 		}
-		else if (newPos.x == currPos.x + 1)
+		else if (newPos.y == currPos.y + 1)
 		{
 			gameCharacter.moveRight();
 			redraw();
 		}
-		else if (newPos.y == currPos.y - 1)
+		else if (newPos.x == currPos.x - 1)
 		{
 			gameCharacter.moveUp();
 			redraw();
 		}
-		else if (newPos.y == currPos.y + 1)
+		else if (newPos.x == currPos.x + 1)
 		{
-			
+
 			gameCharacter.moveDown();
 			redraw();
 		}
 		else if (newPos.z == currPos.z + 1){
+			setZ(newPos.z);
 			gameCharacter.moveFloorDown();
 			redraw();
+
 		}
 		else if (newPos.z == currPos.z -1){
+			setZ(newPos.z);
 			gameCharacter.moveFloorUp();
 			redraw();
 		}
@@ -107,55 +111,72 @@ public class MazeDisplay extends Canvas  {
 
 	public void showSolution(Solution<Position> solve)
 	{
-		List<State<Position>> states = solve.getStates();
+
 
 		TimerTask task = new TimerTask() 
 		{
-	
-			Position currPos = (states.get(0).getValue());
-			int currIndex = 1;		
+			int i=1;
+			List<State<Position>> states = solve.getStates();
+			Position s1 = states.get(0).getValue();
+			int goal=states.size()-1;
 
 			@Override
-			public void run() 
-			{
-				getDisplay().syncExec(new Runnable() 
-				{
+			public void run() {	
+				getDisplay().syncExec(new Runnable() {					
+
+
 					@Override
-					public void run()
-					{
-						for (State <Position> s: states)
-						{
-							Position newPos = (states.get(currIndex).getValue());
-							System.out.println(currPos);
-							System.out.println(newPos);
-							//Position newPos = (s.getValue());
-							moveCat(currPos, newPos);
-							//gameCharacter.moveUp();
-//							redraw();
-							currIndex++;
-							currPos = newPos;
-							
-						}
+					public void run() {
+						Position s2 = states.get(i).getValue();
+						System.out.println(s1+"        "+s2);
+						
+						
+						//redraw();
 
-						if (currIndex == states.size()) 
-						{
-							timer.cancel();
-						}				
 
-						else if (currIndex == 140 / 40) 
-						{
-							timer.cancel();
-							
-							//							setChanged();
-							//							notifyObservers(snakesBoard);
-						}
+						//	if (s2.equals(states.get(goal))){
+						//timer.cancel();
+						winner();
+						//							if (i == states.size()) {
+						//								timer.cancel();
+						//							}		
+
+						//}
+
+						//							if (i==states.size())
+						//							{
+						//								timer.cancel();
+						//							}
+
+						//	}
 					}
+					
 				});
+				
+
 			}
+			
 		};
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(task, 0, 40);	
+		timer.scheduleAtFixedRate(task, 0, 500);
 	}
+
+	//						if (currIndex == states.size()) 
+	//						{
+	//							timer.cancel();
+	//						}				
+	//
+	//						else if (currIndex == 140 / 40) 
+	//						{
+	//							timer.cancel();
+	//							
+	//							//							setChanged();
+	//							//							notifyObservers(snakesBoard);
+	//						}
+	//					}
+	//				});
+	//			}
+	//		};
 
 
 	public void setZ (int z)
@@ -170,8 +191,9 @@ public class MazeDisplay extends Canvas  {
 		{
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 			msg.setText("Winner");
-			msg.setMessage("Congratulations you got tweety");
+			msg.setMessage("Congratulations you got tweety :)");
 			msg.open();
+
 		}
 
 	}

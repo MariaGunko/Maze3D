@@ -20,9 +20,11 @@ import java.util.zip.GZIPOutputStream;
 
 import algorithms.demo.MazeAdapter;
 import algorithms.mazeGenerators.GrowingTreeGenerator;
+import algorithms.mazeGenerators.LastNextMove;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.RandomNextMove;
+import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.BFS;
 import algorithms.search.DFS;
 import algorithms.search.Searchable;
@@ -113,17 +115,36 @@ public class MyModel extends Observable implements Model {
 	 */	
 	@Override
 	public void generateMaze(String name, int floors, int rows, int cols) {
+		String formGenerate = properties.getGenerateMazeAlgorithm();
 		executor.submit(new Callable<Maze3d>() {
 
 			@Override
 			public Maze3d call() throws Exception {
-				GrowingTreeGenerator generator = new GrowingTreeGenerator(new RandomNextMove());
-				Maze3d maze = generator.generate(floors, rows, cols);
-				mazes.put(name, maze);
-				
-				setChanged();
-				notifyObservers("maze_ready " + name);		
-				return maze;
+				switch(formGenerate)
+				{
+				case "GrowingTreeGenerator_RandomNextMove":
+					GrowingTreeGenerator generator = new GrowingTreeGenerator(new RandomNextMove());
+					Maze3d maze = generator.generate(floors, rows, cols);
+					mazes.put(name, maze);
+					setChanged();
+					notifyObservers("maze_ready " + name);		
+					return maze;
+				case "GrowingTreeGenerator_LastNextMove":
+					GrowingTreeGenerator generator1 = new GrowingTreeGenerator(new LastNextMove());
+					Maze3d maze1 = generator1.generate(floors, rows, cols);
+					mazes.put(name, maze1);
+					setChanged();
+					notifyObservers("maze_ready " + name);		
+					return maze1;
+				//case "SimpleMaze3dGenerator":
+				default:
+					SimpleMaze3dGenerator simpleMaze = new SimpleMaze3dGenerator();
+					Maze3d maze11 = simpleMaze.generate(floors, rows, cols);
+					mazes.put(name, maze11);
+					setChanged();
+					notifyObservers("maze_ready " + name);		
+					return maze11;
+				}
 			}	
 		});		
 	}
