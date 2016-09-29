@@ -13,4 +13,5 @@ public interface View {
 	void viewDisplayCrossSection (int [][] maze2d);	
 	void viewDisplaySolution (Solution<Position> solve);
 	void viewExit ();
+	void viewDisplayHint(Solution<Position> s);
 }

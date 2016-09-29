@@ -46,6 +46,7 @@ public class CommandsManager {
 		commands.put("display_solution", new DisplaySolutionCommand());
 		commands.put("exit", new ExitCommand());
 		commands.put("maze_ready", new MazeReadyCommand());
+		commands.put("display_hint", new DisplayHintCommand());
 
 		return commands;
 	}
@@ -191,6 +192,18 @@ public class CommandsManager {
 				String mazeName = args[0];
 				Solution <Position> s = model.modelGetSolution(mazeName);
 				view.viewDisplaySolution(s);
+			}	
+		}
+		
+		/**
+		 * This class displays the maze solution 
+		 */
+		public class DisplayHintCommand implements Command{
+			@Override
+			public void execute(String[] args) {
+				String mazeName = args[0];
+				Solution <Position> s = model.modelGetSolution(mazeName);
+				view.viewDisplayHint(s);
 			}	
 		}
 

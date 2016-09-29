@@ -58,7 +58,7 @@ public class GeneralWindow extends BasicWindow implements View {
 	public void loadFile() {
 		FileDialog fd=new FileDialog(shell,SWT.OPEN);
 		fd.setText("open");
-		//fd.setFilterPath("E:/workspace/89210 part3");
+		fd.setFilterPath("E:/workspace/89210 part3");
 		String[] filterExt = {  "*.*" };
 		fd.setFilterExtensions(filterExt);
 		try{
@@ -68,6 +68,7 @@ public class GeneralWindow extends BasicWindow implements View {
 			setChanged();
 			notifyObservers("display"+" "+fd.getFileName());
 			nameMaze=fd.getFileName();
+			mazeDisplay.setFocus();
 		}
 		catch (Exception e) {
 			
@@ -135,8 +136,7 @@ public class GeneralWindow extends BasicWindow implements View {
 			public void widgetSelected(SelectionEvent arg0) {
 
 				loadFile();
-
-
+				
 			}
 
 			@Override
@@ -346,25 +346,24 @@ public class GeneralWindow extends BasicWindow implements View {
 		//		});
 
 
-		Button solveButton = new Button(shell, SWT.PUSH);
-		solveButton.setText("Solve Maze");
-		solveButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
-		solveButton.setBackground(blue);
-
-
-		solveButton.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {	
-				setChanged();
-				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());		
-				//notifyObservers("solve"+" "+ nameMaze +" "+"BFS");				
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-			}
-		});
+//		Button solveButton = new Button(shell, SWT.PUSH);
+//		solveButton.setText("Solve Maze");
+//		solveButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
+//		solveButton.setBackground(blue);
+//
+//
+//		solveButton.addSelectionListener(new SelectionListener() {
+//
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {	
+//				setChanged();
+//				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());						
+//			}
+//
+//			@Override
+//			public void widgetDefaultSelected(SelectionEvent arg0) {
+//			}
+//		});
 
 
 		Button displayMazeSolutionButton = new Button(shell, SWT.PUSH);
@@ -376,9 +375,15 @@ public class GeneralWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
-				
 				setChanged();
-				//notifyObservers("display_solution"+" "+ "amiran");	
+				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());	
+				
+				MessageBox msg1 = new MessageBox(GenerateShell, SWT.OK);
+				msg1.setText("Lets go :)");
+				msg1.setMessage("Are you ready for the solution? ");
+				msg1.open();
+				
+				setChanged();	
 				notifyObservers("display_solution"+" "+ nameMaze);	
 			}
 
@@ -407,9 +412,6 @@ public class GeneralWindow extends BasicWindow implements View {
 					setChanged();
 					notifyObservers("save_maze "+nameMaze+" "+nameMaze);
 				}
-
-
-
 			}
 
 			@Override
@@ -489,8 +491,26 @@ public class GeneralWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent arg0)
 			{
+				
 				setChanged();
 				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());	
+
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
+				msg.setText("TIP");
+				msg.setMessage("Follow the coins :)");
+				msg.open();
+			
+				setChanged();	
+				notifyObservers("display_hint"+" "+ nameMaze);	
+				mazeDisplay.setFocus();
+			
 			}
 
 			@Override
@@ -513,22 +533,6 @@ public class GeneralWindow extends BasicWindow implements View {
 		};
 		shell.addMouseWheelListener(mouseZoomlListener);
 	}
-
-
-	//	public void notifyMazeIsReady(String name) {
-	//		display.syncExec(new Runnable() {
-	//
-	//			@Override
-	//			public void run() {
-	//				//MessageBox msg = new MessageBox(shell);
-	//
-	//				setChanged();	
-	//				notifyObservers("display"+" "+ nameMaze);
-	//			}
-	//		});			
-	//	}
-
-
 
 	private Display getDisplay() {
 		// TODO Auto-generated method stub
@@ -590,5 +594,11 @@ public class GeneralWindow extends BasicWindow implements View {
 	public void viewExit() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void viewDisplayHint(Solution<Position> s) {
+		mazeDisplay.showHint(s);
+		
 	}
 }

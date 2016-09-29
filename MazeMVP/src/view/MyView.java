@@ -86,4 +86,9 @@ public class MyView extends Observable implements View, Observer {
 		out.println("Bye Bye :)");	
 		out.flush();	
 	}
+
+	@Override
+	public void viewDisplayHint(Solution<Position> s) {
+		// TODO Auto-generated method stub	
+	}
 }

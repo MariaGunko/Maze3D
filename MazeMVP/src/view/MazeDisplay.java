@@ -13,14 +13,11 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
-import algorithms.search.BFS;
 import algorithms.search.Solution;
 import algorithms.search.State;
 
@@ -35,7 +32,7 @@ public class MazeDisplay extends Canvas  {
 	Position goalPosition ;
 	Position currentPosition ;
 	int floors, rows, cols, currentFloor;
-	
+
 	Maze3d maze;
 	Position checkPos;
 	int [][] checkZ;
@@ -73,7 +70,7 @@ public class MazeDisplay extends Canvas  {
 		gameCharacter.setImg(SilvesPic);
 		tweety.setImg(goalImg);
 		coin.setImg(hint);
-		
+
 		gameCharacter.setPosition(new Position(startPosition.z, startPosition.y, startPosition.x));
 		tweety.setPosition(new Position(goalPosition.z, goalPosition.y, goalPosition.x));
 
@@ -126,21 +123,45 @@ public class MazeDisplay extends Canvas  {
 			redraw();
 		}
 	}
-	
+
 	public void showHint (Solution<Position> solve){
 		List<State<Position>> states = solve.getStates();
-		for (int i=0;i<states.size();i++){
-			Position pos = states.get(i).getValue();
-		}
+		this.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				e.gc.setForeground(new Color(null,0,0,0));
+				e.gc.setBackground(new Color(null,0,0,0));
+
+				int width=getSize().x;
+				int height=getSize().y;
+
+				int w=width/mazeData[0].length;
+				int h=height/mazeData.length;
+
+				for (int i=1;i<states.size()-1;i++){
+					Position pos = states.get(i).getValue();
+					if (pos.z==currentFloor)
+					{
+						int x=pos.y*w;
+						int y=pos.x*h;
+						e.gc.drawImage(hint, 0, 0, hint.getBounds().width, hint.getBounds().height, 
+								x, y, w, h);
+					}
+					gameCharacter.draw(w, h, e.gc);
+				}
+			}
+		});
+
 	}
-	
+
 	public void showSolution(Solution<Position> solve)
 	{
 		GoBack();
 
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() 
-	
+
 		{
 			int i=1;
 			List<State<Position>> states = solve.getStates();
@@ -305,11 +326,9 @@ public class MazeDisplay extends Canvas  {
 				gameCharacter.draw(w, h, e.gc);
 				if (tweety.getPosition().z==currentFloor)
 					tweety.draw(w, h, e.gc);
-				
+
 			}
 		});
-
-
 	}
 
 }
