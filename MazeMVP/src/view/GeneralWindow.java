@@ -3,10 +3,10 @@ package view;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.List;
+
 import java.util.Observable;
-import java.util.Timer;
-import java.util.TimerTask;
+//import java.util.Timer;
+//import java.util.TimerTask;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Text;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
-import algorithms.search.State;
-import presenter.CommandsManager.saveMazeCommand;
+
+
 import properties.Properties;
 import properties.PropertiesLoader;
 
