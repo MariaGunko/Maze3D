@@ -25,7 +25,7 @@ import algorithms.search.State;
 public class MazeDisplay extends Canvas  {
 
 	Image SilvesPic = new Image (null, "images/silvestre.gif");
-	Image goalImg = new Image (null, "images/tweety.gif");
+	Image goalImg = new Image (null, "images/tweety3.gif");
 	Image img = new Image (null, "Images/wall_Black.jpg");
 	Image hint = new Image (null, "Images/coin.gif");
 	Position startPosition ;
@@ -202,6 +202,7 @@ public class MazeDisplay extends Canvas  {
 
 	public void winner () {
 		Shell GenerateShell = new Shell(getDisplay());
+		
 		if(tweety.getPosition().equals(gameCharacter.getPosition()))
 		{
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
