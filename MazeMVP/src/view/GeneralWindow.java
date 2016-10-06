@@ -373,13 +373,20 @@ public class GeneralWindow extends BasicWindow implements View {
 					notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());	
 
 					MessageBox msg1 = new MessageBox(GenerateShell, SWT.OK);
-					msg1.setText("Lets go :)");
+					msg1.setText("Let's go :)");
 					msg1.setMessage("Are you ready for the solution? ");
 					msg1.open();
 
 					setChanged();	
 					notifyObservers("display_solution"+" "+ nameMaze);	
 					isMazeGenerated = false;
+				}
+				else
+				{
+					MessageBox error = new MessageBox(GenerateShell, SWT.OK);
+					error.setText("ERROR");
+					error.setMessage("You can't view the solution, you must generate maze first");
+					error.open();
 				}
 			}
 
@@ -513,6 +520,13 @@ public class GeneralWindow extends BasicWindow implements View {
 					setChanged();	
 					notifyObservers("display_hint"+" "+ nameMaze);	
 					mazeDisplay.setFocus();
+				}
+				else
+				{
+					MessageBox error = new MessageBox(GenerateShell, SWT.OK);
+					error.setText("ERROR");
+					error.setMessage("You can't use help, you should generate maze first");
+					error.open();
 				}
 			}
 

@@ -102,14 +102,16 @@ public class MazeDisplay extends Canvas  {
 			gameCharacter.moveDown();
 			redraw();
 		}
-		else if (newPos.z == currPos.z + 1){
-			setZ(newPos.z);
+		else if (newPos.z == currPos.z + 2){
+			setZ(currPos.z +2);
+			//setZ(newPos.z);
 			gameCharacter.moveFloorDown();
 			redraw();
 
 		}
-		else if (newPos.z == currPos.z -1){
-			setZ(newPos.z);
+		else if (newPos.z == currPos.z -2){
+			//setZ(newPos.z);
+			setZ(currPos.z -2);
 			gameCharacter.moveFloorUp();
 			redraw();
 		}
@@ -180,7 +182,13 @@ public class MazeDisplay extends Canvas  {
 							Position s2 = states.get(i).getValue();
 							System.out.println(s1+"        "+s2);
 
+							if ((s2.z==s1.z+1)||(s2.z==s1.z-1))
+							{
+								i++;
+								s2 = states.get(i).getValue();
+							}
 							moveCat(s1,s2);
+							
 							s1=s2;
 							i=i+1;
 							winner();
@@ -273,7 +281,8 @@ public class MazeDisplay extends Canvas  {
 				case SWT.PAGE_UP:
 					if (maze.getMaze()[currentPosition.z-1][currentPosition.y][currentPosition.x] == 0) 
 					{
-						setZ(currentPosition.z - 1);
+						//setZ(currentPosition.z - 1);
+						setZ(currentPosition.z - 2);
 						gameCharacter.moveFloorUp();
 						redraw();
 						winner();
@@ -286,7 +295,8 @@ public class MazeDisplay extends Canvas  {
 
 					if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
 					{
-						setZ(currentPosition.z + 1);
+						//setZ(currentPosition.z + 1);
+						setZ(currentPosition.z + 2);
 						gameCharacter.moveFloorDown();
 						redraw();
 						winner();
@@ -322,6 +332,7 @@ public class MazeDisplay extends Canvas  {
 
 							e.gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 									x, y, w, h);
+						
 					}
 
 				gameCharacter.draw(w, h, e.gc);

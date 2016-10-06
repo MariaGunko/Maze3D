@@ -19,7 +19,7 @@ public class GrowingTreeGenerator extends Maze3dGeneratorBase{
 
 
 		// while wall - set random again
-		while ((maze.getMaze()[z][x][y]==1)||((z==startPosition.z)&&(x==startPosition.x)&&(y==startPosition.y))){
+		while ((maze.getMaze()[z][x][y]==1)||(z%2==0)||((z==startPosition.z)&&(x==startPosition.x)&&(y==startPosition.y))){
 			z = rand.nextInt(maze.getFloors());
 			x = rand.nextInt(maze.getRows());
 			y =  rand.nextInt(maze.getCols());

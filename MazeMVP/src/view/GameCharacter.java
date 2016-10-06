@@ -85,10 +85,12 @@ public class GameCharacter{
 	}
 
 	public void moveFloorUp(){
-		pos.z--;
+		//pos.z--;
+		pos.z=pos.z-2;
 	}
 
 	public void moveFloorDown(){
-		pos.z++;
+		//pos.z++;
+		pos.z=pos.z+2;
 	}
 }
