@@ -1,5 +1,8 @@
 package model;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,25 +39,25 @@ import properties.Properties;
 import properties.PropertiesLoader;
 
 public class MyModel extends Observable implements Model {
-	
+
 	private ExecutorService executor;
 	private Properties properties;
 	private Map<String, Maze3d> mazes = new ConcurrentHashMap<String, Maze3d>();
 	private Map<String, Solution<Position>> solutions = new ConcurrentHashMap<String, Solution<Position>>();
-	
-	
+
+
 	public MyModel() {
 		properties = PropertiesLoader.getInstance().getProperties();
 		executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
 		loadSolutions();
-	}		
-		
+	}	
+
 	@SuppressWarnings("unchecked")
 	private void loadSolutions() {
 		File file = new File ("Solutions.dat");
 		if (!file.exists())
 			return;
-		
+
 		ObjectInputStream ois = null;
 		try {
 			ois = new ObjectInputStream (new GZIPInputStream(new FileInputStream("solutions.dat")));
@@ -67,10 +70,10 @@ public class MyModel extends Observable implements Model {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		finally{
 			try {
 				ois.close();
@@ -80,14 +83,14 @@ public class MyModel extends Observable implements Model {
 			}
 		}	
 	}
-	
+
 	private void saveSolutions (){
 		ObjectOutputStream oos = null;
 		try {
 			oos = new ObjectOutputStream (new GZIPOutputStream (new FileOutputStream("Solutions.dat")));
 			oos.writeObject(mazes);
 			oos.writeObject(solutions);
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,10 +107,42 @@ public class MyModel extends Observable implements Model {
 			}
 		}
 	}
+
+
+	public void modelSetProperties(String prop1, String prop2, String prop3){
+		properties.setSolveMazeAlgorithm(prop1);
+		properties.setGenerateMazeAlgorithm(prop2);
+		properties.setViewForm(prop3);
+
+		XMLEncoder xmlEncoder = null;
+		try {
+			xmlEncoder = new XMLEncoder (new FileOutputStream("properties.xml"));
+			xmlEncoder.writeObject(properties);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			xmlEncoder.close();
+		}
+	}
+
+
+	//	private PropertiesLoader PropertiesLoader(String prop) {
+	//		try {
+	//			XMLDecoder decoder = new XMLDecoder (new BufferedInputStream (new FileInputStream (prop)));
+	//			
+	//			properties=(Properties)decoder.readObject();
+	//			decoder.close();
+	//		} catch (FileNotFoundException e) {
+	//			// TODO Auto-generated catch block
+	//			e.printStackTrace();
+	//		}
+	//	}
+
 	/**
 	 * this method generates a maze due to the given parameters 
 	 * 
-     * @param name - the maze name
+	 * @param name - the maze name
 	 * @param floors - number of floors wanted
 	 * @param rows - number of rows wanted
 	 * @param cols - number of columns wanted
@@ -122,28 +157,26 @@ public class MyModel extends Observable implements Model {
 			public Maze3d call() throws Exception {
 				switch(formGenerate)
 				{
-				case "GrowingTreeGenerator_RandomNextMove":
+				case "GrowingTree_RandomNextMove":
 					GrowingTreeGenerator generator = new GrowingTreeGenerator(new RandomNextMove());
 					Maze3d maze = generator.generate(floors, rows, cols);
 					mazes.put(name, maze);
 					setChanged();
 					notifyObservers("maze_ready " + name);		
 					return maze;
-				case "GrowingTreeGenerator_LastNextMove":
+					
+				default:
+					//case "GrowingTree_LastNextMove":
 					GrowingTreeGenerator generator1 = new GrowingTreeGenerator(new LastNextMove());
 					Maze3d maze1 = generator1.generate(floors, rows, cols);
 					mazes.put(name, maze1);
 					setChanged();
 					notifyObservers("maze_ready " + name);		
 					return maze1;
-				//case "SimpleMaze3dGenerator":
-				default:
-					SimpleMaze3dGenerator simpleMaze = new SimpleMaze3dGenerator();
-					Maze3d maze11 = simpleMaze.generate(floors, rows, cols);
-					mazes.put(name, maze11);
-					setChanged();
-					notifyObservers("maze_ready " + name);		
-					return maze11;
+
+					//default:
+					//SimpleMaze3dGenerator simpleMaze = new SimpleMaze3dGenerator();
+					//Maze3d maze11 = simpleMaze.generate(floors, rows, cols);
 				}
 			}	
 		});		
@@ -159,7 +192,7 @@ public class MyModel extends Observable implements Model {
 	public Maze3d getMaze(String name) {
 		return mazes.get(name);
 	}
-	
+
 	/**
 	 * this method closes all running threads and notify exit
 	 */
@@ -228,7 +261,7 @@ public class MyModel extends Observable implements Model {
 				out.write(arr);
 				out.flush();
 				out.close();
-				
+
 				setChanged();
 				notifyObservers("Maze: " + mazeName + " was saved successfully in file " + fileName);	
 			}
@@ -317,7 +350,7 @@ public class MyModel extends Observable implements Model {
 		catch (IOException e) {
 			setChanged();
 			notifyObservers("File " + fileName + " can't be loaded");	
-			}	
+		}	
 	}
 
 	/**
@@ -327,7 +360,7 @@ public class MyModel extends Observable implements Model {
 	 */
 	@Override
 	public void modelSolveMaze(String mazeName, String algorithm) {
-		
+
 		executor.submit(new Callable<Solution<Position>>() {
 
 			@Override
@@ -335,7 +368,7 @@ public class MyModel extends Observable implements Model {
 				if (!mazes.containsKey(mazeName)){
 					setChanged();
 					notifyObservers("Maze name not found");	
-					}
+				}
 				else if(solutions.containsKey(mazeName))
 				{
 					setChanged();
@@ -370,7 +403,7 @@ public class MyModel extends Observable implements Model {
 				}
 				return null;
 			}
-				
+
 		});		
 	}
 

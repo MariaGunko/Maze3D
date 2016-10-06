@@ -20,6 +20,18 @@ public class PropertiesLoader {
 			e.printStackTrace();
 		}
 	}
+	
+//	private PropertiesLoader(String file) {
+//		try {
+//			XMLDecoder decoder = new XMLDecoder (new BufferedInputStream (new FileInputStream (file)));
+//			
+//			properties=(Properties)decoder.readObject();
+//			decoder.close();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static PropertiesLoader getInstance() {
 		if (instance == null){

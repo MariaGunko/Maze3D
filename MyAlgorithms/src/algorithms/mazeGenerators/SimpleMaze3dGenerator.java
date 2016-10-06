@@ -68,11 +68,11 @@ public class SimpleMaze3dGenerator extends Maze3dGeneratorBase{
 		randomMaze.setGoalPosition(goal);
 		
 		int  n;
-		for (int i=1; i<floors - 1;i++)
+		for (int i=1; i<randomMaze.getFloors() - 1;i++)
 		{
-			for (int j=1;j<	rows - 1;j++)
+			for (int j=1;j<	randomMaze.getRows() - 1;j++)
 			{
-				for (int k=1;k<cols - 1;k++)
+				for (int k=1;k<randomMaze.getCols() - 1;k++)
 				{
 					n = rand.nextInt(2);
 					randomMaze.getMaze()[i][j][k]=n;

@@ -12,6 +12,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -28,6 +29,8 @@ public class MazeDisplay extends Canvas  {
 	Image goalImg = new Image (null, "images/tweety3.gif");
 	Image img = new Image (null, "Images/wall_Black.jpg");
 	Image hint = new Image (null, "Images/coin.gif");
+	Image winner = new Image (null, "images/winner.jpg");
+	Image image=new Image(null,"images/back.jpg");
 	Position startPosition ;
 	Position goalPosition ;
 	Position currentPosition ;
@@ -57,7 +60,6 @@ public class MazeDisplay extends Canvas  {
 	//			{1,0,0,0,0,0,0,0,0,1,0,1,0,0,1},
 	//			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}		
 	//	};
-
 
 	public void setMazeData(Maze3d maze) {
 		this.maze = maze;
@@ -174,7 +176,6 @@ public class MazeDisplay extends Canvas  {
 			public void run() {	
 				getDisplay().syncExec(new Runnable() {					
 
-
 					@Override
 					public void run() {
 						if(i<=goal){
@@ -188,7 +189,7 @@ public class MazeDisplay extends Canvas  {
 								s2 = states.get(i).getValue();
 							}
 							moveCat(s1,s2);
-							
+
 							s1=s2;
 							i=i+1;
 							winner();
@@ -198,7 +199,7 @@ public class MazeDisplay extends Canvas  {
 				});
 			}
 		};
-		timer.scheduleAtFixedRate(task, 0, 500);
+		timer.scheduleAtFixedRate(task, 0, 250);
 	}
 
 
@@ -209,10 +210,19 @@ public class MazeDisplay extends Canvas  {
 	}
 
 	public void winner () {
-		Shell GenerateShell = new Shell(getDisplay());
-		
+
 		if(tweety.getPosition().equals(gameCharacter.getPosition()))
 		{
+			Shell GenerateShell = new Shell(getDisplay());
+			GenerateShell.setLayout(new  GridLayout(2, false));
+
+//			GenerateShell.setText("Winner");
+//			GenerateShell.setSize(800,500);
+//			GenerateShell.setImage(winner);
+//			GenerateShell.setBackgroundImage(winner);
+//			GenerateShell.open();
+			
+			this.setBackgroundImage(winner);
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 			msg.setText("Winner");
 			msg.setMessage("Congratulations you got tweety :)");
@@ -222,6 +232,7 @@ public class MazeDisplay extends Canvas  {
 
 	public MazeDisplay(Shell parent, int style) {
 		super(parent, style);
+
 		setBackground(new Color (null, 255,255,0));
 		gameCharacter = new GameCharacter();
 		tweety = new GameCharacter();
@@ -281,7 +292,6 @@ public class MazeDisplay extends Canvas  {
 				case SWT.PAGE_UP:
 					if (maze.getMaze()[currentPosition.z-1][currentPosition.y][currentPosition.x] == 0) 
 					{
-						//setZ(currentPosition.z - 1);
 						setZ(currentPosition.z - 2);
 						gameCharacter.moveFloorUp();
 						redraw();
@@ -295,7 +305,6 @@ public class MazeDisplay extends Canvas  {
 
 					if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
 					{
-						//setZ(currentPosition.z + 1);
 						setZ(currentPosition.z + 2);
 						gameCharacter.moveFloorDown();
 						redraw();
@@ -312,6 +321,7 @@ public class MazeDisplay extends Canvas  {
 
 			@Override
 			public void paintControl(PaintEvent e) {
+
 				if (mazeData == null)
 					return;
 
@@ -332,7 +342,6 @@ public class MazeDisplay extends Canvas  {
 
 							e.gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 									x, y, w, h);
-						
 					}
 
 				gameCharacter.draw(w, h, e.gc);

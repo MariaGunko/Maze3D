@@ -47,6 +47,7 @@ public class CommandsManager {
 		commands.put("exit", new ExitCommand());
 		commands.put("maze_ready", new MazeReadyCommand());
 		commands.put("display_hint", new DisplayHintCommand());
+		commands.put("set_prop", new setPropCommand());
 
 		return commands;
 	}
@@ -205,6 +206,19 @@ public class CommandsManager {
 				Solution <Position> s = model.modelGetSolution(mazeName);
 				view.viewDisplayHint(s);
 			}	
+		}
+		
+		/**
+		 * This class loads the properties from file
+		 */
+		public class setPropCommand implements Command{
+			@Override
+			public void execute(String[] args){
+				String algSol = args[0];
+				String algGen = args[1];
+				String view = args[2];
+				model.modelSetProperties(algSol, algGen, view);
+			}
 		}
 
 		/**

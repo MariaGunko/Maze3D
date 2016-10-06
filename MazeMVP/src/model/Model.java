@@ -16,4 +16,5 @@ public interface Model {
 	void modelSolveMaze(String mazeName, String algorithm); // TO DO
 	Solution<Position> modelGetSolution(String mazeName);
 	public Properties getProperties();
+	void modelSetProperties(String arg1, String arg2, String arg3);
 }
