@@ -186,6 +186,7 @@ public class GeneralWindow extends BasicWindow implements View {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				loadFile();			
+				isMazeGenerated=true;
 			}
 
 			@Override
