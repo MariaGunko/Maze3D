@@ -222,7 +222,7 @@ public class MazeDisplay extends Canvas  {
 //			GenerateShell.setBackgroundImage(winner);
 //			GenerateShell.open();
 			
-			this.setBackgroundImage(winner);
+//			this.setBackgroundImage(winner);
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 			msg.setText("Winner");
 			msg.setMessage("Congratulations you got tweety :)");

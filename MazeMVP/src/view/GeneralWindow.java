@@ -95,8 +95,8 @@ public class GeneralWindow extends BasicWindow implements View {
 		MenuItem fileItem = new MenuItem(menuButton, SWT.CASCADE);
 		fileItem.setText("Menu");
 
-		MenuItem fileItem1 = new MenuItem(menuButton, SWT.CASCADE);
-		fileItem1.setText("about");
+//		MenuItem fileItem1 = new MenuItem(menuButton, SWT.CASCADE);
+//		fileItem1.setText("about");
 
 		// Drop down functions for file button
 		Menu subMenu = new Menu(shell, SWT.DROP_DOWN);
