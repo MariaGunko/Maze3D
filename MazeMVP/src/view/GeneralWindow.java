@@ -161,9 +161,7 @@ public class GeneralWindow extends BasicWindow implements View {
 						msg.setMessage("The properties has been saved successfully, \nIf you choose CLI please restart the program.");
 						msg.open();
 						
-						GenerateShell.close();
-
-						
+						GenerateShell.close();	
 					}
 
 					@Override
@@ -203,11 +201,22 @@ public class GeneralWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-
+				if (isMazeGenerated)
+				{
 				setChanged();
 				notifyObservers("save_maze "+nameMaze+" "+nameMaze);
-
-
+				MessageBox saved = new MessageBox(GenerateShell, SWT.OK);
+				saved.setText("SUCCESS");
+				saved.setMessage("The maze " + nameMaze +  " was saved");
+				saved.open();
+				}
+				else
+				{
+					MessageBox error = new MessageBox(GenerateShell, SWT.OK);
+					error.setText("ERROR");
+					error.setMessage("Operation denied, you must generate maze first");
+					error.open();
+				}
 			}
 
 			@Override
@@ -235,7 +244,6 @@ public class GeneralWindow extends BasicWindow implements View {
 
 		shell.setLayout(new org.eclipse.swt.layout.GridLayout(2, false));
 
-		//Color blue = display.getSystemColor(SWT.COLOR_CYAN);
 		Color blue = display.getSystemColor(SWT.COLOR_RED);
 		Color yellow = display.getSystemColor(SWT.COLOR_YELLOW);
 		shell.setBackground(yellow);
@@ -328,11 +336,6 @@ public class GeneralWindow extends BasicWindow implements View {
 							msg1.open();
 						}		
 
-						//notifyMazeIsReady(nameMaze);
-
-
-						//	setChanged();
-						//notifyObservers("display"+" "+ nameMaze);
 					}
 
 					@Override
@@ -340,17 +343,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 					}
 				});	
-
-				/*while(!GenerateShell.isDisposed()){
-							if(!GenerateDisplay.readAndDispatch()){
-								GenerateDisplay.sleep();
-							}
-						}
-						GenerateDisplay.dispose();*/
 			}
-
-			//thread.start();
-			//}
 
 
 			@Override
@@ -371,49 +364,6 @@ public class GeneralWindow extends BasicWindow implements View {
 		//		t.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true, 1,7));
 		//		final Image image=new Image(display,"images/background.jpg");
 		//		t.setBackgroundImage(image);
-
-		//		Button displayButton = new Button(shell, SWT.PUSH);
-		//		displayButton.setText("Display Maze");
-		//		displayButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
-		//		displayButton.setBackground(blue);
-		//
-		//
-		//		displayButton.addSelectionListener(new SelectionListener() {
-		//
-		//			@Override
-		//			public void widgetSelected(SelectionEvent e) {
-		//
-		////				setChanged();
-		////				notifyObservers("display"+" "+ nameMaze);	
-		////				//notifyObservers("display"+" "+ "amiran");	
-		////				mazeDisplay.setFocus();
-		//			}
-		//
-		//			@Override
-		//			public void widgetDefaultSelected(SelectionEvent arg0) {
-		//			}
-		//		});
-
-
-		//		Button solveButton = new Button(shell, SWT.PUSH);
-		//		solveButton.setText("Solve Maze");
-		//		solveButton.setLayoutData(new GridData(SWT.FILL,SWT.NONE,false,false, 1, 1));
-		//		solveButton.setBackground(blue);
-		//
-		//
-		//		solveButton.addSelectionListener(new SelectionListener() {
-		//
-		//			@Override
-		//			public void widgetSelected(SelectionEvent e) {	
-		//				setChanged();
-		//				notifyObservers("solve"+" "+ nameMaze +" "+p.getSolveMazeAlgorithm());						
-		//			}
-		//
-		//			@Override
-		//			public void widgetDefaultSelected(SelectionEvent arg0) {
-		//			}
-		//		});
-
 
 		Button displayMazeSolutionButton = new Button(shell, SWT.PUSH);
 		//displayMazeSolutionButton.setText("Display Maze solution");
