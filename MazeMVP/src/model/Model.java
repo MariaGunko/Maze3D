@@ -5,6 +5,12 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import properties.Properties;
 
+/**
+ * MODEL interface 
+ * responsible for all the calculations and algorithms
+ * @author Maria&Amiran
+ *
+ */
 public interface Model {
 	void generateMaze(String name, int floors, int rows, int cols);
 	Maze3d getMaze(String name);

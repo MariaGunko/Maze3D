@@ -5,17 +5,17 @@ import org.eclipse.swt.graphics.Image;
 
 import algorithms.mazeGenerators.Position;
 
+/**
+ * Game Character class for Tweety and Sylvester
+ * @author Maria&Amiran
+ *
+ */
 public class GameCharacter{
 	private Image img;
 	private Position pos;
-	
-	//private Image goalImg;
-	//private Position posT;
 
 
 	public GameCharacter() {
-		//img = new Image (null, "images/silvestre.gif");
-		//goalImg = new Image (null, "images/tweety.gif");
 	}
 
 	public Image getImg() {
@@ -29,30 +29,23 @@ public class GameCharacter{
 	public void setPosition(Position pos) {
 		this.pos = pos;
 	}
-	
+
 	public void setPosition2(int a, int b, int c) {
 		this.pos.z = a;
 		this.pos.x = b;
 		this.pos.y = c;
 	}
-	
+
 	public Position getPosition(){
 		return pos;
 	}
-	
-//	public void setTweetyPosition(Position pos) {
-//		this.posT = pos;
-//	}
-//	public Position getTweetyPosition(){
-//		return posT;
-//	}
-	
+
 	public boolean win() 
 	{
 		if(!getPosition().equals(pos))
 		{
 			return false;
-			
+
 		}
 		return true;
 	}
@@ -61,11 +54,6 @@ public class GameCharacter{
 		gc.drawImage(img, 0, 0, img.getBounds().width, img.getBounds().height, 
 				cellWidth * pos.x, cellHeight * pos.y, cellWidth, cellHeight);
 	}
-	
-//	public void drawTweety(int cellWidth, int cellHeight, GC gc) {
-//		gc.drawImage(goalImg, 0, 0, goalImg.getBounds().width, goalImg.getBounds().height, 
-//				cellWidth * posT.x, cellHeight * posT.y, cellWidth, cellHeight);
-//	}
 
 	public void moveUp(){
 		pos.y--;
@@ -85,12 +73,10 @@ public class GameCharacter{
 	}
 
 	public void moveFloorUp(){
-		//pos.z--;
 		pos.z=pos.z-2;
 	}
 
 	public void moveFloorDown(){
-		//pos.z++;
 		pos.z=pos.z+2;
 	}
 }

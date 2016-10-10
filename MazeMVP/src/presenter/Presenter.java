@@ -7,12 +7,22 @@ import java.util.Observer;
 import model.Model;
 import view.View;
 
+/** 
+ * The PRESENTER class that connects between the VIEW ant the MODEL
+ * @author Maria&Amiran
+ *
+ */
 public class Presenter implements Observer {
 	private Model model;
 	private View view;
 	private CommandsManager commandsManager;
 	private HashMap<String, Command> commands;
 
+	/**
+	 * CTOR
+	 * @param model
+	 * @param view
+	 */
 	public Presenter(Model model, View view) {
 		this.model = model;
 		this.view = view;

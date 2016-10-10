@@ -22,7 +22,11 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 
-
+/**
+ * This class is responsible for the maze display
+ * @author Maria&Amiran
+ *
+ */
 public class MazeDisplay extends Canvas  {
 
 	Image SilvesPic = new Image (null, "images/silvestre.gif");
@@ -31,9 +35,11 @@ public class MazeDisplay extends Canvas  {
 	Image hint = new Image (null, "Images/coin.gif");
 	Image winner = new Image (null, "images/winner.jpg");
 	Image image=new Image(null,"images/back.jpg");
+
 	Position startPosition ;
 	Position goalPosition ;
 	Position currentPosition ;
+
 	int floors, rows, cols, currentFloor;
 
 	Maze3d maze;
@@ -61,6 +67,10 @@ public class MazeDisplay extends Canvas  {
 	//			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}		
 	//	};
 
+	/**
+	 * This function gets a maze and updates all its details
+	 * @param maze
+	 */
 	public void setMazeData(Maze3d maze) {
 		this.maze = maze;
 		System.out.println(maze);
@@ -82,6 +92,11 @@ public class MazeDisplay extends Canvas  {
 		this.redraw();
 	}
 
+	/**
+	 * This function gets two positions and moves the character between both
+	 * @param currPos
+	 * @param newPos
+	 */
 	private void moveCat (Position currPos, Position newPos) {
 		if (newPos.y == currPos.y - 1)
 		{
@@ -119,6 +134,10 @@ public class MazeDisplay extends Canvas  {
 		}
 	}
 
+	/**
+	 * This function returns the character to its starting position
+	 * for displaying the automatic solution
+	 */
 	public void GoBack ()
 	{
 		if (!gameCharacter.getPosition().equals(maze.getStartPosition()))
@@ -128,6 +147,11 @@ public class MazeDisplay extends Canvas  {
 		}
 	}
 
+	/**
+	 * This function gets a solution of positions and draws coins 
+	 * through the path
+	 * @param solve
+	 */
 	public void showHint (Solution<Position> solve){
 		List<State<Position>> states = solve.getStates();
 		this.addPaintListener(new PaintListener() {
@@ -159,6 +183,12 @@ public class MazeDisplay extends Canvas  {
 
 	}
 
+
+	/**
+	 * This function gets a solution of positions and makes sylvester
+	 * move in this path
+	 * @param solve
+	 */
 	public void showSolution(Solution<Position> solve)
 	{
 		GoBack();
@@ -202,13 +232,21 @@ public class MazeDisplay extends Canvas  {
 		timer.scheduleAtFixedRate(task, 0, 250);
 	}
 
-
+	/**
+	 * This function gets a floor and makes a
+	 * crossed section by this number for displaying the 2d maze
+	 * @param z
+	 */
 	public void setZ (int z)
 	{
 		currentFloor=z;
 		this.mazeData = this.maze.getCrossSectionByZ(z);
 	}
 
+	/**
+	 * This function checks if the character arrived to the goal position 
+	 * and displays a winning message
+	 */
 	public void winner () {
 
 		if(tweety.getPosition().equals(gameCharacter.getPosition()))
@@ -216,13 +254,13 @@ public class MazeDisplay extends Canvas  {
 			Shell GenerateShell = new Shell(getDisplay());
 			GenerateShell.setLayout(new  GridLayout(2, false));
 
-//			GenerateShell.setText("Winner");
-//			GenerateShell.setSize(800,500);
-//			GenerateShell.setImage(winner);
-//			GenerateShell.setBackgroundImage(winner);
-//			GenerateShell.open();
-			
-//			this.setBackgroundImage(winner);
+			//			GenerateShell.setText("Winner");
+			//			GenerateShell.setSize(800,500);
+			//			GenerateShell.setImage(winner);
+			//			GenerateShell.setBackgroundImage(winner);
+			//			GenerateShell.open();
+
+			//			this.setBackgroundImage(winner);
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 			msg.setText("Winner");
 			msg.setMessage("Congratulations you got tweety :)");
@@ -300,8 +338,7 @@ public class MazeDisplay extends Canvas  {
 					break;
 
 
-				case SWT.PAGE_DOWN:		
-
+				case SWT.PAGE_DOWN:	
 
 					if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
 					{
@@ -334,6 +371,7 @@ public class MazeDisplay extends Canvas  {
 				int w=width/mazeData[0].length;
 				int h=height/mazeData.length;
 
+				// draw all the walls
 				for(int i=0;i<mazeData.length;i++)
 					for(int j=0;j<mazeData[i].length;j++){
 						int x=j*w;
@@ -351,5 +389,4 @@ public class MazeDisplay extends Canvas  {
 			}
 		});
 	}
-
 }

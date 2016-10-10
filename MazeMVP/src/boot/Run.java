@@ -11,6 +11,12 @@ import properties.PropertiesLoader;
 import view.GeneralWindow;
 import view.MyView;
 
+/**
+ * The main of the program 
+ * builds the MVP depending on the view type
+ * @author Maria&Amiran
+ *
+ */
 public class Run {
 
 	public static void main(String[] args) {	

@@ -9,23 +9,23 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
+/**
+ * The class of the CLI of the game implements view
+ * @author Maria&Amiran
+ *
+ */
 public class MyView extends Observable implements View, Observer {
 	
 	private BufferedReader in;
 	private PrintWriter out;
 	private CLI cli;
-	//private GeneralWindow win;
 
 	public MyView(BufferedReader in, PrintWriter out) {
 		this.in = in;
 		this.out = out;
 				
 		cli = new CLI(in, out);
-		cli.addObserver(this);
-		
-//		win = new GeneralWindow (1700,950);
-//		win.addObserver(this);
-		
+		cli.addObserver(this);	
 	}	
 
 	@Override

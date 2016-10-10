@@ -38,6 +38,11 @@ import io.MyDecompressorInputStream;
 import properties.Properties;
 import properties.PropertiesLoader;
 
+/**
+ * The implementation of the MODEL interface
+ * @author Maria&Amiran
+ *
+ */
 public class MyModel extends Observable implements Model {
 
 	private ExecutorService executor;
@@ -46,12 +51,18 @@ public class MyModel extends Observable implements Model {
 	private Map<String, Solution<Position>> solutions = new ConcurrentHashMap<String, Solution<Position>>();
 
 
+	/** 
+	 * CTOR
+	 */
 	public MyModel() {
 		properties = PropertiesLoader.getInstance().getProperties();
 		executor = Executors.newFixedThreadPool(properties.getNumOfThreads());
 		loadSolutions();
 	}	
 
+	/**
+	 * The method loads the solution file into a HashMap - CASHING
+	 */
 	@SuppressWarnings("unchecked")
 	private void loadSolutions() {
 		File file = new File ("Solutions.dat");
@@ -84,6 +95,10 @@ public class MyModel extends Observable implements Model {
 		}	
 	}
 
+	/**
+	 * The method saves the maze and its solution into a solution file - CASHING
+	 * for not calculating the same solution again
+	 */
 	private void saveSolutions (){
 		ObjectOutputStream oos = null;
 		try {
@@ -108,7 +123,12 @@ public class MyModel extends Observable implements Model {
 		}
 	}
 
-
+	/**
+	 * The method sets the properties and saves it to XML file
+	 * @param prop1
+	 * @param prop2
+	 * @param prop3
+	 */
 	public void modelSetProperties(String prop1, String prop2, String prop3){
 		properties.setSolveMazeAlgorithm(prop1);
 		properties.setGenerateMazeAlgorithm(prop2);
@@ -125,19 +145,6 @@ public class MyModel extends Observable implements Model {
 			xmlEncoder.close();
 		}
 	}
-
-
-	//	private PropertiesLoader PropertiesLoader(String prop) {
-	//		try {
-	//			XMLDecoder decoder = new XMLDecoder (new BufferedInputStream (new FileInputStream (prop)));
-	//			
-	//			properties=(Properties)decoder.readObject();
-	//			decoder.close();
-	//		} catch (FileNotFoundException e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//	}
 
 	/**
 	 * this method generates a maze due to the given parameters 
@@ -164,7 +171,7 @@ public class MyModel extends Observable implements Model {
 					setChanged();
 					notifyObservers("maze_ready " + name);		
 					return maze;
-					
+
 				default:
 					//case "GrowingTree_LastNextMove":
 					GrowingTreeGenerator generator1 = new GrowingTreeGenerator(new LastNextMove());

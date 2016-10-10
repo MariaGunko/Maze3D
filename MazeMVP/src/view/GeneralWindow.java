@@ -37,7 +37,11 @@ import algorithms.search.Solution;
 import properties.Properties;
 import properties.PropertiesLoader;
 
-
+/**
+ * The class of the main window of the game implements view
+ * @author Maria&Amiran
+ *
+ */
 public class GeneralWindow extends BasicWindow implements View {
 
 	private Image exit, musicPic, hint, start, solve;
@@ -55,6 +59,10 @@ public class GeneralWindow extends BasicWindow implements View {
 		super(width, height);
 	}
 
+	/**
+	 * This function opens a file dialog and notifies the observer to load and display
+	 * the chosen maze
+	 */
 	public void loadFile() {
 		FileDialog fd=new FileDialog(shell,SWT.OPEN);
 		fd.setText("open");
@@ -80,23 +88,25 @@ public class GeneralWindow extends BasicWindow implements View {
 
 		shell.setText("Welcome to Tweety & Silvestre MAZE GAME");
 		p = PropertiesLoader.getInstance().getProperties();
+
+		// set all the pictures used in the project
 		exit = new Image (null, "images/EXIT_NEW.png");
 		musicPic = new Image (null, "images/music.jpg");
 		hint = new Image (null, "images/question.jpg");
 		solve = new Image (null, "images/solution2.jpg");
 		start = new Image (null, "images/start2.jpg");
+
 		Shell GenerateShell = new Shell(getDisplay());
 
 		Menu menuButton = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menuButton);
 
-
 		// File button in the bar
 		MenuItem fileItem = new MenuItem(menuButton, SWT.CASCADE);
 		fileItem.setText("Menu");
 
-//		MenuItem fileItem1 = new MenuItem(menuButton, SWT.CASCADE);
-//		fileItem1.setText("about");
+		//		MenuItem fileItem1 = new MenuItem(menuButton, SWT.CASCADE);
+		//		fileItem1.setText("about");
 
 		// Drop down functions for file button
 		Menu subMenu = new Menu(shell, SWT.DROP_DOWN);
@@ -109,14 +119,14 @@ public class GeneralWindow extends BasicWindow implements View {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				
+
 				Shell GenerateShell = new Shell(display);
 
 				GenerateShell.setLayout(new  GridLayout(2, false));
 
 				Label generateAlg = new Label(GenerateShell, SWT.NONE);
 				generateAlg.setText("Maze Generation Algorithm: ");
-				
+
 				String [] algo2={"GrowingTree_RandomNextMove","GrowingTree_LastNextMove"};
 				Combo algorithems2=new Combo(GenerateShell, SWT.DROP_DOWN|SWT.READ_ONLY);
 				algorithems2.setItems(algo2);
@@ -124,7 +134,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 				Label SolveAlg = new Label(GenerateShell, SWT.NONE);
 				SolveAlg.setText("Maze Solution Algorithm: ");
-				
+
 				String [] algo={"BFS","DFS"};
 				Combo algorithems=new Combo(GenerateShell, SWT.DROP_DOWN|SWT.READ_ONLY);
 				algorithems.setItems(algo);
@@ -132,7 +142,7 @@ public class GeneralWindow extends BasicWindow implements View {
 
 				Label viewType = new Label(GenerateShell, SWT.NONE);
 				viewType.setText("View Type: ");
-				
+
 				String [] type={"GUI","CLI"};
 				Combo typesOfView=new Combo(GenerateShell, SWT.DROP_DOWN|SWT.READ_ONLY);
 				typesOfView.setItems(type);
@@ -146,21 +156,21 @@ public class GeneralWindow extends BasicWindow implements View {
 				GenerateShell.setText("Properties");
 				GenerateShell.setSize(560,220);
 				GenerateShell.open();
-				
+
 				setProperties.addSelectionListener(new SelectionListener() {
 
 					@Override
 					public void widgetSelected(SelectionEvent e) {	
 						String newProp = algorithems.getText() + " " + algorithems2.getText() + " " + typesOfView.getText();
-						
+
 						setChanged();
 						notifyObservers("set_prop"+ " "+ newProp );	
-						
+
 						MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 						msg.setText("Properties Saved");
 						msg.setMessage("The properties has been saved successfully, \nIf you choose CLI please restart the program.");
 						msg.open();
-						
+
 						GenerateShell.close();	
 					}
 
@@ -168,7 +178,7 @@ public class GeneralWindow extends BasicWindow implements View {
 					public void widgetDefaultSelected(SelectionEvent arg0) {
 					}
 				});
-			
+
 			}
 
 			@Override
@@ -203,12 +213,12 @@ public class GeneralWindow extends BasicWindow implements View {
 			public void widgetSelected(SelectionEvent arg0) {
 				if (isMazeGenerated)
 				{
-				setChanged();
-				notifyObservers("save_maze "+nameMaze+" "+nameMaze);
-				MessageBox saved = new MessageBox(GenerateShell, SWT.OK);
-				saved.setText("SUCCESS");
-				saved.setMessage("The maze " + nameMaze +  " was saved");
-				saved.open();
+					setChanged();
+					notifyObservers("save_maze "+nameMaze+" "+nameMaze);
+					MessageBox saved = new MessageBox(GenerateShell, SWT.OK);
+					saved.setText("SUCCESS");
+					saved.setMessage("The maze " + nameMaze +  " was saved");
+					saved.open();
 				}
 				else
 				{
@@ -564,6 +574,10 @@ public class GeneralWindow extends BasicWindow implements View {
 		return null;
 	}
 
+	/**
+	 * This function gets a music file and plays it
+	 * @param file
+	 */
 	private void playMusic(File file) {
 
 		try {
