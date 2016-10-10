@@ -40,6 +40,7 @@ public class MazeDisplay extends Canvas  {
 	Position goalPosition ;
 	Position currentPosition ;
 
+	boolean gameStarted;
 	int floors, rows, cols, currentFloor;
 
 	Maze3d maze;
@@ -52,6 +53,9 @@ public class MazeDisplay extends Canvas  {
 	GameCharacter gameCharacter;
 	GameCharacter tweety;
 	GameCharacter coin;
+
+	PaintListener PL;
+	PaintListener PLwalls;
 
 	private int[][] mazeData;
 	//	private int[][] mazeData = {
@@ -89,6 +93,8 @@ public class MazeDisplay extends Canvas  {
 		floors=maze.getFloors();
 		rows=maze.getRows();
 		cols=maze.getCols();
+
+		gameStarted = true;
 		this.redraw();
 	}
 
@@ -154,7 +160,7 @@ public class MazeDisplay extends Canvas  {
 	 */
 	public void showHint (Solution<Position> solve){
 		List<State<Position>> states = solve.getStates();
-		this.addPaintListener(new PaintListener() {
+		this.addPaintListener(PL = new PaintListener() {
 
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -251,6 +257,8 @@ public class MazeDisplay extends Canvas  {
 
 		if(tweety.getPosition().equals(gameCharacter.getPosition()))
 		{
+
+
 			Shell GenerateShell = new Shell(getDisplay());
 			GenerateShell.setLayout(new  GridLayout(2, false));
 
@@ -265,6 +273,10 @@ public class MazeDisplay extends Canvas  {
 			msg.setText("Winner");
 			msg.setMessage("Congratulations you got tweety :)");
 			msg.open();
+			this.removePaintListener(PL);
+			//this.removePaintListener(PLwalls);
+
+			gameStarted = false;
 		}
 	}
 
@@ -285,76 +297,77 @@ public class MazeDisplay extends Canvas  {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				currentPosition = gameCharacter.getPosition();
-				switch (e.keyCode) {
-				case SWT.ARROW_RIGHT:					
-					checkPos=currentPosition;
-					if(mazeData[checkPos.y][checkPos.x+1]==0)
-					{
-						gameCharacter.moveRight();	
-						redraw();
-						winner();
+				if (gameStarted){
+					switch (e.keyCode) {
+					case SWT.ARROW_RIGHT:					
+						checkPos=currentPosition;
+						if(mazeData[checkPos.y][checkPos.x+1]==0)
+						{
+							gameCharacter.moveRight();	
+							redraw();
+							winner();
+						}
+						break;
+
+					case SWT.ARROW_LEFT:
+						checkPos=currentPosition;
+						if(mazeData[checkPos.y][checkPos.x-1]==0)
+						{
+							gameCharacter.moveLeft();
+							redraw();
+							winner();
+						}
+						break;
+
+					case SWT.ARROW_UP:	
+						checkPos=currentPosition;
+						if(mazeData[checkPos.y-1][checkPos.x]==0)
+						{
+							gameCharacter.moveUp();
+							redraw();
+							winner();
+						}
+						break;
+
+					case SWT.ARROW_DOWN:	
+
+						checkPos=currentPosition;
+						if(mazeData[checkPos.y+1][checkPos.x]==0)
+						{
+							gameCharacter.moveDown();	
+							redraw();
+							winner();
+						}
+						break;
+
+					case SWT.PAGE_UP:
+						if (maze.getMaze()[currentPosition.z-1][currentPosition.y][currentPosition.x] == 0) 
+						{
+							setZ(currentPosition.z - 2);
+							gameCharacter.moveFloorUp();
+							redraw();
+							winner();
+						}
+						break;
+
+
+					case SWT.PAGE_DOWN:	
+
+						if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
+						{
+							setZ(currentPosition.z + 2);
+							gameCharacter.moveFloorDown();
+							redraw();
+							winner();
+						}
+						break;
+
 					}
-					break;
-
-				case SWT.ARROW_LEFT:
-					checkPos=currentPosition;
-					if(mazeData[checkPos.y][checkPos.x-1]==0)
-					{
-						gameCharacter.moveLeft();
-						redraw();
-						winner();
-					}
-					break;
-
-				case SWT.ARROW_UP:	
-					checkPos=currentPosition;
-					if(mazeData[checkPos.y-1][checkPos.x]==0)
-					{
-						gameCharacter.moveUp();
-						redraw();
-						winner();
-					}
-					break;
-
-				case SWT.ARROW_DOWN:	
-
-					checkPos=currentPosition;
-					if(mazeData[checkPos.y+1][checkPos.x]==0)
-					{
-						gameCharacter.moveDown();	
-						redraw();
-						winner();
-					}
-					break;
-
-				case SWT.PAGE_UP:
-					if (maze.getMaze()[currentPosition.z-1][currentPosition.y][currentPosition.x] == 0) 
-					{
-						setZ(currentPosition.z - 2);
-						gameCharacter.moveFloorUp();
-						redraw();
-						winner();
-					}
-					break;
-
-
-				case SWT.PAGE_DOWN:	
-
-					if (maze.getMaze()[currentPosition.z+1][currentPosition.y][currentPosition.x] == 0) 
-					{
-						setZ(currentPosition.z + 2);
-						gameCharacter.moveFloorDown();
-						redraw();
-						winner();
-					}
-					break;
-
 				}
+
 			}
 		});
-
-
-		this.addPaintListener(new PaintListener() {
+		PLwalls = new PaintListener() {
 
 			@Override
 			public void paintControl(PaintEvent e) {
@@ -387,6 +400,8 @@ public class MazeDisplay extends Canvas  {
 					tweety.draw(w, h, e.gc);
 
 			}
-		});
+		};
+
+		this.addPaintListener(PLwalls);
 	}
 }
