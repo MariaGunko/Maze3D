@@ -3,7 +3,7 @@ import java.io.Serializable;
 
 /**
  * The properties class sets the basic properties of the game
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class Properties implements Serializable{

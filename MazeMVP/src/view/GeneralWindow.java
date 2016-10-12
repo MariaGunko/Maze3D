@@ -39,14 +39,14 @@ import properties.PropertiesLoader;
 
 /**
  * The class of the main window of the game implements view
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class GeneralWindow extends BasicWindow implements View {
 
 	private Image exit, musicPic, hint, start, solve;
 	private Properties p;
-	private Maze3d maze;
+	//private Maze3d maze;
 	private MazeDisplay mazeDisplay;
 	MouseWheelListener mouseZoomlListener;
 	String nameMaze = null;

@@ -7,7 +7,7 @@ import java.util.Observable;
 
 /**
  * The CLI class - gets a command from the user and sends a notification to the presenter
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class CLI extends Observable {

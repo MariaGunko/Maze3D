@@ -11,7 +11,7 @@ import view.View;
 /** 
  * Manager of commands implemented in controller architecture
  * includes access for both MODEL and VIEW
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class CommandsManager {

@@ -1,8 +1,6 @@
 package model;
 
-import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,7 +25,6 @@ import algorithms.mazeGenerators.LastNextMove;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.RandomNextMove;
-import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.BFS;
 import algorithms.search.DFS;
 import algorithms.search.Searchable;
@@ -40,7 +37,7 @@ import properties.PropertiesLoader;
 
 /**
  * The implementation of the MODEL interface
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class MyModel extends Observable implements Model {
@@ -153,7 +150,6 @@ public class MyModel extends Observable implements Model {
 	 * @param floors - number of floors wanted
 	 * @param rows - number of rows wanted
 	 * @param cols - number of columns wanted
-	 * @return maze
 	 */	
 	@Override
 	public void generateMaze(String name, int floors, int rows, int cols) {
@@ -416,7 +412,7 @@ public class MyModel extends Observable implements Model {
 
 	/**
 	 * this method gets a maze name and returns the solution for it
-	 * @param name
+	 * @param mazeName
 	 * @return mySolution
 	 */
 	@Override

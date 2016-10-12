@@ -54,6 +54,7 @@ public class State<T> implements Comparable<State<T>>, Serializable{
 
 	@Override	
 	public boolean equals(Object obj) {
+		@SuppressWarnings("unchecked")
 		State<T> s = (State<T>)obj;
 		return s.getValue().equals(this.value);
 	}

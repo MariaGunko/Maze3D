@@ -24,7 +24,7 @@ import algorithms.search.State;
 
 /**
  * This class is responsible for the maze display
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class MazeDisplay extends Canvas  {

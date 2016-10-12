@@ -7,7 +7,7 @@ import algorithms.search.Solution;
 /**
  * Interface of VIEW
  * responsible for all the visual side
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public interface View {

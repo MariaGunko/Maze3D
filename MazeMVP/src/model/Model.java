@@ -8,7 +8,7 @@ import properties.Properties;
 /**
  * MODEL interface 
  * responsible for all the calculations and algorithms
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public interface Model {

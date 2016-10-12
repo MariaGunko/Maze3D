@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 
 /**
  * This class loads the properties of the game
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class PropertiesLoader {

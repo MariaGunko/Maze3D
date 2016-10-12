@@ -11,7 +11,7 @@ import algorithms.search.Solution;
 
 /**
  * The class of the CLI of the game implements view
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class MyView extends Observable implements View, Observer {

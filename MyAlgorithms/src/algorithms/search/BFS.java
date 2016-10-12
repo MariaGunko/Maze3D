@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Implementation of Searcher represents the BFS algorithm
  * 
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  * @param <T>
  */
@@ -26,7 +26,7 @@ public class BFS<T> extends CommonSearcher<T>{
 	 * This method build the solution with BFS algorithm 
 	 * using hashset and arrayList 
 	 * 
-	 * @return solution <T> 
+	 * @return
 	 */
 
 	@Override

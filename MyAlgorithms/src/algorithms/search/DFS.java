@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Implementation of Searcher represents the DFS algorithm
  * 
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  * @param <T>
  */

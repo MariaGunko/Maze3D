@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * The basic display window
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public abstract class BasicWindow extends Observable implements Observer{

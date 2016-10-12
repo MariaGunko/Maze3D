@@ -7,7 +7,7 @@ import algorithms.mazeGenerators.Position;
 
 /**
  * Game Character class for Tweety and Sylvester
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class GameCharacter{

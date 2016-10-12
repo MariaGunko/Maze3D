@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Class represents the final solution of the game
  * 
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  * @param <T>
  */

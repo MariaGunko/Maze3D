@@ -9,7 +9,7 @@ import view.View;
 
 /** 
  * The PRESENTER class that connects between the VIEW ant the MODEL
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class Presenter implements Observer {

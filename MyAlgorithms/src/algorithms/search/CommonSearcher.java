@@ -5,7 +5,7 @@ import java.util.List;
 
 
 /**
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  * @param <T>
  */

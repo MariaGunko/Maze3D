@@ -3,7 +3,7 @@ package algorithms.search;
 /**
  * Algorithm Interface 
  * 
- * @author Maria&Amiran
+ * @author MariaAmiran
  * 
  *
  * @param <T>

@@ -14,7 +14,7 @@ import view.MyView;
 /**
  * The main of the program 
  * builds the MVP depending on the view type
- * @author Maria&Amiran
+ * @author MariaAmiran
  *
  */
 public class Run {
