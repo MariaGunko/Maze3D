@@ -33,7 +33,6 @@ public class MazeDisplay extends Canvas  {
 	Image goalImg = new Image (null, "images/tweety3.gif");
 	Image img = new Image (null, "Images/wall_Black.jpg");
 	Image hint = new Image (null, "Images/coin.gif");
-	Image winner = new Image (null, "images/winner.jpg");
 	Image image=new Image(null,"images/back.jpg");
 
 	Position startPosition ;
@@ -262,18 +261,13 @@ public class MazeDisplay extends Canvas  {
 			Shell GenerateShell = new Shell(getDisplay());
 			GenerateShell.setLayout(new  GridLayout(2, false));
 
-			//			GenerateShell.setText("Winner");
-			//			GenerateShell.setSize(800,500);
-			//			GenerateShell.setImage(winner);
-			//			GenerateShell.setBackgroundImage(winner);
-			//			GenerateShell.open();
-
-			//			this.setBackgroundImage(winner);
 			MessageBox msg = new MessageBox(GenerateShell, SWT.OK);
 			msg.setText("Winner");
 			msg.setMessage("Congratulations you got tweety :)");
 			msg.open();
-			this.removePaintListener(PL);
+			
+			if (PL!=null)
+				this.removePaintListener(PL);
 			//this.removePaintListener(PLwalls);
 
 			gameStarted = false;
